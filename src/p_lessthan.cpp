@@ -21,11 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include "pint.hpp"
-#include "pfloat.hpp"
-#include "patom.hpp"
-#include "clist.hpp"
-#include "pvar.hpp"
+#include "pl_search/pint.hpp"
+#include "pl_search/pfloat.hpp"
+#include "pl_search/patom.hpp"
+#include "cpl_search/list.hpp"
+#include "pl_search/pvar.hpp"
 
 bool PInt::isLessThan(Term& t) {
     if (typeid(t) == typeid(PVar)) return false;
