@@ -36,7 +36,7 @@ public:
   Term* value;
   Term* dereference() override;
   bool bind(Term* t) override;
-  void reset() override;
+  void reset(Term* t) override;
   
   PVar() {
     value = this;

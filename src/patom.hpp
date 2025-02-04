@@ -42,7 +42,7 @@ public:
         return false; // Atoms cannot be bound to other terms
     }
 
-    void reset() override {
+    void reset(Term* t) override {
         // No-op for PAtom
     }
 

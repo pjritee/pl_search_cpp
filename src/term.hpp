@@ -33,7 +33,7 @@ class Term {
 public:
   virtual Term* dereference() = 0;
   virtual bool bind(Term* t) = 0;
-  virtual void reset() = 0;
+  virtual void reset(Term* t) = 0;
   virtual std::string repr() const
 	{
 		return "TERM";

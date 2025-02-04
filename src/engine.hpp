@@ -26,17 +26,16 @@ SOFTWARE.
 
 #include "term.hpp"
 #include "pred.hpp"
+#include "pvar.hpp"
 
 #include <stack>
 #include <memory>
 
-//using namespace std;
-//class Pred;
 
-// struct trail_entry {
-//   Var_ptr var;
-//   Term_ptr value;
-// };
+struct trail_entry {
+  PVar* var;
+  Term* value;
+};
 
 
 struct env_entry {
@@ -47,16 +46,15 @@ struct env_entry {
 class Engine {
 public:
 
-  stack<Term*> trail_stack;
+  stack<shared_ptr<trail_entry>> trail_stack;
 
   stack<shared_ptr<env_entry>> env_stack;
   
-  void trail(Term* v);
+  void trail(PVar* v);
 
   void backtrack();
 
   bool unify(Term* v, Term* t);
-  bool unify(Term* v, TermList t);
 
   bool execute(PredPtr p, bool unbind);
 

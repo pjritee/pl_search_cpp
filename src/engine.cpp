@@ -28,18 +28,18 @@ SOFTWARE.
 
 using namespace std;
 
-void Engine::trail(Term* v) {
+void Engine::trail(PVar* v) {
 
-  // shared_ptr<trail_entry> entry(new trail_entry);
-  // entry->var = v;
-  // entry->value = v->value;
-  trail_stack.push(v);
+  shared_ptr<trail_entry> entry(new trail_entry);
+  entry->var = v;
+  entry->value = v->value;
+  trail_stack.push(entry);
 }
 
 void Engine::backtrack() {
   int old_top = env_stack.top()->trail_index;
   while (trail_stack.size() > old_top) {
-    Term* ptr =  trail_stack.top();
+    trail_entry* entry =  trail_stack.top();
     ptr->reset();
     trail_stack.pop();
   }
@@ -48,27 +48,19 @@ void Engine::backtrack() {
 bool Engine::unify(Term* t1, Term* t2) {
   Term* t1_deref = t1->dereference();
   Term* t2_deref = t2->dereference();
-  if (t1_deref->kind == VAR) {
+  if (typeid(t1_deref) == typeid(PVar)){
     t1_deref->bind(t2_deref);
     trail(t1_deref);
     return true;
   }
-  if (t2_deref->kind == VAR) {
+  if (typeid(t2_deref) == typeid(PVar)){
     t2_deref->bind(t1_deref);
     trail(t2_deref);
     return true;
   }  
   return (*t1_deref == *t2_deref);
 }
-bool Engine::unify(Term* t1,TermList t2) {
-  Term* t1_deref = t1->dereference();
-  if (t1_deref->kind == VAR) {
-    t1_deref->bind(t2);
-    trail(t1_deref);
-    return true;
-  }
-  return false;
-}
+
 
 bool Engine::push_and_call(PredPtr p) {
   if (p == nullptr) {

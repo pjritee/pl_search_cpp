@@ -59,9 +59,9 @@ bool PVar::bind(Term* t) {
   return true;
 }
 
-// Reset the variable to point to itself
-void PVar::reset() {
-  value = this;
+// Reset the variable to point at supplied term
+void PVar::reset(Term* t) {
+  value = t;
 }
 
 // Define the isLessThan method
