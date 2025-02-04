@@ -1,11 +1,11 @@
 PHONY:	all
 
-OUTPUTFILE  = pl_search.a
+OUTPUTFILE  = pl_search_cpp.a
 
 all: $(OUTPUTFILE)
 
 
-$(OUTPUTFILE): term.o pred.o engine.o 
+$(OUTPUTFILE): pvar.o p_lessthan.cpp pred.o engine.o 
 	ar r $@ $^
 	ranlib $@
 

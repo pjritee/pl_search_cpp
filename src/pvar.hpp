@@ -84,7 +84,7 @@ public:
     return this;
   }
 
-  getValue() {
+  Term* getValue() {
     return value;
   } 
   
