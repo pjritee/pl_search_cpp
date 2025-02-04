@@ -55,7 +55,7 @@ class ChoicePred : public Pred {
   Term* var;
   stack<Term*> choices;
  
- void initialize_call();
+  void initialize_call();
   bool apply_choice();
   bool test_choice();
   bool more_choices();

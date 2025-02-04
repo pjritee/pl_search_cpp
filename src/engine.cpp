@@ -39,8 +39,8 @@ void Engine::trail(PVar* v) {
 void Engine::backtrack() {
   int old_top = env_stack.top()->trail_index;
   while (trail_stack.size() > old_top) {
-    trail_entry* entry =  trail_stack.top();
-    ptr->reset();
+    shared_ptr<trail_entry> entry =  trail_stack.top();
+    entry->var->reset(entry->value);
     trail_stack.pop();
   }
 }
@@ -48,16 +48,16 @@ void Engine::backtrack() {
 bool Engine::unify(Term* t1, Term* t2) {
   Term* t1_deref = t1->dereference();
   Term* t2_deref = t2->dereference();
-  if (typeid(t1_deref) == typeid(PVar)){
-    t1_deref->bind(t2_deref);
-    trail(t1_deref);
+  if (PVar* v1 = dynamic_cast<PVar*>(t1_deref)) {
+    trail(v1);
+    v1->bind(t2_deref);
     return true;
   }
-  if (typeid(t2_deref) == typeid(PVar)){
-    t2_deref->bind(t1_deref);
-    trail(t2_deref);
+  if (PVar* v2 = dynamic_cast<PVar*>(t2_deref)) {
+    trail(v2);
+    v2->bind(t1_deref);
     return true;
-  }  
+  }
   return (*t1_deref == *t2_deref);
 }
 
@@ -105,22 +105,3 @@ bool Engine::execute(PredPtr p, bool unbind) {
   if (unbind) clear_stacks();
   return has_succeeded;
 }
-
-// int main()
-// {
-//   Var v1 = Var();
-//   Var v2 = Var();
-//   Int i1(42);
-//   Engine eng;
-//   eng.unify(v1, v2);
-//   eng.unify(v2, i1);
-//   cout << v1.dereference() << " " << v2.dereference() << endl;
-
-//   eng.backtrack();
-//   cout << v1.dereference() << " " << v2.dereference() << endl;
-
-  
-
-
-//   return 1;
-// }

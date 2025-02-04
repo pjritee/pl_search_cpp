@@ -1,4 +1,7 @@
 # Ignore object files
 *.o
 
+# Ignore libraries
+*.a
+
 # Other ignore rules...
