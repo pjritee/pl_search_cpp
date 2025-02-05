@@ -28,6 +28,8 @@ SOFTWARE.
 #include <string>
 #include <typeinfo>
 
+namespace pl_search {
+
 
 // PFloat objects approximate Prolog floats
 class PFloat : public Term {
@@ -66,4 +68,5 @@ private:
     double value;
 };
 
+} // namespace pl_search
 #endif // PFLOAT_HPP

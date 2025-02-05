@@ -28,6 +28,9 @@ SOFTWARE.
 
 using namespace std;
 
+namespace pl_search {
+
+
 void Engine::trail(PVar* v) {
 
   shared_ptr<trail_entry> entry(new trail_entry);
@@ -38,6 +41,7 @@ void Engine::trail(PVar* v) {
 
 void Engine::backtrack() {
   int old_top = env_stack.top()->trail_index;
+ 
   while (trail_stack.size() > old_top) {
     shared_ptr<trail_entry> entry =  trail_stack.top();
     entry->var->reset(entry->value);
@@ -61,15 +65,18 @@ bool Engine::unify(Term* t1, Term* t2) {
   return (*t1_deref == *t2_deref);
 }
 
+void Engine::push(PredPtr p) {
+  shared_ptr<env_entry> entry(new env_entry);
+  entry->pred = p;
+  entry->trail_index = trail_stack.size();
+  env_stack.push(entry);
+} 
 
 bool Engine::push_and_call(PredPtr p) {
   if (p == nullptr) {
     return true;
   }
-  shared_ptr<env_entry> entry(new env_entry);
-  entry->pred = p;
-  entry->trail_index = trail_stack.size();
-  env_stack.push(entry);
+  push(p);
   return p->call();
 }
 
@@ -105,3 +112,5 @@ bool Engine::execute(PredPtr p, bool unbind) {
   if (unbind) clear_stacks();
   return has_succeeded;
 }
+
+} // namespace pl_search

@@ -28,6 +28,8 @@ SOFTWARE.
 #include <string>
 #include <typeinfo>
 
+namespace pl_search {
+
 
 // PAtom objects approximate Prolog atoms
 class PAtom : public Term {
@@ -66,4 +68,5 @@ private:
     std::string name;
 };
 
+} // namespace pl_search
 #endif // PATOM_HPP

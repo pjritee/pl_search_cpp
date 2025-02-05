@@ -29,6 +29,8 @@ SOFTWARE.
 
 
 using namespace std;
+namespace pl_search {
+
 
 Pred::Pred(Engine* eng, PredPtr cont) {
     engine = eng;
@@ -103,3 +105,5 @@ bool ChoicePred::more_choices() {
 PredPtr ChoicePred::get_continuation() {
   return continuation;
 }
+
+} // namespace pl_search

@@ -31,6 +31,8 @@ SOFTWARE.
 #include <stack>
 #include <memory>
 
+namespace pl_search {
+
 
 struct trail_entry {
   PVar* var;
@@ -46,6 +48,8 @@ struct env_entry {
 class Engine {
 public:
 
+  Engine() {};
+
   stack<shared_ptr<trail_entry>> trail_stack;
 
   stack<shared_ptr<env_entry>> env_stack;
@@ -60,10 +64,12 @@ public:
 
   bool push_and_call(PredPtr p);
 
+  void push(PredPtr p);
+
   void pop_call();
 
   void clear_stacks();
 };
 
-
+} // namespace pl_search
 #endif

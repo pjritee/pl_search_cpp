@@ -4,4 +4,9 @@
 # Ignore libraries
 *.a
 
+
+# Ignore build directories
+build/
+bin/
+
 # Other ignore rules...

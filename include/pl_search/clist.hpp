@@ -37,6 +37,9 @@ SOFTWARE.
 // If a Prolog-like list is required, a user-defined class that implements the
 // Term interface should be used (for example ConsList).
 
+namespace pl_search {
+
+
 class CList : public Term {
 public:
     CList() {}
@@ -87,5 +90,7 @@ public:
 private:
     std::list<Term*> elements;
 };
+
+} // namespace pl_search
 
 #endif // CLIST_HPP

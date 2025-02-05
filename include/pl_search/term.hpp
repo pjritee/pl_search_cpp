@@ -28,6 +28,9 @@ SOFTWARE.
 
 using namespace std;
 
+namespace pl_search {
+
+
 // Abstract base class for terms that approximate Prolog terms
 class Term {
 public:
@@ -71,6 +74,6 @@ public:
    }
 };
 
-
+} // namespace pl_search
 
 #endif

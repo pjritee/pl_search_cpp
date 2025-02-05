@@ -28,6 +28,9 @@ SOFTWARE.
 #include <stack>
 #include <memory>
 
+namespace pl_search {
+
+
 class Engine;
 
 class Pred;
@@ -66,6 +69,6 @@ class ChoicePred : public Pred {
  
 };
 
-
+} // namespace pl_search
 
 #endif

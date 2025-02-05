@@ -1,6 +1,6 @@
 PHONY:	all
 
-OUTPUTFILE  = pl_search_cpp.a
+OUTPUTFILE  = pl_search.a
 
 all: $(OUTPUTFILE)
 

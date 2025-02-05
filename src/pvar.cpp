@@ -24,6 +24,9 @@ SOFTWARE.
 #include "pl_search/pvar.hpp"
 #include <cassert>
 
+namespace pl_search {
+
+
 // Initialize static member
 int PVar::id = 0;
 
@@ -70,3 +73,5 @@ bool PVar::isLessThan(Term& t) {
   if (v == nullptr) return true;
   return getVarId() < v->getVarId();
 }
+
+} // namespace pl_search

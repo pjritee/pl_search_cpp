@@ -28,6 +28,8 @@ SOFTWARE.
 #include <string>
 #include <cassert>
 
+namespace pl_search {
+
 // PVar objects approximate Prolog variables
 class PVar : public Term {
 public:
@@ -84,11 +86,9 @@ public:
     return this;
   }
 
-  Term* getValue() {
-    return value;
-  } 
   
 };
 
+} // namespace pl_search
 
 #endif // PVAR_HPP

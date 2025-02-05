@@ -24,8 +24,11 @@ SOFTWARE.
 #include "pl_search/pint.hpp"
 #include "pl_search/pfloat.hpp"
 #include "pl_search/patom.hpp"
-#include "cpl_search/list.hpp"
+#include "pl_search/clist.hpp"
 #include "pl_search/pvar.hpp"
+
+namespace pl_search {
+
 
 bool PInt::isLessThan(Term& t) {
     if (typeid(t) == typeid(PVar)) return false;
@@ -63,3 +66,4 @@ bool CList::isLessThan(Term& t) {
     if (l == nullptr) return false;
     return elements < l->elements;
 }
+} // namespace pl_search

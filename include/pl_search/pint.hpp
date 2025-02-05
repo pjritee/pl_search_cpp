@@ -28,6 +28,8 @@ SOFTWARE.
 #include <string>
 #include <typeinfo>
 
+namespace pl_search {
+
 
 // PInt objects approximate Prolog integers
 class PInt : public Term {
@@ -66,4 +68,5 @@ private:
     int value;
 };
 
+} // namespace pl_search
 #endif // PINT_HPP
