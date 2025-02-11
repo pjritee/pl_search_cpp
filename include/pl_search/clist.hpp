@@ -21,8 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#ifndef CLIST_HPP
-#define CLIST_HPP
+#ifndef PL_SEARCH_CLIST_HPP
+#define PL_SEARCH_CLIST_HPP
 
 #include "term.hpp"
 #include <list>
@@ -93,4 +93,4 @@ private:
 
 } // namespace pl_search
 
-#endif // CLIST_HPP
+#endif // PL_SEARCH_CLIST_HPP

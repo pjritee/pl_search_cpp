@@ -23,19 +23,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+#include "pl_search/pred.hpp"
 #include "pl_search/engine.hpp"
 #include "pl_search/term.hpp"
-#include "pl_search/pred.hpp"
-
+#include "pl_search/choice_iterator.hpp"
 
 using namespace std;
 namespace pl_search {
 
-
-Pred::Pred(Engine* eng, PredPtr cont) {
-    engine = eng;
-    continuation = cont;
-}
 
 bool Pred::call() {
   initialize_call();
@@ -44,54 +39,32 @@ bool Pred::call() {
 }
 
 bool Pred::try_call() {
-  if (more_choices()) {
-    if (apply_choice() && test_choice()) {
-      return engine->push_and_call(get_continuation());
-    }
+  if (!more_choices()) {
+    engine->pop_call();
     return false;
   }
-  engine->pop_call();
+  if (apply_choice() && test_choice()) {
+    return engine->push_and_call(get_continuation());
+  }
   return false;
 }
     
-void Pred::initialize_call() {
- 
+void Pred::initialize_call() { 
 }
 
-
-
-bool Pred::apply_choice() {
-  return false;
+// follow the continuation chain to the last predicate
+PredPtr Pred::last_pred() {
+  PredPtr p = shared_from_this();
+  while (p->get_continuation() != nullptr) {
+    p = p->get_continuation();
+  }
+  return p;
 }
 
-bool Pred::test_choice() {
-  return false;
-}
-
-bool Pred::more_choices() {
-  return false;
-}
-
-PredPtr Pred::get_continuation() {
-  return nullptr;
-}
-
-
-ChoicePred::ChoicePred(Engine* eng, PredPtr cont, Term* v,
-            stack<Term*> &ch): Pred(eng,cont){
-   var = v;
-   choices = ch;
- }
-
-void ChoicePred::initialize_call() {
-}
 
 bool ChoicePred::apply_choice() {
-  Term* t = choices.top();
-  choices.pop();
-  return engine->unify(var, t);
+  return choice_iterator->make_choice();
 }
-
 
 
 bool ChoicePred::test_choice() {
@@ -99,11 +72,43 @@ bool ChoicePred::test_choice() {
 }
 
 bool ChoicePred::more_choices() {
-  return !choices.empty();
+  return choice_iterator->has_next();
 }
 
-PredPtr ChoicePred::get_continuation() {
-  return continuation;
+
+// Create a predicate that is a conjunction of a list of predicates
+PredPtr conjunction(Engine* engine, std::vector<PredPtr> preds) {
+  if (preds.empty()) return nullptr;
+  PredPtr first = preds.front();
+
+  for (auto it = preds.begin(); it != prev(preds.end()); ++it) {
+    PredPtr last = (*it)->last_pred();
+    last->set_continuation(*(it + 1));
+  }
+  return first;
+}
+
+
+void DisjPred::initialize_call() {
+  current_pred = preds.begin(); 
+}
+
+bool DisjPred::apply_choice(){
+  return (*current_pred)->call();
+}
+
+bool DisjPred::test_choice() {
+  return true;
+}
+
+bool DisjPred::more_choices() {
+  return current_pred != preds.end();
+}
+
+void DisjPred::set_continuation(PredPtr cont) {
+  for (auto it = current_pred; it != preds.end(); ++it) {
+    (*it)->set_continuation(cont);
+  }
 }
 
 } // namespace pl_search

@@ -21,8 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#ifndef PFLOAT_HPP
-#define PFLOAT_HPP
+#ifndef PL_SEARCH_PFLOAT_HPP
+#define PL_SEARCH_PFLOAT_HPP
 
 #include "term.hpp"
 #include <string>
@@ -69,4 +69,4 @@ private:
 };
 
 } // namespace pl_search
-#endif // PFLOAT_HPP
+#endif // PL_SEARCH_PFLOAT_HPP

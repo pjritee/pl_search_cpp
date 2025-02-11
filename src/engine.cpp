@@ -21,6 +21,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+//#include "pl_search/choice_iterator.hpp"
+#include "pl_search/typedefs.hpp"
+#include "pl_search/pred.hpp"
 #include "pl_search/engine.hpp"
 
 #include <fstream>
@@ -52,6 +55,14 @@ void Engine::backtrack() {
 bool Engine::unify(Term* t1, Term* t2) {
   Term* t1_deref = t1->dereference();
   Term* t2_deref = t2->dereference();
+  // Same pointers
+  if (t1_deref == t2_deref) {
+    return true;
+  }
+  // Same values
+  if (*t1_deref == *t2_deref) {
+    return true;
+  }
   if (PVar* v1 = dynamic_cast<PVar*>(t1_deref)) {
     trail(v1);
     v1->bind(t2_deref);
@@ -62,7 +73,25 @@ bool Engine::unify(Term* t1, Term* t2) {
     v2->bind(t1_deref);
     return true;
   }
-  return (*t1_deref == *t2_deref);
+  CList* l1 = dynamic_cast<CList*>(t1_deref);
+  CList* l2 = dynamic_cast<CList*>(t2_deref);
+  if ((l1 != nullptr) && (l2 != nullptr)) { 
+    if (l1->getElements().size() != l2->getElements().size()) {
+      return false;
+    }
+    auto it1 = l1->getElements().begin();
+    auto it2 = l2->getElements().begin();
+    while (it1 != l1->getElements().end()) {
+      if (!unify(*it1, *it2)) {
+        return false;
+      }
+      ++it1;
+      ++it2;
+    }
+    return true;
+  }
+
+  return t1_deref->unifyWith(t2_deref);
 }
 
 void Engine::push(PredPtr p) {
@@ -83,6 +112,12 @@ bool Engine::push_and_call(PredPtr p) {
 void Engine::pop_call() {
   backtrack();
   env_stack.pop();
+}
+
+void Engine::pop_to_once() {
+  while (typeid(*(env_stack.top()->pred)) != typeid(Once)) {
+    env_stack.pop();
+  }
 }
 
 void Engine::clear_stacks() {

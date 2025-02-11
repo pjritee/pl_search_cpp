@@ -42,6 +42,14 @@ target_link_libraries(test_pvar Catch2::Catch2 pl_search)
 add_executable(test_engine tests/test_engine.cpp)
 target_link_libraries(test_engine Catch2::Catch2 pl_search)
 
+add_executable(test_choice_pred tests/test_choice_pred.cpp)
+target_link_libraries(test_choice_pred Catch2::Catch2 pl_search)
+
+add_executable(test_pred tests/test_pred.cpp)
+target_link_libraries(test_pred Catch2::Catch2 pl_search)
+
 include(CTest)
 catch_discover_tests(test_pvar)
 catch_discover_tests(test_engine)
+catch_discover_tests(test_choice_pred)
+catch_discover_tests(test_pred)

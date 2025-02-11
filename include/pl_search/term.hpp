@@ -21,12 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#ifndef TERM_HPP
-#define TERM_HPP
+#ifndef PL_SEARCH_TERM_HPP
+#define PL_SEARCH_TERM_HPP
 #include <iostream>
 #include <string>
 
-using namespace std;
+//using namespace std;
 
 namespace pl_search {
 
@@ -44,6 +44,12 @@ public:
 
   virtual bool isEqualTo(Term& t) = 0;
   virtual bool isLessThan(Term& t) = 0;
+
+  // A hook for unification of user-defined classes
+  // Only override this method if you want to unify user-defined classes
+  bool unifyWith(Term* t) {
+    return false;
+  }
 
   Term() {
   }
@@ -76,4 +82,4 @@ public:
 
 } // namespace pl_search
 
-#endif
+#endif // PL_SEARCH_TERM_HPP

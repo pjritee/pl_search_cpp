@@ -21,12 +21,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#ifndef ENGINE_HPP_
-#define ENGINE_HPP_
+#ifndef PL_SEARCH_ENGINE_HPP_
+#define PL_SEARCH_ENGINE_HPP_
 
 #include "term.hpp"
-#include "pred.hpp"
+//#include "pred.hpp"
 #include "pvar.hpp"
+#include "clist.hpp"
+#include "typedefs.hpp"
 
 #include <stack>
 #include <memory>
@@ -50,9 +52,9 @@ public:
 
   Engine() {};
 
-  stack<shared_ptr<trail_entry>> trail_stack;
+  std::stack<std::shared_ptr<trail_entry>> trail_stack;
 
-  stack<shared_ptr<env_entry>> env_stack;
+  std::stack<std::shared_ptr<env_entry>> env_stack;
   
   void trail(PVar* v);
 
@@ -68,8 +70,10 @@ public:
 
   void pop_call();
 
+  void pop_to_once();
+
   void clear_stacks();
 };
 
 } // namespace pl_search
-#endif
+#endif // PL_SEARCH_ENGINE_HPP_
