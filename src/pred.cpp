@@ -31,24 +31,6 @@ SOFTWARE.
 using namespace std;
 namespace pl_search {
 
-
-bool Pred::call() {
-  initialize_call();
-  return try_call();
-  
-}
-
-bool Pred::try_call() {
-  if (!more_choices()) {
-    engine->pop_call();
-    return false;
-  }
-  if (apply_choice() && test_choice()) {
-    return engine->push_and_call(get_continuation());
-  }
-  return false;
-}
-    
 void Pred::initialize_call() { 
 }
 
@@ -77,7 +59,7 @@ bool ChoicePred::more_choices() {
 
 
 // Create a predicate that is a conjunction of a list of predicates
-PredPtr conjunction(Engine* engine, std::vector<PredPtr> preds) {
+PredPtr conjunction(std::vector<PredPtr> preds) {
   if (preds.empty()) return nullptr;
   PredPtr first = preds.front();
 
@@ -88,13 +70,14 @@ PredPtr conjunction(Engine* engine, std::vector<PredPtr> preds) {
   return first;
 }
 
-
 void DisjPred::initialize_call() {
   current_pred = preds.begin(); 
 }
 
 bool DisjPred::apply_choice(){
-  return (*current_pred)->call();
+  set_continuation(*current_pred);
+  ++current_pred;
+  return true;
 }
 
 bool DisjPred::test_choice() {

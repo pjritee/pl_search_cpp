@@ -30,11 +30,11 @@ SOFTWARE.
 
 #include "term.hpp"
 #include "engine.hpp"
-
 #include "typedefs.hpp"
 
 #include <stack>
 #include <vector>
+#include <memory>
 
 // An approximation of a Prolog predicate.
 // We use shared_ptr as we end up with multiple instances of loop predicates 
@@ -43,122 +43,111 @@ SOFTWARE.
 
 namespace pl_search {
 
-
 class Engine;
 class ChoiceIterator;
 
-class Pred : std::enable_shared_from_this<Pred> {
+class Pred : public std::enable_shared_from_this<Pred> {
 public:
-  Engine* engine;
-  
-  bool call();
-  bool try_call();
+  Pred(Engine* eng) : engine(eng), continuation(nullptr) {}
   virtual void initialize_call() = 0;
-  bool apply_choice() { return false; }
-  bool test_choice() { return false; }
-  bool more_choices() { return false; }
+  virtual bool apply_choice() { return false; }
+  virtual bool test_choice() { return false; }
+  virtual bool more_choices() { return false; }
   PredPtr get_continuation() { return continuation; }
   void set_continuation(PredPtr cont) { continuation = cont; }
   PredPtr last_pred();
 
-  Pred(Engine* eng) : engine(eng) { continuation = nullptr; }
- 
- 
   virtual ~Pred() = default; // Virtual destructor for proper cleanup
 
- 
-private: 
-
+protected:
+  Engine* engine;
   PredPtr continuation;
-
 };
-
 
 class ChoicePred : public Pred {
- public:
+public:
   ChoiceIterator* choice_iterator;
- 
-  void initialize_call() override {};
-  bool apply_choice();
-  bool test_choice();
-  bool more_choices();
-  
 
-  
- ChoicePred(Engine* eng, ChoiceIterator* ch) : 
-  Pred(eng), choice_iterator(ch) {}
- 
-};
-
-// A predicate that is semi-deterministic I.e. it has at most one solution
-class SemiDetPred : public Pred {
- public:
-  SemiDetPred(Engine* eng) : Pred(eng) {}
-
-  bool try_call() {
-    engine->pop_call();
-    return test_choice() && engine->push_and_call(get_continuation());
-  }
-
-};
-
-// A predicate that is deterministic I.e. it has exactly one solution
-class DetPred : public Pred {
- public:
-  DetPred(Engine* eng) : Pred(eng) {}
-
-  // All the work should be done in initialize_call. The predicate succeeds
-  bool try_call() {
-    engine->pop_call();
-    return engine->push_and_call(get_continuation());
-  }
-};
-
-// Create a predicate that is a conjunction of a list of predicates
-PredPtr conjunction(Engine* engine, std::vector<PredPtr> preds); 
-
-
-class DisjPred : public Pred {
- public:
-  DisjPred(Engine* eng, std::vector<pl_search::PredPtr> preds) :
-    Pred(eng), preds(preds) {}
-  void initialize_call() override;
-  bool apply_choice();
-  bool test_choice();
-  bool more_choices();
-  void set_continuation(PredPtr cont);
- private:
-  std::vector<pl_search::PredPtr> preds;
-  std::vector<pl_search::PredPtr>::iterator current_pred;
-};
-
-
-class OnceEnd : public DetPred {
- public:
-  OnceEnd(Engine* eng) : DetPred(eng){}
-  bool try_call(){
-    engine->pop_to_once();
-    return engine->push_and_call(get_continuation());
-  }
+  ChoicePred(Engine* eng, ChoiceIterator* ch) : Pred(eng), choice_iterator(ch) {}
 
   void initialize_call() override {}
+  bool apply_choice() override;
+  bool test_choice() override;
+  bool more_choices() override;
+};
+
+class SemiDetPred : public Pred {
+public:
+  SemiDetPred(Engine* eng) : Pred(eng) {}
+
+  bool more_choices() override { return false; }
+  //bool apply_choice() override { return true; }
+  //bool test_choice() override { return true; }
+};
+
+class DetPred : public Pred {
+public:
+  DetPred(Engine* eng) : Pred(eng) {}
+
+  bool more_choices() override { return false; }
+  bool apply_choice() override { return true; }
+  bool test_choice() override { return true; }
+};
+
+class DisjPred : public Pred {
+public:
+  DisjPred(Engine* eng, std::vector<PredPtr> preds) : Pred(eng), preds(preds) {}
+
+  void initialize_call() override;
+  bool apply_choice() override;
+  bool test_choice() override;
+  bool more_choices() override;
+  void set_continuation(PredPtr cont);
+
+private:
+  std::vector<PredPtr> preds;
+  std::vector<PredPtr>::iterator current_pred;
+};
+
+class OnceEnd : public Pred {
+public:
+  OnceEnd(Engine* eng) : Pred(eng) {
+
+  }
+
+  void initialize_call() override {   
+  }
+
+  bool apply_choice() override {
+    return true;
+    }
+  
+  bool test_choice() override {
+    engine->pop_to_once();
+    return engine->push_and_call(continuation);
+  }
+
+  bool more_choices() override {
+    return false;
+  }
 };
 
 class Once : public DetPred {
- public:
- PredPtr pred;
-  Once(Engine* eng, PredPtr p) : DetPred(eng), pred(p) {}
+public:
+  PredPtr pred;
+
+  Once(Engine* eng, PredPtr p) : DetPred(eng), pred(p) {
+    set_continuation(pred);
+    PredPtr end = std::make_shared<OnceEnd>(eng);
+    pred->last_pred()->set_continuation(end);
+  }
 
   void initialize_call() override {
-    // set preds last continuation to a OnceEnd predicate
-    pred->last_pred()->set_continuation(std::make_shared<OnceEnd>(engine));
   }
-  bool try_call(){
-    return engine->push_and_call(pred);
-  }
+
 };
 
-
+PredPtr conjunction(std::vector<PredPtr> preds);
 
 } // namespace pl_search
 

@@ -106,10 +106,23 @@ bool Engine::push_and_call(PredPtr p) {
     return true;
   }
   push(p);
-  return p->call();
+  p->initialize_call();
+  return try_call(p);
 }
 
-void Engine::pop_call() {
+bool Engine::try_call(PredPtr p) {
+  if (!p->more_choices()) {
+    env_stack.pop();
+    //pop_pred_call();
+    return false;
+  }
+  if (p->apply_choice() && p->test_choice()) {
+    return push_and_call(p->get_continuation());
+  }
+  return false;
+}
+
+void Engine::pop_pred_call() {
   backtrack();
   env_stack.pop();
 }
@@ -122,28 +135,22 @@ void Engine::pop_to_once() {
 
 void Engine::clear_stacks() {
    while (env_stack.size() > 0) {
-     //PredPtr pred_call = env_stack.top()->pred;
-     //pred_call->cleanup();
      backtrack();
      env_stack.pop();
-   }
-   // while (trail_stack.size() > 1) {
-   //   Term* ptr =  trail_stack.top();
-   //   cerr << "clear " << *ptr << endl;
-   //   ptr->reset();
-   //   trail_stack.pop();
-   // }
+   } 
 }
   
 bool Engine::execute(PredPtr p, bool unbind) {
   int top_of_env_stack = env_stack.size();
   bool has_succeeded = push_and_call(p);
+  
   while (!has_succeeded) {
     if (env_stack.size() == top_of_env_stack) break;
     backtrack();
     PredPtr pred_call = env_stack.top()->pred;
-    has_succeeded = pred_call->try_call();
+    has_succeeded = try_call(pred_call);
   }
+ 
   if (unbind) clear_stacks();
   return has_succeeded;
 }

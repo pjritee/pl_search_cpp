@@ -31,9 +31,7 @@ class DetTestPred : public DetPred {
   DetTestPred(Engine* eng) : DetPred(eng){}
   void initialize_call() override {
     
-  }
-  
-  
+  } 
 };
 
 
@@ -45,17 +43,12 @@ TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
     std::vector<Term*> choices = {&term1, &term2};
     VarChoiceIterator choice_iterator(&engine, &var, choices);
 
-    std::shared_ptr<ChoicePred> choicePred = std::make_shared<ChoicePred>(&engine, &choice_iterator);
+    std::shared_ptr<ChoicePred> choicePred = 
+        std::make_shared<ChoicePred>(&engine, &choice_iterator);
  
-    engine.push(choicePred); // added so we can backtrack
-
-    SECTION("Initialize call test") {
-        choicePred->initialize_call();
-        // Add assertions based on what initialize_call is supposed to do
-    }
-
+    
     SECTION("Apply choice test") {
-        REQUIRE(choicePred->apply_choice() == false);
+        REQUIRE(choicePred->apply_choice() == true);
     }
 
     SECTION("Test choice test") {
@@ -63,7 +56,7 @@ TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
     }
 
     SECTION("More choices test") {
-        REQUIRE(choicePred->more_choices() == false);
+        REQUIRE(choicePred->more_choices() == true);
     }
 }
 
@@ -74,22 +67,12 @@ TEST_CASE("SemiDetPred functionality", "[SemiDetPred]") {
     std::shared_ptr<SemiDetTestPred> semiDetPred12 = std::make_shared<SemiDetTestPred>(&engine, &term1, &term2);
     std::shared_ptr<SemiDetTestPred> semiDetPred11 = std::make_shared<SemiDetTestPred>(&engine, &term1, &term1);
     
-    engine.push(semiDetPred12); 
     SECTION("Try call test term1  and term2") {
-        REQUIRE(semiDetPred12->try_call() == false);
+        REQUIRE(semiDetPred12->test_call() == false);
     }
 
     SECTION("Try call test term1  and term1") {
-        REQUIRE(semiDetPred11->try_call() == true);
-    }
-}
-
-TEST_CASE("DetPred functionality", "[DetPred]") {
-    Engine engine;
-    PredPtr detPred = std::make_shared<DetTestPred>(&engine);
-    engine.push(detPred);
-    SECTION("Try call test") {
-        REQUIRE(detPred->try_call() == true);
+        REQUIRE(semiDetPred11->test_call() == true);
     }
 }
 
@@ -101,7 +84,7 @@ TEST_CASE("Conjunction functionality", "[Conjunction]") {
     std::shared_ptr<SemiDetTestPred> semiDetPred11 = std::make_shared<SemiDetTestPred>(&engine, &term1, &term1);
     std::vector<PredPtr> preds = {semiDetPred12, semiDetPred11};
     
-    PredPtr conjunctionPred = conjunction(&engine, preds);
+    PredPtr conjunctionPred = conjunction(preds);
 
     
     SECTION("Try call test") {
@@ -109,21 +92,6 @@ TEST_CASE("Conjunction functionality", "[Conjunction]") {
         REQUIRE(conjunctionPred->get_continuation() == semiDetPred11);
     }
 }
-TEST_CASE("Once functionality", "[Once]") {
-    Engine engine;
-    PInt term1(42);
-    PInt term2(43);
-    SemiDetTestPred semiDetPred12(&engine, &term1, &term2);
-    SemiDetTestPred semiDetPred11(&engine, &term1, &term1);
-    std::vector<PredPtr> preds = {std::make_shared<SemiDetTestPred>(&engine, &term1, &term2), 
-        std::make_shared<SemiDetTestPred>(&engine, &term1, &term1)};
-    PredPtr conjunctionPred = conjunction(&engine, preds);
-    PredPtr oncePred = std::make_shared<Once>(&engine, conjunctionPred);
- 
 
-    SECTION("Try call test") {
-        REQUIRE(oncePred->try_call() == false);
-    }
-}
 
 

@@ -33,6 +33,8 @@ SOFTWARE.
 #include <stack>
 #include <memory>
 
+class EngineTest;
+
 namespace pl_search {
 
 
@@ -52,6 +54,19 @@ public:
 
   Engine() {};
 
+  bool unify(Term* v, Term* t);
+
+  bool execute(PredPtr p, bool unbind);
+
+  // Special Pred's that need to access the engine's private members
+  friend class Once;
+  friend class OnceEnd;
+
+  // Friend test class
+  friend class ::EngineTest;
+
+
+private:
   std::stack<std::shared_ptr<trail_entry>> trail_stack;
 
   std::stack<std::shared_ptr<env_entry>> env_stack;
@@ -60,15 +75,13 @@ public:
 
   void backtrack();
 
-  bool unify(Term* v, Term* t);
-
-  bool execute(PredPtr p, bool unbind);
+  bool try_call(PredPtr p) ;
 
   bool push_and_call(PredPtr p);
 
   void push(PredPtr p);
 
-  void pop_call();
+  void pop_pred_call();
 
   void pop_to_once();
 
