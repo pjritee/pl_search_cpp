@@ -54,7 +54,7 @@ public:
 
   Engine() {};
 
-  bool unify(Term* v, Term* t);
+  bool unify(Term* t1, Term* t2);
 
   bool execute(PredPtr p, bool unbind);
 
