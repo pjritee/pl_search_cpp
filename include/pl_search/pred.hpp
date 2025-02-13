@@ -78,25 +78,42 @@ public:
 
 class SemiDetPred : public Pred {
 public:
-  SemiDetPred(Engine* eng) : Pred(eng) {}
+  SemiDetPred(Engine* eng) : Pred(eng) {first_call = true;}
 
-  bool more_choices() override { return false; }
-  //bool apply_choice() override { return true; }
-  //bool test_choice() override { return true; }
+  bool more_choices() override { 
+    if (first_call) {
+      first_call = false;
+      return true;
+    }
+    return false; 
+  }
+  
+private:
+  bool first_call;
 };
 
 class DetPred : public Pred {
 public:
-  DetPred(Engine* eng) : Pred(eng) {}
+  DetPred(Engine* eng) : Pred(eng) { first_call = true; }
 
-  bool more_choices() override { return false; }
+  bool more_choices() override { 
+    if (first_call) {
+      first_call = false;
+      return true;
+    }
+    return false; 
+  }
   bool apply_choice() override { return true; }
   bool test_choice() override { return true; }
+
+  private:
+    bool first_call;
 };
 
 class DisjPred : public Pred {
 public:
-  DisjPred(Engine* eng, std::vector<PredPtr> preds) : Pred(eng), preds(preds) {}
+  DisjPred(Engine* eng, std::vector<PredPtr> preds) : 
+    Pred(eng), preds(preds) {}
 
   void initialize_call() override;
   bool apply_choice() override;
@@ -112,7 +129,7 @@ private:
 class OnceEnd : public Pred {
 public:
   OnceEnd(Engine* eng) : Pred(eng) {
-
+    first_call = true;
   }
 
   void initialize_call() override {   
@@ -123,13 +140,19 @@ public:
     }
   
   bool test_choice() override {
-    engine->pop_to_once();
-    return engine->push_and_call(continuation);
+    return true;
   }
 
   bool more_choices() override {
+    if (first_call) {
+      first_call = false;
+      return true;
+    }
+    engine->pop_to_once();
     return false;
   }
+  private:
+    bool first_call;
 };
 
 class Once : public DetPred {
@@ -140,10 +163,12 @@ public:
     set_continuation(pred);
     PredPtr end = std::make_shared<OnceEnd>(eng);
     pred->last_pred()->set_continuation(end);
-  }
+    assert(continuation == pred);
+    assert(pred->get_continuation() == end);
+     }
 
-  void initialize_call() override {
-  }
+  void initialize_call() override {}
+
 
 };
 

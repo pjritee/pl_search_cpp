@@ -75,9 +75,11 @@ void DisjPred::initialize_call() {
 }
 
 bool DisjPred::apply_choice(){
-  set_continuation(*current_pred);
+  PredPtr cont = *current_pred;
+  // the chosen disjunct should have the same continuation as the disjunction
+  cont->set_continuation(continuation);
   ++current_pred;
-  return true;
+  return engine->push_and_call(cont);
 }
 
 bool DisjPred::test_choice() {
@@ -88,10 +90,5 @@ bool DisjPred::more_choices() {
   return current_pred != preds.end();
 }
 
-void DisjPred::set_continuation(PredPtr cont) {
-  for (auto it = current_pred; it != preds.end(); ++it) {
-    (*it)->set_continuation(cont);
-  }
-}
 
 } // namespace pl_search

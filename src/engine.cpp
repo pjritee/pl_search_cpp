@@ -143,7 +143,6 @@ void Engine::clear_stacks() {
 bool Engine::execute(PredPtr p, bool unbind) {
   int top_of_env_stack = env_stack.size();
   bool has_succeeded = push_and_call(p);
-  
   while (!has_succeeded) {
     if (env_stack.size() == top_of_env_stack) break;
     backtrack();

@@ -6,6 +6,7 @@
 #include "pl_search/pred.hpp"
 #include "pl_search/choice_iterator.hpp"
 
+
 using namespace pl_search;
 
 // Define a simple predicate for testing
@@ -43,8 +44,8 @@ public:
         SemiDetPred(eng), var(v), results(r) {}
 
     void initialize_call() override {
-        results.push_back(var->dereference());
-    }
+       results.push_back(var->dereference());
+      }
 
     bool apply_choice() override {
         return false;
@@ -54,6 +55,15 @@ public:
         return false;
     }
 };
+
+void print_pred_chain(PredPtr pred) {
+
+    while (pred != nullptr) {
+        pred = pred->get_continuation();
+        std::cerr << " : " << pred;
+    }
+    std::cerr << std::endl;
+}
 
 class EngineTest {
 public:
@@ -131,9 +141,8 @@ TEST_CASE("Engine execute test", "[Engine]") {
     PredPtr conjunctionPred1 = conjunction({choicePred1, failpred});
     PredPtr conjunctionPred2 = conjunction({oncePred, failpred});
 
-    PredPtr onceEnd = std::make_shared<OnceEnd>(&engine);
     SECTION("Execute test - test once") {
-        REQUIRE(typeid(oncePred->get_continuation()->get_continuation()).name() == typeid(onceEnd).name());
+        REQUIRE(typeid(oncePred->get_continuation()->get_continuation()).name() == typeid(PredPtr).name());
         REQUIRE(oncePred->get_continuation() == choicePred2);
         REQUIRE(choicePred2->get_continuation()->get_continuation() == failpred);
     }
@@ -156,5 +165,38 @@ TEST_CASE("Engine execute test", "[Engine]") {
         REQUIRE(!EngineTest::test_execute(engine, conjunctionPred2, false));
         REQUIRE(results.size() == 1);
         REQUIRE(results.front() == &term1);
+    }
+    
+}
+
+TEST_CASE("Engine execute disj test", "[Engine]") {
+    Engine engine;
+    PVar var;
+    std::list<Term*> results;
+    PredPtr failpred = std::make_shared<CollectAndFail>(&engine, &var, results);
+    PInt term1(42);
+    PInt term2(43);
+    std::vector<Term*> choices = {&term1, &term2};
+    VarChoiceIterator choice_iterator1(&engine, &var, choices);
+    VarChoiceIterator choice_iterator2(&engine, &var, choices);
+    PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, &choice_iterator1);
+    PredPtr choicePred2 = std::make_shared<ChoicePred>(&engine, &choice_iterator2);
+    
+
+    PredPtr disjPred = std::make_shared<DisjPred>(&engine, std::vector<PredPtr>{choicePred1, choicePred2});
+    PredPtr conjunctionPred3 = conjunction({disjPred, failpred});
+
+
+    SECTION("Execute test - disjunction, backtrack over choice") {
+        REQUIRE(!EngineTest::test_execute(engine, conjunctionPred3, false));
+        REQUIRE(results.size() == 4);
+        std::list<Term*>::iterator it = results.begin();
+        REQUIRE(*it == &term1);
+        ++it;
+        REQUIRE(*it == &term2);
+        ++it;
+        REQUIRE(*it == &term1);
+        ++it;
+        REQUIRE(*it == &term2);
     }
 }

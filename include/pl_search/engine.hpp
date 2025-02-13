@@ -61,6 +61,7 @@ public:
   // Special Pred's that need to access the engine's private members
   friend class Once;
   friend class OnceEnd;
+  friend class DisjPred;
 
   // Friend test class
   friend class ::EngineTest;
