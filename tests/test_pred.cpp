@@ -13,7 +13,8 @@ using namespace pl_search;
 // Like Prolog unify, but only for testing
 class SemiDetTestPred : public SemiDetPred {
  public:
-  SemiDetTestPred(Engine* eng, Term* t1, Term* t2) : SemiDetPred(eng), term1(t1), term2(t2) {}
+  SemiDetTestPred(Engine* eng, Term* t1, Term* t2) : 
+    SemiDetPred(eng), term1(t1), term2(t2) {}
   void initialize_call() override {
     // Add assertions based on what initialize_call is supposed to do
   }
@@ -34,6 +35,22 @@ class DetTestPred : public DetPred {
   } 
 };
 
+//
+// Test Loop
+class TestBodyFactory : public LoopBodyFactory {
+public:
+    TestBodyFactory(Engine* eng) : LoopBodyFactory(eng) { cont = true;}
+
+    bool loop_continues() override {
+        if (cont) {cont = false; return true; }
+        return false;
+    }
+
+    PredPtr make_body_pred() override { return std::make_shared<DetTestPred>(engine);}
+private:
+    bool cont;
+
+};
 
 TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
     Engine engine;
@@ -94,4 +111,19 @@ TEST_CASE("Conjunction functionality", "[Conjunction]") {
 }
 
 
+TEST_CASE("Loop functionality", "[Loop]") {
+    Engine engine;
+    TestBodyFactory body_factory = TestBodyFactory(&engine);
+    PredPtr loop = std::make_shared<Loop>(&engine, &body_factory);
 
+    loop-> initialize_call();
+
+    SECTION("Test loop continuation") {
+        REQUIRE(loop->apply_choice());
+        REQUIRE(loop->get_continuation()->get_continuation() == loop);
+        // loop_continue becomes false so the loop exits
+        REQUIRE(loop->apply_choice());
+        REQUIRE(loop->get_continuation() == nullptr);
+    }
+    
+}

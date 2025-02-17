@@ -43,6 +43,11 @@ PredPtr Pred::last_pred() {
   return p;
 }
 
+void Pred::wrap_with_once() {
+  int env_index = engine->env_stack.size();
+  PredPtr cut_pred = make_shared<Cut>(engine, env_index);
+  last_pred()->set_continuation(cut_pred);
+}
 
 bool ChoicePred::apply_choice() {
   return choice_iterator->make_choice();
@@ -70,6 +75,11 @@ PredPtr conjunction(std::vector<PredPtr> preds) {
   return first;
 }
 
+bool Cut::apply_choice() {
+  engine->cut_to_choice_point(env_index);
+  return true;
+}
+
 void DisjPred::initialize_call() {
   current_pred = preds.begin(); 
 }
@@ -77,9 +87,9 @@ void DisjPred::initialize_call() {
 bool DisjPred::apply_choice(){
   PredPtr cont = *current_pred;
   // the chosen disjunct should have the same continuation as the disjunction
-  cont->set_continuation(continuation);
+  continuation = cont;
   ++current_pred;
-  return engine->push_and_call(cont);
+  return true;
 }
 
 bool DisjPred::test_choice() {
@@ -90,5 +100,83 @@ bool DisjPred::more_choices() {
   return current_pred != preds.end();
 }
 
+void DisjPred::set_continuation(PredPtr cont) {
+  for (auto it = preds.begin(); it != preds.end(); ++it) {
+    (*it)->last_pred()->set_continuation(cont);
+    
+  }
+  
+};
+
+bool NotNotEnd::apply_choice() {
+  *succeeded = true;
+  return false;
+}
+
+void NotNot::initialize_call() {
+  saved_continuation = continuation;
+  succeeded = false;
+  another_choice = true;
+  PredPtr notnotend = make_shared<NotNotEnd>(engine, &succeeded);
+  pred->wrap_with_once();
+  continuation = pred;
+  pred->last_pred()->set_continuation(notnotend);
+}
+
+bool NotNot::apply_choice() {
+ if (another_choice) {
+  return true;
+ }
+ if (succeeded) {
+  continuation = saved_continuation;
+  return true;
+ }
+ return false;
+}
+
+bool NotNot::test_choice() { return true; }
+
+
+bool NotNot::more_choices() {
+  if (another_choice) {
+    another_choice = false;
+    return true;
+  }
+  return false;
+}
+
+
+void Loop::initialize_call() {
+  saved_continuation = continuation;
+
+}
+
+bool Loop::apply_choice() {
+  if (body_factory->loop_continues()) {
+    PredPtr pred = body_factory->make_body_pred();
+    pred->last_pred()->set_continuation(shared_from_this());
+    set_continuation(pred);
+  } else {
+    set_continuation(saved_continuation);
+  }
+  return true;
+}
+
+bool Loop::test_choice() {
+  return true;
+
+}
+
+
+// for debugging
+std::string repr(PredPtr pred) {
+  std::stringstream s;
+    while (pred->get_continuation() != nullptr) {
+      s << pred << " - ";
+      pred = pred->get_continuation();
+    }
+  	s << pred << " - nullptr";
+		return s.str();
+	}
 
 } // namespace pl_search

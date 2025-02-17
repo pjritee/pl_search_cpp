@@ -51,6 +51,14 @@ Term* PVar::dereference() {
   return result;
 }
 
+bool PVar::is_var() {
+  Term* deref = dereference();
+  if (PVar* v = dynamic_cast<PVar*>(deref)) {
+    return true;
+  }
+  return false;
+}
+
 // Bind the variable to a term
 bool PVar::bind(Term* t) {
   // Dereference the term to find its actual value

@@ -9,4 +9,7 @@
 build/
 bin/
 
+# Ignore html doc files
+docs/html
+
 # Other ignore rules...

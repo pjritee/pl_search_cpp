@@ -1,0 +1,22 @@
+# Doxyfile configuration for PLSearchCPP
+
+# Project related settings
+PROJECT_NAME           = PLSearchCPP
+PROJECT_NUMBER         = 1.0
+OUTPUT_DIRECTORY       = docs
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+# Source code settings
+INPUT                  = include src
+RECURSIVE              = YES
+
+# Extract all entities
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+
+# Enable class diagrams
+HAVE_DOT               = YES
+DOT_PATH               = /usr/bin/dot
+CLASS_DIAGRAMS         = YES

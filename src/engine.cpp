@@ -21,7 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-//#include "pl_search/choice_iterator.hpp"
+
+/**
+ * @file engine.cpp
+ * @brief Implementation of the Engine class.
+ */
+
 #include "pl_search/typedefs.hpp"
 #include "pl_search/pred.hpp"
 #include "pl_search/engine.hpp"
@@ -33,15 +38,20 @@ using namespace std;
 
 namespace pl_search {
 
-
+/**
+ * @brief Trails a variable.
+ * @param v The variable to trail.
+ */
 void Engine::trail(PVar* v) {
-
   shared_ptr<trail_entry> entry(new trail_entry);
   entry->var = v;
   entry->value = v->value;
   trail_stack.push(entry);
 }
 
+/**
+ * @brief Performs backtracking.
+ */
 void Engine::backtrack() {
   int old_top = env_stack.top()->trail_index;
  
@@ -52,14 +62,20 @@ void Engine::backtrack() {
   }
 }
 
+/**
+ * @brief Unifies two terms.
+ * @param t1 The first term.
+ * @param t2 The second term.
+ * @return True if the terms unify, false otherwise.
+ */
 bool Engine::unify(Term* t1, Term* t2) {
   Term* t1_deref = t1->dereference();
   Term* t2_deref = t2->dereference();
-  // Same pointers
+  ///< Same pointers
   if (t1_deref == t2_deref) {
     return true;
   }
-  // Same values
+  ///< Same values
   if (*t1_deref == *t2_deref) {
     return true;
   }
@@ -94,6 +110,10 @@ bool Engine::unify(Term* t1, Term* t2) {
   return t1_deref->unifyWith(t2_deref);
 }
 
+/**
+ * @brief Pushes a predicate onto the environment stack.
+ * @param p The predicate to push.
+ */
 void Engine::push(PredPtr p) {
   shared_ptr<env_entry> entry(new env_entry);
   entry->pred = p;
@@ -101,38 +121,63 @@ void Engine::push(PredPtr p) {
   env_stack.push(entry);
 } 
 
-bool Engine::push_and_call(PredPtr p) {
+/**
+ * @brief Calls a predicate.
+ * @param p The predicate to call.
+ * @return True if the call succeeds, false otherwise.
+ */
+bool Engine::call_predicate(PredPtr p) {
   if (p == nullptr) {
     return true;
   }
-  push(p);
+  if (p->is_non_det()) {
+    push(p);
+  }
   p->initialize_call();
-  return try_call(p);
+  return make_choice_and_continue(p);
 }
 
-bool Engine::try_call(PredPtr p) {
+/**
+ * 
+ * @param p The predicate to retry.
+ * @return True if the retry succeeds, false otherwise.
+ */
+bool Engine::retry_predicate(PredPtr p) {
   if (!p->more_choices()) {
     env_stack.pop();
-    //pop_pred_call();
     return false;
   }
+  return make_choice_and_continue(p);
+}
+
+/**
+ * @brief Makes a choice and continues execution.
+ * @param p The predicate to continue with.
+ * @return True if the continuation succeeds, false otherwise.
+ */
+bool Engine::make_choice_and_continue(PredPtr p) {
+  //std::cout << "make choice " << repr(p) << std::endl;
   if (p->apply_choice() && p->test_choice()) {
-    return push_and_call(p->get_continuation());
+    //std::cout << "after make choice " << repr(p) << " continuation " << repr(p->get_continuation()) << std::endl;
+    return call_predicate(p->get_continuation());
   }
   return false;
 }
 
-void Engine::pop_pred_call() {
-  backtrack();
-  env_stack.pop();
-}
 
-void Engine::pop_to_once() {
-  while (typeid(*(env_stack.top()->pred)) != typeid(Once)) {
+/**
+ * @brief Cuts the environment stack to a specific choice point.
+ * @param env_index The index of the choice point.
+ */
+void Engine::cut_to_choice_point(int env_index) {
+  while (env_stack.size() > env_index) {
     env_stack.pop();
   }
 }
 
+/**
+ * @brief Clears the environment and trail stacks.
+ */
 void Engine::clear_stacks() {
    while (env_stack.size() > 0) {
      backtrack();
@@ -140,18 +185,25 @@ void Engine::clear_stacks() {
    } 
 }
   
+/**
+ * @brief Executes a predicate.
+ * @param p The predicate to execute.
+ * @param unbind Whether to unbind variables after execution.
+ * @return True if the execution succeeds, false otherwise.
+ */
 bool Engine::execute(PredPtr p, bool unbind) {
   int top_of_env_stack = env_stack.size();
-  bool has_succeeded = push_and_call(p);
+  bool has_succeeded = call_predicate(p);
   while (!has_succeeded) {
     if (env_stack.size() == top_of_env_stack) break;
     backtrack();
     PredPtr pred_call = env_stack.top()->pred;
-    has_succeeded = try_call(pred_call);
+    has_succeeded = retry_predicate(pred_call);
   }
  
   if (unbind) clear_stacks();
   return has_succeeded;
 }
+
 
 } // namespace pl_search

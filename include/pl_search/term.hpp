@@ -51,8 +51,10 @@ public:
     return false;
   }
 
-  Term() {
-  }
+  virtual bool is_var() { return false; }
+
+  Term() {}
+  
   virtual ~Term() {
   } // Virtual destructor
   friend std::ostream& operator<<(std::ostream& os, const Term& t)
@@ -61,8 +63,11 @@ public:
 		return os;
 	}
  
+
   friend bool operator==( Term& t1, Term& t2 ) {
-    return t1.isEqualTo(t2);
+    Term* deref1 = t1.dereference();
+    Term* deref2 = t2.dereference();
+    return deref1->isEqualTo(*deref2);
     }
   
   // Approximating the @< operator in Prolog

@@ -29,12 +29,15 @@ SOFTWARE.
 #define PL_SEARCH_PRED_HPP_
 
 #include "term.hpp"
-#include "engine.hpp"
 #include "typedefs.hpp"
+//#include "engine.hpp"
 
 #include <stack>
 #include <vector>
 #include <memory>
+
+#include <iostream>
+#include <sstream>
 
 // An approximation of a Prolog predicate.
 // We use shared_ptr as we end up with multiple instances of loop predicates 
@@ -43,7 +46,7 @@ SOFTWARE.
 
 namespace pl_search {
 
-class Engine;
+class Engine; 
 class ChoiceIterator;
 
 class Pred : public std::enable_shared_from_this<Pred> {
@@ -54,71 +57,83 @@ public:
   virtual bool test_choice() { return false; }
   virtual bool more_choices() { return false; }
   PredPtr get_continuation() { return continuation; }
-  void set_continuation(PredPtr cont) { continuation = cont; }
+  virtual void set_continuation(PredPtr cont) { continuation = cont;}
   PredPtr last_pred();
+  bool is_non_det() { return true; }
+  void wrap_with_once();
 
   virtual ~Pred() = default; // Virtual destructor for proper cleanup
 
+  std::string get_name() { return typeid(this).name(); }
+ 
+
 protected:
-  Engine* engine;
   PredPtr continuation;
+  Engine* engine;
 };
+
+//void wrap_with_once(PredPtr);
+
+
 
 class ChoicePred : public Pred {
 public:
   ChoiceIterator* choice_iterator;
 
-  ChoicePred(Engine* eng, ChoiceIterator* ch) : Pred(eng), choice_iterator(ch) {}
+  ChoicePred(Engine* eng, ChoiceIterator* ch) : 
+    Pred(eng), choice_iterator(ch) {}
 
   void initialize_call() override {}
   bool apply_choice() override;
   bool test_choice() override;
   bool more_choices() override;
+
 };
 
 class SemiDetPred : public Pred {
 public:
-  SemiDetPred(Engine* eng) : Pred(eng) {first_call = true;}
+  SemiDetPred(Engine* eng): Pred(eng) { }
 
-  bool more_choices() override { 
-    if (first_call) {
-      first_call = false;
-      return true;
-    }
-    return false; 
-  }
+  bool more_choices() override { return false; }
+
+  bool is_non_det() { return false; }
   
-private:
-  bool first_call;
 };
 
-class DetPred : public Pred {
+class DetPred : public SemiDetPred {
 public:
-  DetPred(Engine* eng) : Pred(eng) { first_call = true; }
+  DetPred(Engine* eng): SemiDetPred(eng) { }
 
-  bool more_choices() override { 
-    if (first_call) {
-      first_call = false;
-      return true;
-    }
-    return false; 
-  }
   bool apply_choice() override { return true; }
   bool test_choice() override { return true; }
 
-  private:
-    bool first_call;
+
 };
 
+PredPtr conjunction(std::vector<PredPtr> preds);
+
+
+/**
+ * The DisjPred class is an implementation of disjunctionin Prolog.
+ * In Prolog we might write p1 ; p2 ; p3. Here we would provide the
+ * constructor with the vector {p1, p2, p3}. Initially the continuation
+ * for the object and each of p1, p2, p3 is nullptr but if it becomes
+ * part of a conjunction then the set_continuation method sets
+ * the (ultimate) continuation of each of p1,p2,p3 to the next
+ * predicate in the conjunction. This means than when each disjunct
+ * is chosen the execution moves on to the next predicate in the
+ * conjunction if the call succeeds.
+*/
 class DisjPred : public Pred {
 public:
   DisjPred(Engine* eng, std::vector<PredPtr> preds) : 
-    Pred(eng), preds(preds) {}
+    Pred(eng), preds(preds) { }
 
   void initialize_call() override;
   bool apply_choice() override;
   bool test_choice() override;
   bool more_choices() override;
+  bool is_non_det() { return true; }
   void set_continuation(PredPtr cont);
 
 private:
@@ -126,53 +141,87 @@ private:
   std::vector<PredPtr>::iterator current_pred;
 };
 
-class OnceEnd : public Pred {
+class Cut : public DetPred {
 public:
-  OnceEnd(Engine* eng) : Pred(eng) {
-    first_call = true;
-  }
+  Cut(Engine* eng, int index): DetPred(eng), env_index(index) {}
 
   void initialize_call() override {   
   }
 
-  bool apply_choice() override {
-    return true;
-    }
+  bool apply_choice() override;
   
   bool test_choice() override {
     return true;
   }
 
-  bool more_choices() override {
-    if (first_call) {
-      first_call = false;
-      return true;
-    }
-    engine->pop_to_once();
-    return false;
-  }
-  private:
-    bool first_call;
+  
+
+private:
+  int env_index;
 };
 
-class Once : public DetPred {
+class NotNotEnd: public SemiDetPred {
 public:
+  NotNotEnd(Engine* eng, bool* succ): 
+    SemiDetPred(eng), succeeded(succ) {}
+
+    void initialize_call() override {};
+    bool apply_choice() override;
+    bool test_choice() override {return true;};
+
+private:
+  bool* succeeded;
+};
+
+class NotNot: public Pred {
+public:
+  NotNot(Engine* eng, PredPtr p) : Pred(eng), pred(p) {}
+
+  void initialize_call() override;
+  bool apply_choice() override;
+  bool test_choice() override;
+  bool more_choices() override;
+private:
   PredPtr pred;
+  bool succeeded;
+  bool another_choice;
+  PredPtr saved_continuation;
+};
 
-  Once(Engine* eng, PredPtr p) : DetPred(eng), pred(p) {
-    set_continuation(pred);
-    PredPtr end = std::make_shared<OnceEnd>(eng);
-    pred->last_pred()->set_continuation(end);
-    assert(continuation == pred);
-    assert(pred->get_continuation() == end);
-     }
+/**
+ * LoopBodyFactory is an abstract base class used for  generating
+ * instances of a predicate class used in the body of a loop.
+*/
+class LoopBodyFactory {
+public:
+  Engine* engine;
 
-  void initialize_call() override {}
+  LoopBodyFactory(Engine* eng) : engine(eng) {}
+  
+  virtual ~LoopBodyFactory(){};
 
+  virtual bool loop_continues() = 0;
+
+  virtual PredPtr make_body_pred() = 0;
 
 };
 
-PredPtr conjunction(std::vector<PredPtr> preds);
+class Loop : public DetPred {
+public:
+  LoopBodyFactory* body_factory;
+
+  Loop(Engine* eng, LoopBodyFactory* bf) : DetPred(eng), body_factory(bf) {}
+
+  void initialize_call() override;
+  bool apply_choice() override;
+  bool test_choice() override;
+  
+  private:
+    PredPtr saved_continuation;
+};
+
+//for testing
+std::string repr(PredPtr pred);
 
 } // namespace pl_search
 

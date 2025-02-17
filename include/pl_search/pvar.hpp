@@ -61,6 +61,8 @@ public:
 
   bool isLessThan(Term& t) override;
 
+  bool is_var() override;
+
 private:
   int var_id;
 };
