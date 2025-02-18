@@ -147,17 +147,28 @@ bool NotNot::more_choices() {
 
 
 void Loop::initialize_call() {
-  saved_continuation = continuation;
 
+}
+
+void Loop::set_continuation(PredPtr cont) {
+  /**
+  * When the loop body predicate is created in apply_choice,
+  * continuation is set to the newely created predicate.
+  * When the loop exits continuation is reset to the original continuation 
+  * (the predicate to call after the loop body). Therefore the set continuation
+  * needs to be saved.
+   */
+  continuation = cont;
+  saved_continuation = cont;
 }
 
 bool Loop::apply_choice() {
   if (body_factory->loop_continues()) {
     PredPtr pred = body_factory->make_body_pred();
     pred->last_pred()->set_continuation(shared_from_this());
-    set_continuation(pred);
+    continuation = pred;
   } else {
-    set_continuation(saved_continuation);
+    continuation = saved_continuation;
   }
   return true;
 }

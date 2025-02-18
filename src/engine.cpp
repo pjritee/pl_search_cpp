@@ -27,9 +27,9 @@ SOFTWARE.
  * @brief Implementation of the Engine class.
  */
 
-#include "pl_search/typedefs.hpp"
-#include "pl_search/pred.hpp"
 #include "pl_search/engine.hpp"
+#include "pl_search/pred.hpp"
+#include "pl_search/typedefs.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -42,7 +42,7 @@ namespace pl_search {
  * @brief Trails a variable.
  * @param v The variable to trail.
  */
-void Engine::trail(PVar* v) {
+void Engine::trail(PVar *v) {
   shared_ptr<trail_entry> entry(new trail_entry);
   entry->var = v;
   entry->value = v->value;
@@ -53,10 +53,18 @@ void Engine::trail(PVar* v) {
  * @brief Performs backtracking.
  */
 void Engine::backtrack() {
-  int old_top = env_stack.top()->trail_index;
- 
+  int old_top;
+  ///< If the current execution does not involve non-deterministic
+  ///< predicates then there will be no choices points (env_stack will be
+  ///< empty). In that case we should remove all variable bindings on the trail.
+  if (env_stack.empty()) {
+    old_top = 0;
+  } else {
+    old_top = env_stack.top()->trail_index;
+  }
+
   while (trail_stack.size() > old_top) {
-    shared_ptr<trail_entry> entry =  trail_stack.top();
+    shared_ptr<trail_entry> entry = trail_stack.top();
     entry->var->reset(entry->value);
     trail_stack.pop();
   }
@@ -68,9 +76,9 @@ void Engine::backtrack() {
  * @param t2 The second term.
  * @return True if the terms unify, false otherwise.
  */
-bool Engine::unify(Term* t1, Term* t2) {
-  Term* t1_deref = t1->dereference();
-  Term* t2_deref = t2->dereference();
+bool Engine::unify(Term *t1, Term *t2) {
+  Term *t1_deref = t1->dereference();
+  Term *t2_deref = t2->dereference();
   ///< Same pointers
   if (t1_deref == t2_deref) {
     return true;
@@ -79,19 +87,19 @@ bool Engine::unify(Term* t1, Term* t2) {
   if (*t1_deref == *t2_deref) {
     return true;
   }
-  if (PVar* v1 = dynamic_cast<PVar*>(t1_deref)) {
+  if (PVar *v1 = dynamic_cast<PVar *>(t1_deref)) {
     trail(v1);
     v1->bind(t2_deref);
     return true;
   }
-  if (PVar* v2 = dynamic_cast<PVar*>(t2_deref)) {
+  if (PVar *v2 = dynamic_cast<PVar *>(t2_deref)) {
     trail(v2);
     v2->bind(t1_deref);
     return true;
   }
-  CList* l1 = dynamic_cast<CList*>(t1_deref);
-  CList* l2 = dynamic_cast<CList*>(t2_deref);
-  if ((l1 != nullptr) && (l2 != nullptr)) { 
+  CList *l1 = dynamic_cast<CList *>(t1_deref);
+  CList *l2 = dynamic_cast<CList *>(t2_deref);
+  if ((l1 != nullptr) && (l2 != nullptr)) {
     if (l1->getElements().size() != l2->getElements().size()) {
       return false;
     }
@@ -119,7 +127,7 @@ void Engine::push(PredPtr p) {
   entry->pred = p;
   entry->trail_index = trail_stack.size();
   env_stack.push(entry);
-} 
+}
 
 /**
  * @brief Calls a predicate.
@@ -138,7 +146,7 @@ bool Engine::call_predicate(PredPtr p) {
 }
 
 /**
- * 
+ *
  * @param p The predicate to retry.
  * @return True if the retry succeeds, false otherwise.
  */
@@ -156,14 +164,14 @@ bool Engine::retry_predicate(PredPtr p) {
  * @return True if the continuation succeeds, false otherwise.
  */
 bool Engine::make_choice_and_continue(PredPtr p) {
-  //std::cout << "make choice " << repr(p) << std::endl;
+  // std::cout << "make choice " << repr(p) << std::endl;
   if (p->apply_choice() && p->test_choice()) {
-    //std::cout << "after make choice " << repr(p) << " continuation " << repr(p->get_continuation()) << std::endl;
+    // std::cout << "after make choice " << repr(p) << " continuation " <<
+    // repr(p->get_continuation()) << std::endl;
     return call_predicate(p->get_continuation());
   }
   return false;
 }
-
 
 /**
  * @brief Cuts the environment stack to a specific choice point.
@@ -179,12 +187,12 @@ void Engine::cut_to_choice_point(int env_index) {
  * @brief Clears the environment and trail stacks.
  */
 void Engine::clear_stacks() {
-   while (env_stack.size() > 0) {
-     backtrack();
-     env_stack.pop();
-   } 
+  while (env_stack.size() > 0) {
+    backtrack();
+    env_stack.pop();
+  }
 }
-  
+
 /**
  * @brief Executes a predicate.
  * @param p The predicate to execute.
@@ -195,15 +203,16 @@ bool Engine::execute(PredPtr p, bool unbind) {
   int top_of_env_stack = env_stack.size();
   bool has_succeeded = call_predicate(p);
   while (!has_succeeded) {
-    if (env_stack.size() == top_of_env_stack) break;
+    if (env_stack.size() == top_of_env_stack)
+      break;
     backtrack();
     PredPtr pred_call = env_stack.top()->pred;
     has_succeeded = retry_predicate(pred_call);
   }
- 
-  if (unbind) clear_stacks();
+
+  if (unbind)
+    clear_stacks();
   return has_succeeded;
 }
-
 
 } // namespace pl_search

@@ -215,6 +215,7 @@ public:
   void initialize_call() override;
   bool apply_choice() override;
   bool test_choice() override;
+  void set_continuation(PredPtr cont);
   
   private:
     PredPtr saved_continuation;
