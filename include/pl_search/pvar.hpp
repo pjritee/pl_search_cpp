@@ -25,8 +25,8 @@ SOFTWARE.
 #define PL_SEARCH_PVAR_HPP
 
 #include "term.hpp"
-#include <string>
 #include <cassert>
+#include <string>
 
 namespace pl_search {
 
@@ -35,31 +35,28 @@ class PVar : public Term {
 public:
   static int id;
 
-  Term* value;
-  Term* dereference() override;
-  bool bind(Term* t) override;
-  void reset(Term* t) override;
-  
+  Term *value;
+  Term *dereference() override;
+  bool bind(Term *t) override;
+  void reset(Term *t) override;
+
   PVar() {
     value = this;
     var_id = id++;
   }
 
-  int getVarId() const {
-    return var_id;
-  }
+  int getVarId() const { return var_id; }
 
-  std::string repr() const override {
-    return "X" + std::to_string(var_id);
-  }
+  std::string repr() const override { return "X" + std::to_string(var_id); }
 
-  bool isEqualTo(Term& t) override {
-    PVar* v = dynamic_cast<PVar*>(&t);
-    if (v == nullptr) return false;
+  bool isEqualTo(Term &t) override {
+    PVar *v = dynamic_cast<PVar *>(&t);
+    if (v == nullptr)
+      return false;
     return getVarId() == v->getVarId();
   }
 
-  bool isLessThan(Term& t) override;
+  bool isLessThan(Term &t) override;
 
   bool is_var() override;
 
@@ -76,19 +73,13 @@ private:
 // the old value will be restored
 class UpdatablePVar : public PVar {
 public:
-  UpdatablePVar(Term* t) : PVar() {
-    value = t;
-  }
+  UpdatablePVar(Term *t) : PVar() { value = t; }
 
   // As the intention is to update the value of the variable, we need to
   // simply return this pointer so that a following bind will update the value.
-  // If we wanted to do a full dereference for an updatable variable, v, we would
-  // use v->PVar::dereference() or v->getValue()->dereference()
-  Term* dereference() override {
-    return this;
-  }
-
-  
+  // If we wanted to do a full dereference for an updatable variable, v, we
+  // would use v->PVar::dereference() or v->getValue()->dereference()
+  Term *dereference() override { return this; }
 };
 
 } // namespace pl_search

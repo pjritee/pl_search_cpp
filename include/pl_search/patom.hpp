@@ -30,42 +30,36 @@ SOFTWARE.
 
 namespace pl_search {
 
-
 // PAtom objects approximate Prolog atoms
 class PAtom : public Term {
 public:
-    PAtom(const std::string& name) : name(name) {}
+  PAtom(const std::string &name) : name(name) {}
 
-    Term* dereference() override {
-        return this;
-    }
+  Term *dereference() override { return this; }
 
-    bool bind(Term* t) override {
-        return false; // Atoms cannot be bound to other terms
-    }
+  bool bind(Term *t) override {
+    return false; // Atoms cannot be bound to other terms
+  }
 
-    void reset(Term* t) override {
-        // No-op for PAtom
-    }
+  void reset(Term *t) override {
+    // No-op for PAtom
+  }
 
-    std::string getName() const {
-        return name;
-    }
+  std::string getName() const { return name; }
 
-    std::string repr() const override {
-       return name;
-    }
+  std::string repr() const override { return name; }
 
-    bool isEqualTo(Term& t) override {
-        PAtom* a = dynamic_cast<PAtom*>(&t);
-        if (a == nullptr) return false;
-        return name == a->name;
-    }
+  bool isEqualTo(Term &t) override {
+    PAtom *a = dynamic_cast<PAtom *>(&t);
+    if (a == nullptr)
+      return false;
+    return name == a->name;
+  }
 
-    bool isLessThan(Term& t) override;
+  bool isLessThan(Term &t) override;
 
 private:
-    std::string name;
+  std::string name;
 };
 
 } // namespace pl_search

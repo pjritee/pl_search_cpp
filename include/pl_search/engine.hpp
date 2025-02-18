@@ -25,34 +25,34 @@ SOFTWARE.
 #ifndef PL_SEARCH_ENGINE_HPP_
 #define PL_SEARCH_ENGINE_HPP_
 
-#include "term.hpp"
-#include "pvar.hpp"
 #include "clist.hpp"
-#include "typedefs.hpp"
 #include "pred.hpp"
+#include "pvar.hpp"
+#include "term.hpp"
+#include "typedefs.hpp"
 
-#include <stack>
 #include <memory>
+#include <stack>
 
 class EngineTest;
 
 namespace pl_search {
 
-class Pred; 
+class Pred;
 
 /**
  * @brief Represents a trail entry for backtracking.
  */
 struct trail_entry {
-  PVar* var;  ///< The variable being trailed.
-  Term* value; ///< The value of the variable.
+  PVar *var;   ///< The variable being trailed.
+  Term *value; ///< The value of the variable.
 };
 
 /**
  * @brief Represents an environment entry for predicates.
  */
 struct env_entry {
-  PredPtr pred; ///< The predicate being executed.
+  PredPtr pred;    ///< The predicate being executed.
   int trail_index; ///< The index in the trail stack.
 };
 
@@ -65,7 +65,7 @@ struct env_entry {
  */
 class Engine {
 public:
-  Engine() {};
+  Engine(){};
 
   /**
    * @brief Unifies two terms.
@@ -73,7 +73,7 @@ public:
    * @param t2 The second term.
    * @return True if the terms unify, false otherwise.
    */
-  bool unify(Term* t1, Term* t2);
+  bool unify(Term *t1, Term *t2);
 
   /**
    * @brief Executes a predicate.
@@ -83,22 +83,22 @@ public:
    */
   bool execute(PredPtr p, bool unbind);
 
-  
-  
   friend class Cut;
   friend void Pred::wrap_with_once();
 
   friend class ::EngineTest;
 
 private:
-  std::stack<std::shared_ptr<trail_entry>> trail_stack; ///< Stack for trail entries.
-  std::stack<std::shared_ptr<env_entry>> env_stack; ///< Stack for environment entries.
+  std::stack<std::shared_ptr<trail_entry>>
+      trail_stack; ///< Stack for trail entries.
+  std::stack<std::shared_ptr<env_entry>>
+      env_stack; ///< Stack for environment entries.
 
   /**
    * @brief Trails a variable.
    * @param v The variable to trail.
    */
-  void trail(PVar* v);
+  void trail(PVar *v);
 
   /**
    * @brief Performs backtracking.
@@ -110,8 +110,8 @@ private:
    *
    * If the call is non-deterministic, the predicate is pushed onto the
    * environment stack before the call. Otherwise the is not pushed
-   * and the call is made directly.  
-   * 
+   * and the call is made directly.
+   *
    * @param p The predicate to call.
    * @return True if the call succeeds, false otherwise.
    */
@@ -124,22 +124,21 @@ private:
    * environment stack. Otherwise, the predicate is called.
    * Note that only predicates that have been pushed onto the
    * environment stack can be retried (as they are non-deterministic).
-   * 
+   *
    * @param p The predicate to call.
    * @return True if the call succeeds, false otherwise.
    */
   bool retry_predicate(PredPtr p);
 
   /**
-    * @brief Makes the current choice, checks it, and continues 
-    * execution (using the predicates continuation) if the choice is valid.
-    * @param p The predicate to make a choice on.
-    * @return True if the choice is valid and the predicates continuation
-    * succeeds, false otherwise.
+   * @brief Makes the current choice, checks it, and continues
+   * execution (using the predicates continuation) if the choice is valid.
+   * @param p The predicate to make a choice on.
+   * @return True if the choice is valid and the predicates continuation
+   * succeeds, false otherwise.
    */
   bool make_choice_and_continue(PredPtr p);
-  
-  
+
   /**
    * @brief Pushes a predicate onto the environment stack.
    * @param p The predicate to push.
@@ -151,7 +150,7 @@ private:
    * @param env_index The index of the environment stack to pop to.
    */
   void cut_to_choice_point(int env_index);
-  
+
   /**
    * @brief Clears the environment and trail stacks.
    */

@@ -21,49 +21,57 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include "pl_search/pint.hpp"
-#include "pl_search/pfloat.hpp"
-#include "pl_search/patom.hpp"
 #include "pl_search/clist.hpp"
+#include "pl_search/patom.hpp"
+#include "pl_search/pfloat.hpp"
+#include "pl_search/pint.hpp"
 #include "pl_search/pvar.hpp"
 
 namespace pl_search {
 
-
-bool PInt::isLessThan(Term& t) {
-    if (typeid(t) == typeid(PVar)) return false;
-    PInt* i = dynamic_cast<PInt*>(&t);
-    if (i == nullptr) {
-        PFloat* f = dynamic_cast<PFloat*>(&t);
-        if (f == nullptr) return true;
-        return value < f->getValue();
-    }
-    return value < i->value;
+bool PInt::isLessThan(Term &t) {
+  if (typeid(t) == typeid(PVar))
+    return false;
+  PInt *i = dynamic_cast<PInt *>(&t);
+  if (i == nullptr) {
+    PFloat *f = dynamic_cast<PFloat *>(&t);
+    if (f == nullptr)
+      return true;
+    return value < f->getValue();
+  }
+  return value < i->value;
 }
 
-bool PFloat::isLessThan(Term& t) {
-    if (typeid(t) == typeid(PVar)) return false;
-    PFloat* f = dynamic_cast<PFloat*>(&t);
-    if (f == nullptr) {
-        PInt* i = dynamic_cast<PInt*>(&t);
-        if (i == nullptr) return true;
-        return value < i->getValue();
-    }
-    return value < f->value;
+bool PFloat::isLessThan(Term &t) {
+  if (typeid(t) == typeid(PVar))
+    return false;
+  PFloat *f = dynamic_cast<PFloat *>(&t);
+  if (f == nullptr) {
+    PInt *i = dynamic_cast<PInt *>(&t);
+    if (i == nullptr)
+      return true;
+    return value < i->getValue();
+  }
+  return value < f->value;
 }
 
-bool PAtom::isLessThan(Term& t) {
-    if (typeid(t) == typeid(PVar)) return false;
-    if (typeid(t) == typeid(PInt)) return false;
-    if (typeid(t) == typeid(PFloat)) return false;
-    PAtom* a = dynamic_cast<PAtom*>(&t);
-    if (a == nullptr) return false;
-    return name < a->name;
+bool PAtom::isLessThan(Term &t) {
+  if (typeid(t) == typeid(PVar))
+    return false;
+  if (typeid(t) == typeid(PInt))
+    return false;
+  if (typeid(t) == typeid(PFloat))
+    return false;
+  PAtom *a = dynamic_cast<PAtom *>(&t);
+  if (a == nullptr)
+    return false;
+  return name < a->name;
 }
 
-bool CList::isLessThan(Term& t) {
-    CList* l = dynamic_cast<CList*>(&t);
-    if (l == nullptr) return false;
-    return elements < l->elements;
+bool CList::isLessThan(Term &t) {
+  CList *l = dynamic_cast<CList *>(&t);
+  if (l == nullptr)
+    return false;
+  return elements < l->elements;
 }
 } // namespace pl_search

@@ -26,11 +26,11 @@ SOFTWARE.
 
 #include "term.hpp"
 #include <list>
-#include <string>
 #include <sstream>
+#include <string>
 
 // CList objects replace Prolog lists for efficiency
-// WARNING: Because the internal list is mutable care must be taken when using 
+// WARNING: Because the internal list is mutable care must be taken when using
 // CList objects. For example, it might be necessary to copy the list before
 // passing it to a function that might modify it or when binding a variable to
 // a CList object.
@@ -39,56 +39,50 @@ SOFTWARE.
 
 namespace pl_search {
 
-
 class CList : public Term {
 public:
-    CList() {}
+  CList() {}
 
-    CList(const std::list<Term*>& elements) : elements(elements) {}
+  CList(const std::list<Term *> &elements) : elements(elements) {}
 
-    Term* dereference() override {
-        return this;
+  Term *dereference() override { return this; }
+
+  bool bind(Term *t) override {
+    return false; // Lists cannot be bound to other terms
+  }
+
+  void reset(Term *t) override {
+    // No-op for CList
+  }
+
+  std::string repr() const override {
+    std::ostringstream oss;
+    oss << "[";
+    for (auto it = elements.begin(); it != elements.end(); ++it) {
+      if (it != elements.begin()) {
+        oss << ", ";
+      }
+      oss << (*it)->repr();
     }
+    oss << "]";
+    return oss.str();
+  }
 
-    bool bind(Term* t) override {
-        return false; // Lists cannot be bound to other terms
-    }
+  bool isEqualTo(Term &t) override {
+    CList *l = dynamic_cast<CList *>(&t);
+    if (l == nullptr)
+      return false;
+    return elements == l->elements;
+  }
 
-    void reset(Term* t) override {
-        // No-op for CList
-    }
+  bool isLessThan(Term &t) override;
 
-    std::string repr() const override {
-        std::ostringstream oss;
-        oss << "[";
-        for (auto it = elements.begin(); it != elements.end(); ++it) {
-            if (it != elements.begin()) {
-                oss << ", ";
-            }
-            oss << (*it)->repr();
-        }
-        oss << "]";
-        return oss.str();
-    }
+  void addElement(Term *element) { elements.push_back(element); }
 
-    bool isEqualTo(Term& t) override {
-        CList* l = dynamic_cast<CList*>(&t);
-        if (l == nullptr) return false;
-        return elements == l->elements;
-    }
-
-    bool isLessThan(Term& t) override;
-
-    void addElement(Term* element) {
-        elements.push_back(element);
-    }
-
-    const std::list<Term*>& getElements() const {
-        return elements;
-    }
+  const std::list<Term *> &getElements() const { return elements; }
 
 private:
-    std::list<Term*> elements;
+  std::list<Term *> elements;
 };
 
 } // namespace pl_search

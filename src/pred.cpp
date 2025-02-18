@@ -24,15 +24,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 #include "pl_search/pred.hpp"
+#include "pl_search/choice_iterator.hpp"
 #include "pl_search/engine.hpp"
 #include "pl_search/term.hpp"
-#include "pl_search/choice_iterator.hpp"
 
 using namespace std;
 namespace pl_search {
 
-void Pred::initialize_call() { 
-}
+void Pred::initialize_call() {}
 
 // follow the continuation chain to the last predicate
 PredPtr Pred::last_pred() {
@@ -49,23 +48,16 @@ void Pred::wrap_with_once() {
   last_pred()->set_continuation(cut_pred);
 }
 
-bool ChoicePred::apply_choice() {
-  return choice_iterator->make_choice();
-}
+bool ChoicePred::apply_choice() { return choice_iterator->make_choice(); }
 
+bool ChoicePred::test_choice() { return true; }
 
-bool ChoicePred::test_choice() {
-  return true;
-}
-
-bool ChoicePred::more_choices() {
-  return choice_iterator->has_next();
-}
-
+bool ChoicePred::more_choices() { return choice_iterator->has_next(); }
 
 // Create a predicate that is a conjunction of a list of predicates
 PredPtr conjunction(std::vector<PredPtr> preds) {
-  if (preds.empty()) return nullptr;
+  if (preds.empty())
+    return nullptr;
   PredPtr first = preds.front();
 
   for (auto it = preds.begin(); it != prev(preds.end()); ++it) {
@@ -80,11 +72,9 @@ bool Cut::apply_choice() {
   return true;
 }
 
-void DisjPred::initialize_call() {
-  current_pred = preds.begin(); 
-}
+void DisjPred::initialize_call() { current_pred = preds.begin(); }
 
-bool DisjPred::apply_choice(){
+bool DisjPred::apply_choice() {
   PredPtr cont = *current_pred;
   // the chosen disjunct should have the same continuation as the disjunction
   continuation = cont;
@@ -92,20 +82,14 @@ bool DisjPred::apply_choice(){
   return true;
 }
 
-bool DisjPred::test_choice() {
-  return true;
-}
+bool DisjPred::test_choice() { return true; }
 
-bool DisjPred::more_choices() {
-  return current_pred != preds.end();
-}
+bool DisjPred::more_choices() { return current_pred != preds.end(); }
 
 void DisjPred::set_continuation(PredPtr cont) {
   for (auto it = preds.begin(); it != preds.end(); ++it) {
     (*it)->last_pred()->set_continuation(cont);
-    
   }
-  
 };
 
 bool NotNotEnd::apply_choice() {
@@ -124,18 +108,17 @@ void NotNot::initialize_call() {
 }
 
 bool NotNot::apply_choice() {
- if (another_choice) {
-  return true;
- }
- if (succeeded) {
-  continuation = saved_continuation;
-  return true;
- }
- return false;
+  if (another_choice) {
+    return true;
+  }
+  if (succeeded) {
+    continuation = saved_continuation;
+    return true;
+  }
+  return false;
 }
 
 bool NotNot::test_choice() { return true; }
-
 
 bool NotNot::more_choices() {
   if (another_choice) {
@@ -145,18 +128,15 @@ bool NotNot::more_choices() {
   return false;
 }
 
-
-void Loop::initialize_call() {
-
-}
+void Loop::initialize_call() {}
 
 void Loop::set_continuation(PredPtr cont) {
   /**
-  * When the loop body predicate is created in apply_choice,
-  * continuation is set to the newely created predicate.
-  * When the loop exits continuation is reset to the original continuation 
-  * (the predicate to call after the loop body). Therefore the set continuation
-  * needs to be saved.
+   * When the loop body predicate is created in apply_choice,
+   * continuation is set to the newely created predicate.
+   * When the loop exits continuation is reset to the original continuation
+   * (the predicate to call after the loop body). Therefore the set continuation
+   * needs to be saved.
    */
   continuation = cont;
   saved_continuation = cont;
@@ -173,21 +153,17 @@ bool Loop::apply_choice() {
   return true;
 }
 
-bool Loop::test_choice() {
-  return true;
-
-}
-
+bool Loop::test_choice() { return true; }
 
 // for debugging
 std::string repr(PredPtr pred) {
   std::stringstream s;
-    while (pred->get_continuation() != nullptr) {
-      s << pred << " - ";
-      pred = pred->get_continuation();
-    }
-  	s << pred << " - nullptr";
-		return s.str();
-	}
+  while (pred->get_continuation() != nullptr) {
+    s << pred << " - ";
+    pred = pred->get_continuation();
+  }
+  s << pred << " - nullptr";
+  return s.str();
+}
 
 } // namespace pl_search

@@ -30,42 +30,36 @@ SOFTWARE.
 
 namespace pl_search {
 
-
 // PInt objects approximate Prolog integers
 class PInt : public Term {
 public:
-    PInt(int value) : value(value) {}
+  PInt(int value) : value(value) {}
 
-    Term* dereference() override {
-        return this;
-    }
+  Term *dereference() override { return this; }
 
-    bool bind(Term* t) override {
-        return false; // Integers cannot be bound to other terms
-    }
+  bool bind(Term *t) override {
+    return false; // Integers cannot be bound to other terms
+  }
 
-    void reset(Term* t) override {
-        // No-op for PInt
-    }
+  void reset(Term *t) override {
+    // No-op for PInt
+  }
 
-    std::string repr() const override {
-        return std::to_string(value);
-    }
+  std::string repr() const override { return std::to_string(value); }
 
-    bool isEqualTo(Term& t) override {
-        PInt* i = dynamic_cast<PInt*>(&t);
-        if (i == nullptr) return false;
-        return value == i->value;
-    }
+  bool isEqualTo(Term &t) override {
+    PInt *i = dynamic_cast<PInt *>(&t);
+    if (i == nullptr)
+      return false;
+    return value == i->value;
+  }
 
-    bool isLessThan(Term& t) override;
+  bool isLessThan(Term &t) override;
 
-    int getValue() const {
-        return value;
-    }
+  int getValue() const { return value; }
 
 private:
-    int value;
+  int value;
 };
 
 } // namespace pl_search
