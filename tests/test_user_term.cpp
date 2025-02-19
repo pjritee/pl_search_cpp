@@ -91,6 +91,6 @@ TEST_CASE("User defined term type - build and test", "[Term]") {
   }
   SECTION("Test unify") {
     REQUIRE(engine.unify(&list2, &list3));
-    REQUIRE(v1.dereference()->isEqualTo(list1));
+    REQUIRE(v1.dereference()->isEqualTo(list1));  
   }
 }

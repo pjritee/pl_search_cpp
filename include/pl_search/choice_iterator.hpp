@@ -1,3 +1,10 @@
+/*
+MIT License
+
+...license text...
+
+*/
+
 #ifndef PL_SEARCH_CHOICE_ITERATOR_HPP
 #define PL_SEARCH_CHOICE_ITERATOR_HPP
 
@@ -8,32 +15,63 @@ namespace pl_search {
 class Engine;
 class PVar;
 
-// Base class for choice iterators
+/**
+ * @brief Base class for choice iterators.
+ */
 class ChoiceIterator {
 public:
+  /**
+   * @brief Checks if there are more choices available.
+   * @return True if there are more choices, false otherwise.
+   */
   virtual bool has_next() = 0;
+
+  /**
+   * @brief Makes a choice.
+   * @return True if the choice is made successfully, false otherwise.
+   */
   virtual bool make_choice() = 0;
+
+  /**
+   * @brief Virtual destructor for proper cleanup.
+   */
   virtual ~ChoiceIterator() = default;
 };
 
+/**
+ * @brief Choice iterator for variables.
+ */
 class VarChoiceIterator : public ChoiceIterator {
 public:
+  /**
+   * @brief Constructs a VarChoiceIterator.
+   * @param engine Pointer to the Engine.
+   * @param v Pointer to the variable.
+   * @param ch Reference to the vector of choices.
+   */
   VarChoiceIterator(Engine *engine, PVar *v, std::vector<Term *> &ch)
-      : engine(engine), var(v), choices(ch) {
-    index = 0;
-  }
+      : engine(engine), var(v), choices(ch), index(0) {}
 
+  /**
+   * @brief Checks if there are more choices available.
+   * @return True if there are more choices, false otherwise.
+   */
   bool has_next() override { return index < choices.size(); }
+
+  /**
+   * @brief Makes a choice.
+   * @return True if the choice is made successfully, false otherwise.
+   */
   bool make_choice() override {
     Term *t = choices[index++];
     return engine->unify(var, t);
   }
 
 private:
-  Engine *engine;
-  int index;
-  PVar *var;
-  std::vector<Term *> choices;
+  Engine *engine;              ///< Pointer to the Engine.
+  int index;                   ///< Current index in the choices vector.
+  PVar *var;                   ///< Pointer to the variable.
+  std::vector<Term *> choices; ///< Reference to the vector of choices.
 };
 
 } // namespace pl_search

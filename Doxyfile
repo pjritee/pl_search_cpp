@@ -8,7 +8,7 @@ GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 
 # Source code settings
-INPUT                  = include src
+INPUT                  = include src mainpage.dox
 RECURSIVE              = YES
 
 # Extract all entities

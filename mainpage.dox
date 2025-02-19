@@ -1,0 +1,82 @@
+/**
+ * @mainpage PLSearchCPP Documentation
+ *
+ * @section intro Introduction
+ *
+ * PLSearchCPP is a C++ library that approximates Prolog predicates using a continuation-passing style. 
+ * It provides a framework for defining and executing Prolog-like predicates, including support for 
+ * backtracking, choice points, and unification.
+ *
+ * @section features Features
+ *
+ * - Prolog-like predicates
+ * - Continuation-passing style execution
+ * - Backtracking and choice points
+ * - Unification of terms
+ * - Support for variables, integers, floats, atoms, and lists
+ *
+ * @section usage Usage
+ *
+ * To use the PLSearchCPP library, include the necessary headers in your project and link against the library.
+ *
+ * @code
+ * #include "pl_search/engine.hpp"
+ * #include "pl_search/pvar.hpp"
+ * #include "pl_search/pint.hpp"
+ * #include "pl_search/pfloat.hpp"
+ * #include "pl_search/patom.hpp"
+ * #include "pl_search/clist.hpp"
+ * #include "pl_search/pred.hpp"
+ * #include "pl_search/choice_iterator.hpp"
+ * @endcode
+ *
+ * @section example Example
+ *
+ * Here is a simple example of defining and executing a predicate:
+ *
+ * @code
+ * #include "pl_search/engine.hpp"
+ * #include "pl_search/pvar.hpp"
+ * #include "pl_search/pint.hpp"
+ * #include "pl_search/pred.hpp"
+ * #include <iostream>
+ *
+ * using namespace pl_search;
+ *
+ * class TestPred : public Pred {
+ * public:
+ *     TestPred() : Pred() {}
+ *
+ *     void initialize_call() override {
+ *         // Initialize the call
+ *     }
+ *
+ *     bool apply_choice() override {
+ *         // Apply choice logic
+ *         return true;
+ *     }
+ *
+ *     bool test_choice() override {
+ *         // Test choice logic
+ *         return true;
+ *     }
+ *
+ *     bool more_choices() override {
+ *         // Determine if there are more choices
+ *         return false;
+ *     }
+ * };
+ *
+ * int main() {
+ *     Engine engine;
+ *     PredPtr pred = std::make_shared<TestPred>();
+ *     bool result = engine.execute(pred, true);
+ *     std::cout << "Execution result: " << result << std::endl;
+ *     return 0;
+ * }
+ * @endcode
+ *
+ * @section license License
+ *
+ * This project is licensed under the MIT License - see the LICENSE file for details.
+ */

@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #ifndef PL_SEARCH_CLIST_HPP
 #define PL_SEARCH_CLIST_HPP
 
@@ -28,6 +29,11 @@ SOFTWARE.
 #include <list>
 #include <sstream>
 #include <string>
+
+/**
+ * @file clist.hpp
+ * @brief Definition of the CList class.
+ */
 
 // CList objects replace Prolog lists for efficiency
 // WARNING: Because the internal list is mutable care must be taken when using
@@ -39,22 +45,54 @@ SOFTWARE.
 
 namespace pl_search {
 
+/**
+ * @brief Represents a list of terms.
+ *
+ * CList objects replace Prolog lists for efficiency. The internal list is
+ * mutable, so care must be taken when using CList objects. For example, it
+ * might be necessary to copy the list before passing it to a function that
+ * might modify it or when binding a variable to a CList object.
+ */
 class CList : public Term {
 public:
+  /**
+   * @brief Default constructor.
+   */
   CList() {}
 
+  /**
+   * @brief Constructs a CList with the given elements.
+   * @param elements The elements of the list.
+   */
   CList(const std::list<Term *> &elements) : elements(elements) {}
 
+  /**
+   * @brief Dereferences the term.
+   * @return A pointer to the dereferenced term.
+   */
   Term *dereference() override { return this; }
 
+  /**
+   * @brief Binds the term to another term.
+   * @param t The term to bind to.
+   * @return False, as lists cannot be bound to other terms.
+   */
   bool bind(Term *t) override {
     return false; // Lists cannot be bound to other terms
   }
 
+  /**
+   * @brief Resets the term.
+   * @param t The term to reset to.
+   */
   void reset(Term *t) override {
     // No-op for CList
   }
 
+  /**
+   * @brief Returns a string representation of the list.
+   * @return A string representation of the list.
+   */
   std::string repr() const override {
     std::ostringstream oss;
     oss << "[";
@@ -68,6 +106,11 @@ public:
     return oss.str();
   }
 
+  /**
+   * @brief Checks if the term is equal to another term.
+   * @param t The term to compare to.
+   * @return True if the terms are equal, false otherwise.
+   */
   bool isEqualTo(Term &t) override {
     CList *l = dynamic_cast<CList *>(&t);
     if (l == nullptr)
@@ -75,14 +118,27 @@ public:
     return elements == l->elements;
   }
 
+  /**
+   * @brief Checks if the term is less than another term.
+   * @param t The term to compare to.
+   * @return True if the term is less than the other term, false otherwise.
+   */
   bool isLessThan(Term &t) override;
 
+  /**
+   * @brief Adds an element to the list.
+   * @param element The element to add.
+   */
   void addElement(Term *element) { elements.push_back(element); }
 
+  /**
+   * @brief Returns the elements of the list.
+   * @return A reference to the list of elements.
+   */
   const std::list<Term *> &getElements() const { return elements; }
 
 private:
-  std::list<Term *> elements;
+  std::list<Term *> elements; ///< The elements of the list.
 };
 
 } // namespace pl_search

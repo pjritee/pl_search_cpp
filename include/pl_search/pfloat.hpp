@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #ifndef PL_SEARCH_PFLOAT_HPP
 #define PL_SEARCH_PFLOAT_HPP
 
@@ -28,25 +29,61 @@ SOFTWARE.
 #include <string>
 #include <typeinfo>
 
+/**
+ * @file pfloat.hpp
+ * @brief Definition of the PFloat class.
+ */
+
 namespace pl_search {
 
-// PFloat objects approximate Prolog floats
+/**
+ * @brief Represents a Prolog float.
+ *
+ * PFloat objects approximate Prolog floats. Floats are immutable and cannot be
+ * bound to other terms.
+ */
 class PFloat : public Term {
 public:
+  /**
+   * @brief Constructs a PFloat with the given value.
+   * @param value The value of the float.
+   */
   PFloat(double value) : value(value) {}
 
+  /**
+   * @brief Dereferences the term.
+   * @return A pointer to the dereferenced term.
+   */
   Term *dereference() override { return this; }
 
+  /**
+   * @brief Binds the term to another term.
+   * @param t The term to bind to.
+   * @return False, as floats cannot be bound to other terms.
+   */
   bool bind(Term *t) override {
     return false; // Floats cannot be bound to other terms
   }
 
+  /**
+   * @brief Resets the term.
+   * @param t The term to reset to.
+   */
   void reset(Term *t) override {
     // No-op for PFloat
   }
 
+  /**
+   * @brief Returns a string representation of the float.
+   * @return A string representation of the float.
+   */
   std::string repr() const override { return std::to_string(value); }
 
+  /**
+   * @brief Checks if the term is equal to another term.
+   * @param t The term to compare to.
+   * @return True if the terms are equal, false otherwise.
+   */
   bool isEqualTo(Term &t) override {
     PFloat *f = dynamic_cast<PFloat *>(&t);
     if (f == nullptr)
@@ -54,13 +91,23 @@ public:
     return value == f->value;
   }
 
+  /**
+   * @brief Checks if the term is less than another term.
+   * @param t The term to compare to.
+   * @return True if the term is less than the other term, false otherwise.
+   */
   bool isLessThan(Term &t) override;
 
+  /**
+   * @brief Returns the value of the float.
+   * @return The value of the float.
+   */
   double getValue() const { return value; }
 
 private:
-  double value;
+  double value; ///< The value of the float.
 };
 
 } // namespace pl_search
+
 #endif // PL_SEARCH_PFLOAT_HPP

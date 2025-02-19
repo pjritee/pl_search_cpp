@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #ifndef PL_SEARCH_PINT_HPP
 #define PL_SEARCH_PINT_HPP
 
@@ -28,25 +29,61 @@ SOFTWARE.
 #include <string>
 #include <typeinfo>
 
+/**
+ * @file pint.hpp
+ * @brief Definition of the PInt class.
+ */
+
 namespace pl_search {
 
-// PInt objects approximate Prolog integers
+/**
+ * @brief Represents a Prolog integer.
+ *
+ * PInt objects approximate Prolog integers. Integers are immutable and cannot
+ * be bound to other terms.
+ */
 class PInt : public Term {
 public:
+  /**
+   * @brief Constructs a PInt with the given value.
+   * @param value The value of the integer.
+   */
   PInt(int value) : value(value) {}
 
+  /**
+   * @brief Dereferences the term.
+   * @return A pointer to the dereferenced term.
+   */
   Term *dereference() override { return this; }
 
+  /**
+   * @brief Binds the term to another term.
+   * @param t The term to bind to.
+   * @return False, as integers cannot be bound to other terms.
+   */
   bool bind(Term *t) override {
     return false; // Integers cannot be bound to other terms
   }
 
+  /**
+   * @brief Resets the term.
+   * @param t The term to reset to.
+   */
   void reset(Term *t) override {
     // No-op for PInt
   }
 
+  /**
+   * @brief Returns a string representation of the integer.
+   * @return A string representation of the integer.
+   */
   std::string repr() const override { return std::to_string(value); }
 
+  /**
+   * @brief Checks if the term is equal to another term.
+   * @param t The term to compare to.
+   * @return True if the terms are equal, false otherwise.
+   */
   bool isEqualTo(Term &t) override {
     PInt *i = dynamic_cast<PInt *>(&t);
     if (i == nullptr)
@@ -54,13 +91,23 @@ public:
     return value == i->value;
   }
 
+  /**
+   * @brief Checks if the term is less than another term.
+   * @param t The term to compare to.
+   * @return True if the term is less than the other term, false otherwise.
+   */
   bool isLessThan(Term &t) override;
 
+  /**
+   * @brief Returns the value of the integer.
+   * @return The value of the integer.
+   */
   int getValue() const { return value; }
 
 private:
-  int value;
+  int value; ///< The value of the integer.
 };
 
 } // namespace pl_search
+
 #endif // PL_SEARCH_PINT_HPP

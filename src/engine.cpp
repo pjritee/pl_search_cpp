@@ -53,15 +53,7 @@ void Engine::trail(PVar *v) {
  * @brief Performs backtracking.
  */
 void Engine::backtrack() {
-  int old_top;
-  ///< If the current execution does not involve non-deterministic
-  ///< predicates then there will be no choices points (env_stack will be
-  ///< empty). In that case we should remove all variable bindings on the trail.
-  if (env_stack.empty()) {
-    old_top = 0;
-  } else {
-    old_top = env_stack.top()->trail_index;
-  }
+  int old_top = env_stack.top()->trail_index;
 
   while (trail_stack.size() > old_top) {
     shared_ptr<trail_entry> entry = trail_stack.top();
@@ -79,11 +71,11 @@ void Engine::backtrack() {
 bool Engine::unify(Term *t1, Term *t2) {
   Term *t1_deref = t1->dereference();
   Term *t2_deref = t2->dereference();
-  ///< Same pointers
+  // Same pointers
   if (t1_deref == t2_deref) {
     return true;
   }
-  ///< Same values
+  // Same values
   if (*t1_deref == *t2_deref) {
     return true;
   }
@@ -130,7 +122,12 @@ void Engine::push(PredPtr p) {
 }
 
 /**
- * @brief Calls a predicate.
+ * @brief Call a predicate.
+ *
+ * If the call is non-deterministic, the predicate is pushed onto the
+ * environment stack before the call. Otherwise the is not pushed
+ * and the call is made directly.
+ *
  * @param p The predicate to call.
  * @return True if the call succeeds, false otherwise.
  */
@@ -162,6 +159,7 @@ bool Engine::retry_predicate(PredPtr p) {
  * @brief Makes a choice and continues execution.
  * @param p The predicate to continue with.
  * @return True if the continuation succeeds, false otherwise.
+
  */
 bool Engine::make_choice_and_continue(PredPtr p) {
   if (p->apply_choice() && p->test_choice()) {
@@ -171,8 +169,16 @@ bool Engine::make_choice_and_continue(PredPtr p) {
 }
 
 /**
- * @brief Cuts the environment stack to a specific choice point.
- * @param env_index The index of the choice point.
+ * @brief Pops the top predicate call from the environment stack.
+ */
+void Engine::pop_pred_call() {
+  backtrack();
+  env_stack.pop();
+}
+
+/**
+ * @brief Cuts the environment stack to the choice point at the given index.
+ * @param env_index The index to cut back to.
  */
 void Engine::cut_to_choice_point(int env_index) {
   while (env_stack.size() > env_index) {

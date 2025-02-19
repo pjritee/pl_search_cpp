@@ -21,6 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+/**
+ * @file pvar.cpp
+ * @brief Implementation of the PVar class.
+ */
+
 #include "pl_search/pvar.hpp"
 #include <cassert>
 
@@ -29,7 +35,10 @@ namespace pl_search {
 // Initialize static member
 int PVar::id = 0;
 
-// Dereference the variable to find the actual term it points to
+/**
+ * @brief Dereferences the variable to find the actual term it points to.
+ * @return A pointer to the dereferenced term.
+ */
 Term *PVar::dereference() {
   Term *result = this;
 
@@ -51,6 +60,10 @@ Term *PVar::dereference() {
   return result;
 }
 
+/**
+ * @brief Checks if the term is a variable.
+ * @return True if the term is a variable, false otherwise.
+ */
 bool PVar::is_var() {
   Term *deref = dereference();
   if (PVar *v = dynamic_cast<PVar *>(deref)) {
@@ -59,7 +72,11 @@ bool PVar::is_var() {
   return false;
 }
 
-// Bind the variable to a term
+/**
+ * @brief Binds the variable to a term.
+ * @param t The term to bind to.
+ * @return True if the binding is successful, false otherwise.
+ */
 bool PVar::bind(Term *t) {
   // Dereference the term to find its actual value
   Term *deref = t->dereference();
@@ -71,10 +88,17 @@ bool PVar::bind(Term *t) {
   return true;
 }
 
-// Reset the variable to point at supplied term
+/**
+ * @brief Resets the variable to point at the supplied term.
+ * @param t The term to reset to.
+ */
 void PVar::reset(Term *t) { value = t; }
 
-// Define the isLessThan method
+/**
+ * @brief Checks if the variable is less than another term.
+ * @param t The term to compare to.
+ * @return True if the variable is less than the other term, false otherwise.
+ */
 bool PVar::isLessThan(Term &t) {
   PVar *v = dynamic_cast<PVar *>(&t);
   if (v == nullptr)

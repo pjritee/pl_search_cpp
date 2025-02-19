@@ -1,5 +1,3 @@
-
-
 /*
 MIT License
 
@@ -23,6 +21,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+/**
+ * @file pred.cpp
+ * @brief Implementation of the Pred class and its derived classes.
+ */
+
 #include "pl_search/pred.hpp"
 #include "pl_search/choice_iterator.hpp"
 #include "pl_search/engine.hpp"
@@ -31,9 +35,15 @@ SOFTWARE.
 using namespace std;
 namespace pl_search {
 
+/**
+ * @brief Initializes the predicate call.
+ */
 void Pred::initialize_call() {}
 
-// follow the continuation chain to the last predicate
+/**
+ * @brief Follows the continuation chain to the last predicate.
+ * @return A shared pointer to the last predicate in the continuation chain.
+ */
 PredPtr Pred::last_pred() {
   PredPtr p = shared_from_this();
   while (p->get_continuation() != nullptr) {
@@ -48,13 +58,29 @@ void Pred::wrap_with_once() {
   last_pred()->set_continuation(cut_pred);
 }
 
+/**
+ * @brief Applies a choice for the choice predicate.
+ * @return True if the choice is applied successfully, false otherwise.
+ */
 bool ChoicePred::apply_choice() { return choice_iterator->make_choice(); }
 
+/**
+ * @brief Tests a choice for the choice predicate.
+ * @return True if the choice is valid, false otherwise.
+ */
 bool ChoicePred::test_choice() { return true; }
 
+/**
+ * @brief Checks if there are more choices for the choice predicate.
+ * @return True if there are more choices, false otherwise.
+ */
 bool ChoicePred::more_choices() { return choice_iterator->has_next(); }
 
-// Create a predicate that is a conjunction of a list of predicates
+/**
+ * @brief Creates a conjunction of predicates.
+ * @param preds A vector of shared pointers to the predicates.
+ * @return A shared pointer to the first predicate in the conjunction.
+ */
 PredPtr conjunction(std::vector<PredPtr> preds) {
   if (preds.empty())
     return nullptr;
@@ -67,36 +93,68 @@ PredPtr conjunction(std::vector<PredPtr> preds) {
   return first;
 }
 
+/**
+ * @brief Applies a choice for the cut predicate.
+ * @return True if the choice is applied successfully, false otherwise.
+ */
 bool Cut::apply_choice() {
   engine->cut_to_choice_point(env_index);
   return true;
 }
 
+/**
+ * @brief Initializes the call for the disjunction predicate.
+ */
 void DisjPred::initialize_call() { current_pred = preds.begin(); }
 
+/**
+ * @brief Applies a choice for the disjunction predicate.
+ * @return True if the choice is applied successfully, false otherwise.
+ */
 bool DisjPred::apply_choice() {
   PredPtr cont = *current_pred;
   // the chosen disjunct should have the same continuation as the disjunction
+
+  cont->last_pred()->set_continuation(continuation);
   continuation = cont;
-  ++current_pred;
+  ++current_pred; // move to the next disjunct
   return true;
 }
 
+/**
+ * @brief Tests a choice for the disjunction predicate.
+ * @return True if the choice is valid, false otherwise.
+ */
 bool DisjPred::test_choice() { return true; }
 
+/**
+ * @brief Checks if there are more choices for the disjunction predicate.
+ * @return True if there are more choices, false otherwise.
+ */
 bool DisjPred::more_choices() { return current_pred != preds.end(); }
 
+/**
+ * @brief Sets the continuation for the disjunction predicate.
+ * @param cont A shared pointer to the continuation predicate.
+ */
 void DisjPred::set_continuation(PredPtr cont) {
   for (auto it = preds.begin(); it != preds.end(); ++it) {
     (*it)->last_pred()->set_continuation(cont);
   }
-};
+}
 
+/**
+ * @brief Applies a choice for the not-not-end predicate.
+ * @return True if the choice is applied successfully, false otherwise.
+ */
 bool NotNotEnd::apply_choice() {
   *succeeded = true;
   return false;
 }
 
+/**
+ * @brief Initializes the call for the not-not predicate.
+ */
 void NotNot::initialize_call() {
   saved_continuation = continuation;
   succeeded = false;
@@ -107,6 +165,10 @@ void NotNot::initialize_call() {
   pred->last_pred()->set_continuation(notnotend);
 }
 
+/**
+ * @brief Applies a choice for the not-not predicate.
+ * @return True if the choice is applied successfully, false otherwise.
+ */
 bool NotNot::apply_choice() {
   if (another_choice) {
     return true;
@@ -118,8 +180,16 @@ bool NotNot::apply_choice() {
   return false;
 }
 
+/**
+ * @brief Tests a choice for the not-not predicate.
+ * @return True if the choice is valid, false otherwise.
+ */
 bool NotNot::test_choice() { return true; }
 
+/**
+ * @brief Checks if there are more choices for the not-not predicate.
+ * @return True if there are more choices, false otherwise.
+ */
 bool NotNot::more_choices() {
   if (another_choice) {
     another_choice = false;
@@ -130,6 +200,10 @@ bool NotNot::more_choices() {
 
 void Loop::initialize_call() {}
 
+/**
+ * @brief Sets the continuation for the loop predicate.
+ * @param cont A shared pointer to the continuation predicate.
+ */
 void Loop::set_continuation(PredPtr cont) {
   /**
    * When the loop body predicate is created in apply_choice,
@@ -142,6 +216,10 @@ void Loop::set_continuation(PredPtr cont) {
   saved_continuation = cont;
 }
 
+/**
+ * @brief Applies a choice for the loop predicate.
+ * @return True if the choice is applied successfully, false otherwise.
+ */
 bool Loop::apply_choice() {
   if (body_factory->loop_continues()) {
     PredPtr pred = body_factory->make_body_pred();
@@ -153,6 +231,10 @@ bool Loop::apply_choice() {
   return true;
 }
 
+/**
+ * @brief Tests a choice for the loop predicate.
+ * @return True if the choice is valid, false otherwise.
+ */
 bool Loop::test_choice() { return true; }
 
 // for debugging

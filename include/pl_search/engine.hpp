@@ -34,11 +34,14 @@ SOFTWARE.
 #include <memory>
 #include <stack>
 
+/**
+ * @file engine.hpp
+ * @brief Definition of the Engine class and related structures.
+ */
+
 class EngineTest;
 
 namespace pl_search {
-
-class Pred;
 
 /**
  * @brief Represents a trail entry for backtracking.
@@ -57,7 +60,7 @@ struct env_entry {
 };
 
 /**
- * @brief The Engine class manages the execution of predicates.
+ * @brief The Engine class manages the execution of predicates and backtracking.
  *
  * Execution uses a continuation-passing style for predicates that
  * represent a conjunction of goals. The engine implements
@@ -86,6 +89,7 @@ public:
   friend class Cut;
   friend void Pred::wrap_with_once();
 
+  friend class DisjPred;
   friend class ::EngineTest;
 
 private:
@@ -118,15 +122,14 @@ private:
   bool call_predicate(PredPtr p);
 
   /**
-   * Retries the call on a predicate.
+   * @brief Retries the call on a predicate.
    *
    * If the predicate has no more choices, it is popped from the
    * environment stack. Otherwise, the predicate is called.
    * Note that only predicates that have been pushed onto the
    * environment stack can be retried (as they are non-deterministic).
    *
-   * @param p The predicate to call.
-   * @return True if the call succeeds, false otherwise.
+   * @param p The predicate to retry.
    */
   bool retry_predicate(PredPtr p);
 
@@ -146,8 +149,13 @@ private:
   void push(PredPtr p);
 
   /**
-   * @brief Pops the the environment stack.
-   * @param env_index The index of the environment stack to pop to.
+   * @brief Pops the top predicate call from the environment stack.
+   */
+  void pop_pred_call();
+
+  /**
+   * @brief Pop env_stack back to the given index.
+   * @param index The index to pop back to.
    */
   void cut_to_choice_point(int env_index);
 

@@ -21,30 +21,72 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #ifndef PL_SEARCH_PVAR_HPP
 #define PL_SEARCH_PVAR_HPP
 
 #include "term.hpp"
-#include <cassert>
-#include <string>
+
+/**
+ * @file pvar.hpp
+ * @brief Definition of the PVar class.
+ */
 
 namespace pl_search {
 
-// PVar objects approximate Prolog variables
+/**
+ * @brief Represents a Prolog variable.
+ *
+ * PVar objects approximate Prolog variables. Variables can be bound to other
+ * terms.
+ */
 class PVar : public Term {
 public:
-  static int id;
+  static int id; ///< Static member to generate unique IDs for variables.
 
-  Term *value;
+  Term *value; ///< The value of the variable.
+
+  /**
+   * @brief Constructs a PVar.
+   */
+  PVar() : value(this), var_id(id++) {}
+
+  /**
+   * @brief Dereferences the variable to find the actual term it points to.
+   * @return A pointer to the dereferenced term.
+   */
   Term *dereference() override;
+
+  /**
+   * @brief Binds the variable to a term.
+   * @param t The term to bind to.
+   * @return True if the binding is successful, false otherwise.
+   */
   bool bind(Term *t) override;
+
+  /**
+   * @brief Resets the variable to point at the supplied term.
+   * @param t The term to reset to.
+   */
   void reset(Term *t) override;
 
-  PVar() {
-    value = this;
-    var_id = id++;
-  }
+  /**
+   * @brief Checks if the term is a variable.
+   * @return True if the term is a variable, false otherwise.
+   */
+  bool is_var() override;
 
+  /**
+   * @brief Checks if the variable is less than another term.
+   * @param t The term to compare to.
+   * @return True if the variable is less than the other term, false otherwise.
+   */
+  bool isLessThan(Term &t) override;
+
+  /**
+   * @brief Returns the variable ID.
+   * @return The variable ID.
+   */
   int getVarId() const { return var_id; }
 
   std::string repr() const override { return "X" + std::to_string(var_id); }
@@ -56,12 +98,8 @@ public:
     return getVarId() == v->getVarId();
   }
 
-  bool isLessThan(Term &t) override;
-
-  bool is_var() override;
-
 private:
-  int var_id;
+  int var_id; ///< The ID of the variable.
 };
 
 // UpdatableVar is used to implement what some Prologs call

@@ -12,4 +12,6 @@ bin/
 # Ignore html doc files
 docs/html
 
+send_more_money
+
 # Other ignore rules...

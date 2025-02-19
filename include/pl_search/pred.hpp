@@ -29,53 +29,110 @@ SOFTWARE.
 
 #include "term.hpp"
 #include "typedefs.hpp"
-// #include "engine.hpp"
 
 #include <memory>
 #include <stack>
 #include <vector>
 
-#include <iostream>
-#include <sstream>
-
-// An approximation of a Prolog predicate.
-// We use shared_ptr as we end up with multiple instances of loop predicates
-// that need to be cleaned up on backtracking.
-// We use a continuation-passing style to approximate conjunctions in Prolog
+/**
+ * @file pred.hpp
+ * @brief Definition of the Pred class and its derived classes.
+ */
 
 namespace pl_search {
 
-class Engine;
 class ChoiceIterator;
 
+/**
+ * @brief Abstract base class for Prolog-like predicates.
+ *
+ * The Pred class provides an interface for Prolog-like predicates. It includes
+ * methods for initializing calls, applying choices, testing choices, and
+ * checking for more choices. It also includes methods for managing
+ * continuations.
+ */
 class Pred : public std::enable_shared_from_this<Pred> {
 public:
+  /**
+   * @brief Default constructor.
+   */
   Pred(Engine *eng) : engine(eng), continuation(nullptr) {}
+
+  /**
+   * @brief Initializes the predicate call.
+   */
   virtual void initialize_call() = 0;
+
+  /**
+   * @brief Applies a choice.
+   * @return True if the choice is applied successfully, false otherwise.
+   */
   virtual bool apply_choice() { return false; }
+
+  /**
+   * @brief Tests a choice.
+   * @return True if the choice is valid, false otherwise.
+   */
   virtual bool test_choice() { return false; }
+
+  /**
+   * @brief Checks if there are more choices.
+   * @return True if there are more choices, false otherwise.
+   */
   virtual bool more_choices() { return false; }
+
+  /**
+   * @brief Gets the continuation of the predicate.
+   * @return A shared pointer to the continuation predicate.
+   */
   PredPtr get_continuation() { return continuation; }
+
+  /**
+   * @brief Sets the continuation of the predicate.
+   * @param cont A shared pointer to the continuation predicate.
+   */
   virtual void set_continuation(PredPtr cont) { continuation = cont; }
+
+  /**
+   * @brief Follows the continuation chain to the last predicate.
+   * @return A shared pointer to the last predicate in the continuation chain.
+   */
   PredPtr last_pred();
+
+  /**
+   * @brief Determines if the predicate is non-deterministic.
+   * @return True if the predicate is non-deterministic, false otherwise.
+   */
   bool is_non_det() { return true; }
+
+  /**
+   * @brief Wraps the predicate with a once.
+   */
   void wrap_with_once();
 
-  virtual ~Pred() = default; // Virtual destructor for proper cleanup
+  /**
+   * @brief Virtual destructor for proper cleanup.
+   */
+  virtual ~Pred() = default;
 
   std::string get_name() { return typeid(this).name(); }
 
 protected:
-  PredPtr continuation;
+  PredPtr continuation; ///< The continuation of the predicate.
   Engine *engine;
 };
 
-// void wrap_with_once(PredPtr);
-
+/**
+ * @brief Represents a choice predicate.
+ */
 class ChoicePred : public Pred {
 public:
-  ChoiceIterator *choice_iterator;
+  ChoiceIterator *choice_iterator; ///< Pointer to the choice iterator.
 
+  /**
+   * @brief Constructs a ChoicePred with the given choice iterator.
+   * @param ch Pointer to the choice iterator.
+   */
   ChoicePred(Engine *eng, ChoiceIterator *ch)
       : Pred(eng), choice_iterator(ch) {}
 
@@ -85,8 +142,14 @@ public:
   bool more_choices() override;
 };
 
+/**
+ * @brief Represents a semi-deterministic predicate.
+ */
 class SemiDetPred : public Pred {
 public:
+  /**
+   * @brief Default constructor.
+   */
   SemiDetPred(Engine *eng) : Pred(eng) {}
 
   bool more_choices() override { return false; }
@@ -94,29 +157,37 @@ public:
   bool is_non_det() { return false; }
 };
 
+/**
+ * @brief Represents a deterministic predicate.
+ */
 class DetPred : public SemiDetPred {
 public:
+  /**
+   * @brief Default constructor.
+   */
   DetPred(Engine *eng) : SemiDetPred(eng) {}
 
   bool apply_choice() override { return true; }
   bool test_choice() override { return true; }
 };
 
+/**
+ * @brief Represents a conjunction of predicates by chaining them together via
+ * continuations.
+ * @param preds A vector of shared pointers to the predicates.
+ * @return A shared pointer to the first predicate in the conjunction.
+ */
 PredPtr conjunction(std::vector<PredPtr> preds);
 
 /**
- * The DisjPred class is an implementation of disjunctionin Prolog.
- * In Prolog we might write p1 ; p2 ; p3. Here we would provide the
- * constructor with the vector {p1, p2, p3}. Initially the continuation
- * for the object and each of p1, p2, p3 is nullptr but if it becomes
- * part of a conjunction then the set_continuation method sets
- * the (ultimate) continuation of each of p1,p2,p3 to the next
- * predicate in the conjunction. This means than when each disjunct
- * is chosen the execution moves on to the next predicate in the
- * conjunction if the call succeeds.
+ * @brief Represents a disjunction of predicates.
  */
 class DisjPred : public Pred {
 public:
+  /**
+   * @brief Constructs a DisjPred with the given predicates.
+   * @param preds A vector of shared pointers to the predicates.
+   */
   DisjPred(Engine *eng, std::vector<PredPtr> preds) : Pred(eng), preds(preds) {}
 
   void initialize_call() override;
@@ -127,8 +198,9 @@ public:
   void set_continuation(PredPtr cont);
 
 private:
-  std::vector<PredPtr> preds;
-  std::vector<PredPtr>::iterator current_pred;
+  std::vector<PredPtr> preds; ///< The predicates in the disjunction.
+  std::vector<PredPtr>::iterator
+      current_pred; ///< Iterator to the current predicate.
 };
 
 class Cut : public DetPred {

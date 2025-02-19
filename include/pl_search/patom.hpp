@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
 #ifndef PL_SEARCH_PATOM_HPP
 #define PL_SEARCH_PATOM_HPP
 
@@ -28,27 +29,67 @@ SOFTWARE.
 #include <string>
 #include <typeinfo>
 
+/**
+ * @file patom.hpp
+ * @brief Definition of the PAtom class.
+ */
+
 namespace pl_search {
 
-// PAtom objects approximate Prolog atoms
+/**
+ * @brief Represents a Prolog atom.
+ *
+ * PAtom objects approximate Prolog atoms. Atoms are immutable and cannot be
+ * bound to other terms.
+ */
 class PAtom : public Term {
 public:
+  /**
+   * @brief Constructs a PAtom with the given name.
+   * @param name The name of the atom.
+   */
   PAtom(const std::string &name) : name(name) {}
 
+  /**
+   * @brief Dereferences the term.
+   * @return A pointer to the dereferenced term.
+   */
   Term *dereference() override { return this; }
 
+  /**
+   * @brief Binds the term to another term.
+   * @param t The term to bind to.
+   * @return False, as atoms cannot be bound to other terms.
+   */
   bool bind(Term *t) override {
     return false; // Atoms cannot be bound to other terms
   }
 
+  /**
+   * @brief Resets the term.
+   * @param t The term to reset to.
+   */
   void reset(Term *t) override {
     // No-op for PAtom
   }
 
+  /**
+   * @brief Returns the name of the atom.
+   * @return The name of the atom.
+   */
   std::string getName() const { return name; }
 
+  /**
+   * @brief Returns a string representation of the atom.
+   * @return A string representation of the atom.
+   */
   std::string repr() const override { return name; }
 
+  /**
+   * @brief Checks if the term is equal to another term.
+   * @param t The term to compare to.
+   * @return True if the terms are equal, false otherwise.
+   */
   bool isEqualTo(Term &t) override {
     PAtom *a = dynamic_cast<PAtom *>(&t);
     if (a == nullptr)
@@ -56,11 +97,17 @@ public:
     return name == a->name;
   }
 
+  /**
+   * @brief Checks if the term is less than another term.
+   * @param t The term to compare to.
+   * @return True if the term is less than the other term, false otherwise.
+   */
   bool isLessThan(Term &t) override;
 
 private:
-  std::string name;
+  std::string name; ///< The name of the atom.
 };
 
 } // namespace pl_search
+
 #endif // PL_SEARCH_PATOM_HPP
