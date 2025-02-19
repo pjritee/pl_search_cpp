@@ -24,3 +24,18 @@ PLSearchCPP is a C++ library that approximates Prolog predicates using a continu
 ```sh
 git clone https://github.com/yourusername/PLSearchCPP.git
 cd PLSearchCPP
+
+2. Create a build directory and navigate to it:
+
+mkdir build
+cd build
+
+3: Run CMake to configure the project:
+
+cmake ..
+
+4: Build the project:
+
+make
+
+This will build the pl_search library and place it in the lib directory.
