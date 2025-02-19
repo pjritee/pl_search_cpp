@@ -1,7 +1,7 @@
 #ifndef PL_SEARCH_CHOICE_ITERATOR_HPP
 #define PL_SEARCH_CHOICE_ITERATOR_HPP
 
-// #include "engine.hpp"
+#include "engine.hpp"
 #include <vector>
 
 namespace pl_search {

@@ -30,6 +30,8 @@ SOFTWARE.
 
 namespace pl_search {
 
+class Engine;
+
 // Abstract base class for terms that approximate Prolog terms
 class Term {
 public:
@@ -43,7 +45,7 @@ public:
 
   // A hook for unification of user-defined classes
   // Only override this method if you want to unify user-defined classes
-  bool unifyWith(Term *t) { return false; }
+  virtual bool unifyWith(Engine *, Term *t) { return false; }
 
   virtual bool is_var() { return false; }
 

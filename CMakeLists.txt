@@ -39,6 +39,9 @@ include(Catch)
 add_executable(test_pvar tests/test_pvar.cpp)
 target_link_libraries(test_pvar Catch2::Catch2 pl_search)
 
+add_executable(test_user_term tests/test_user_term.cpp)
+target_link_libraries(test_user_term Catch2::Catch2 pl_search)
+
 add_executable(test_engine tests/test_engine.cpp)
 target_link_libraries(test_engine Catch2::Catch2 pl_search)
 
@@ -50,6 +53,7 @@ target_link_libraries(test_pred Catch2::Catch2 pl_search)
 
 include(CTest)
 catch_discover_tests(test_pvar)
+catch_discover_tests(test_user_term)
 
 #catch_discover_tests(test_choice_pred)
 catch_discover_tests(test_pred)

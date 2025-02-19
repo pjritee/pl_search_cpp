@@ -115,7 +115,7 @@ bool Engine::unify(Term *t1, Term *t2) {
     return true;
   }
 
-  return t1_deref->unifyWith(t2_deref);
+  return t1_deref->unifyWith(this, t2_deref);
 }
 
 /**
@@ -164,10 +164,7 @@ bool Engine::retry_predicate(PredPtr p) {
  * @return True if the continuation succeeds, false otherwise.
  */
 bool Engine::make_choice_and_continue(PredPtr p) {
-  // std::cout << "make choice " << repr(p) << std::endl;
   if (p->apply_choice() && p->test_choice()) {
-    // std::cout << "after make choice " << repr(p) << " continuation " <<
-    // repr(p->get_continuation()) << std::endl;
     return call_predicate(p->get_continuation());
   }
   return false;
