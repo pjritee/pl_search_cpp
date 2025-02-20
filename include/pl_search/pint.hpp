@@ -99,7 +99,7 @@ public:
   bool isLessThan(Term &t) override;
 
   /**
-   * @brief Returns the value of the integer.
+   * @brief Get the value of the integer.
    * @return The value of the integer.
    */
   int getValue() const { return value; }

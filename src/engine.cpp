@@ -81,13 +81,11 @@ bool Engine::unify(Term *t1, Term *t2) {
   }
   if (PVar *v1 = dynamic_cast<PVar *>(t1_deref)) {
     trail(v1);
-    v1->bind(t2_deref);
-    return true;
+    return v1->bind(t2_deref);
   }
   if (PVar *v2 = dynamic_cast<PVar *>(t2_deref)) {
     trail(v2);
-    v2->bind(t1_deref);
-    return true;
+    return v2->bind(t1_deref);
   }
   CList *l1 = dynamic_cast<CList *>(t1_deref);
   CList *l2 = dynamic_cast<CList *>(t2_deref);
