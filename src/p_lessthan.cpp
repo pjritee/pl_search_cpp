@@ -29,49 +29,58 @@ SOFTWARE.
 
 namespace pl_search {
 
-bool PInt::isLessThan(Term &t) {
+bool PInt::isLessThan(Term &t) const {
   if (typeid(t) == typeid(PVar))
     return false;
-  PInt *i = dynamic_cast<PInt *>(&t);
-  if (i == nullptr) {
-    PFloat *f = dynamic_cast<PFloat *>(&t);
-    if (f == nullptr)
+  if (typeid(t) != typeid(PInt)) {
+    if (typeid(t) != typeid(PFloat))
       return true;
-    return value < f->getValue();
+    PFloat f = static_cast<PFloat &>(t);
+    return value < f.getValue();
   }
-  return value < i->value;
+  PInt i = static_cast<PInt &>(t);
+  return value < i.getValue();
 }
 
-bool PFloat::isLessThan(Term &t) {
+bool PFloat::isLessThan(Term &t) const {
   if (typeid(t) == typeid(PVar))
     return false;
-  PFloat *f = dynamic_cast<PFloat *>(&t);
-  if (f == nullptr) {
-    PInt *i = dynamic_cast<PInt *>(&t);
-    if (i == nullptr)
+  if (typeid(t) != typeid(PFloat)) {
+    if (typeid(t) != typeid(PInt))
       return true;
-    return value < i->getValue();
+    PInt i = static_cast<PInt &>(t);
+    return value < i.getValue();
   }
-  return value < f->value;
+  PFloat f = static_cast<PFloat &>(t);
+  return value < f.getValue();
 }
 
-bool PAtom::isLessThan(Term &t) {
+bool PAtom::isLessThan(Term &t) const {
   if (typeid(t) == typeid(PVar))
     return false;
   if (typeid(t) == typeid(PInt))
     return false;
   if (typeid(t) == typeid(PFloat))
     return false;
-  PAtom *a = dynamic_cast<PAtom *>(&t);
-  if (a == nullptr)
-    return false;
-  return name < a->name;
+  if (typeid(t) != typeid(PAtom))
+    return true;
+  PAtom a = static_cast<PAtom &>(t);
+  return name < a.getName();
 }
 
-bool CList::isLessThan(Term &t) {
-  CList *l = dynamic_cast<CList *>(&t);
-  if (l == nullptr)
+bool CList::isLessThan(Term &t) const {
+  if (typeid(t) == typeid(PVar))
     return false;
-  return elements < l->elements;
+  if (typeid(t) == typeid(PInt))
+    return false;
+  if (typeid(t) == typeid(PFloat))
+    return false;
+  if (typeid(t) == typeid(PAtom))
+    return false;
+  if (typeid(t) != typeid(CList))
+    return true;
+  CList l = static_cast<CList &>(t);
+  return elements < l.elements;
 }
+
 } // namespace pl_search

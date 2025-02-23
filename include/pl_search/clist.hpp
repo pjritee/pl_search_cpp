@@ -26,6 +26,8 @@ SOFTWARE.
 #define PL_SEARCH_CLIST_HPP
 
 #include "term.hpp"
+#include "typedefs.hpp"
+
 #include <list>
 #include <sstream>
 #include <string>
@@ -64,20 +66,20 @@ public:
    * @brief Constructs a CList with the given elements.
    * @param elements The elements of the list.
    */
-  CList(const std::list<Term *> &elements) : elements(elements) {}
+  CList(const std::list<TermPtr> &elements) : elements(elements) {}
 
   /**
    * @brief Dereferences the term.
    * @return A pointer to the dereferenced term.
    */
-  Term *dereference() override { return this; }
+  TermPtr dereference() override { return shared_from_this(); }
 
   /**
    * @brief Binds the term to another term.
    * @param t The term to bind to.
    * @return False, as lists cannot be bound to other terms.
    */
-  bool bind(Term *t) override {
+  bool bind(TermPtr t) override {
     return false; // Lists cannot be bound to other terms
   }
 
@@ -85,7 +87,7 @@ public:
    * @brief Resets the term.
    * @param t The term to reset to.
    */
-  void reset(Term *t) override {
+  void reset(TermPtr t) override {
     // No-op for CList
   }
 
@@ -111,11 +113,13 @@ public:
    * @param t The term to compare to.
    * @return True if the terms are equal, false otherwise.
    */
-  bool isEqualTo(Term &t) override {
-    CList *l = dynamic_cast<CList *>(&t);
-    if (l == nullptr)
+  bool isEqualTo(Term &t) const override {
+    if (typeid(*this) != typeid(t)) {
       return false;
-    return elements == l->elements;
+    }
+    CList l = static_cast<CList &>(t);
+
+    return elements == l.elements;
   }
 
   /**
@@ -123,22 +127,22 @@ public:
    * @param t The term to compare to.
    * @return True if the term is less than the other term, false otherwise.
    */
-  bool isLessThan(Term &t) override;
+  bool isLessThan(Term &t) const override;
 
   /**
    * @brief Adds an element to the list.
    * @param element The element to add.
    */
-  void addElement(Term *element) { elements.push_back(element); }
+  void addElement(TermPtr element) { elements.push_back(element); }
 
   /**
    * @brief Returns the elements of the list.
    * @return A reference to the list of elements.
    */
-  const std::list<Term *> &getElements() const { return elements; }
+  const std::list<TermPtr> &getElements() const { return elements; }
 
 private:
-  std::list<Term *> elements; ///< The elements of the list.
+  std::list<TermPtr> elements; ///< The elements of the list.
 };
 
 } // namespace pl_search

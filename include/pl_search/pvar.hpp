@@ -26,6 +26,7 @@ SOFTWARE.
 #define PL_SEARCH_PVAR_HPP
 
 #include "term.hpp"
+#include "typedefs.hpp"
 
 /**
  * @file pvar.hpp
@@ -38,37 +39,37 @@ namespace pl_search {
  * @brief Represents a Prolog variable.
  *
  * PVar objects approximate Prolog variables. Variables can be bound to other
- * terms.
+ * terms. An unbound variable is represented by a PVar object with a null value.
  */
 class PVar : public Term {
 public:
   static int id; ///< Static member to generate unique IDs for variables.
 
-  Term *value; ///< The value of the variable.
+  TermPtr value; ///< The value of the variable.
 
   /**
    * @brief Constructs a PVar.
    */
-  PVar() : value(this), var_id(id++) {}
+  PVar() : value(nullptr), var_id(id++) {}
 
   /**
    * @brief Dereferences the variable to find the actual term it points to.
    * @return A pointer to the dereferenced term.
    */
-  Term *dereference() override;
+  TermPtr dereference() override;
 
   /**
    * @brief Binds the variable to a term.
    * @param t The term to bind to.
    * @return True if the binding is successful, false otherwise.
    */
-  bool bind(Term *t) override;
+  bool bind(TermPtr t) override;
 
   /**
    * @brief Resets the variable to point at the supplied term.
    * @param t The term to reset to.
    */
-  void reset(Term *t) override;
+  void reset(TermPtr t) override;
 
   /**
    * @brief Checks if the term is a variable.
@@ -81,7 +82,7 @@ public:
    * @param t The term to compare to.
    * @return True if the variable is less than the other term, false otherwise.
    */
-  bool isLessThan(Term &t) override;
+  bool isLessThan(Term &t) const override;
 
   /**
    * @brief Returns the variable ID.
@@ -91,11 +92,13 @@ public:
 
   std::string repr() const override { return "X" + std::to_string(var_id); }
 
-  bool isEqualTo(Term &t) override {
-    PVar *v = dynamic_cast<PVar *>(&t);
-    if (v == nullptr)
+protected:
+  virtual bool isEqualTo(Term &t) const override {
+    if (typeid(*this) != typeid(t)) {
       return false;
-    return getVarId() == v->getVarId();
+    }
+    PVar v = static_cast<PVar &>(t);
+    return getVarId() == v.getVarId();
   }
 
 private:
@@ -111,13 +114,13 @@ private:
 // the old value will be restored
 class UpdatablePVar : public PVar {
 public:
-  UpdatablePVar(Term *t) : PVar() { value = t; }
+  UpdatablePVar(TermPtr t) : PVar() { value = t; }
 
   // As the intention is to update the value of the variable, we need to
   // simply return this pointer so that a following bind will update the value.
   // If we wanted to do a full dereference for an updatable variable, v, we
   // would use v->PVar::dereference() or v->getValue()->dereference()
-  Term *dereference() override { return this; }
+  TermPtr dereference() override { return shared_from_this(); }
 };
 
 } // namespace pl_search

@@ -9,6 +9,8 @@ MIT License
 #define PL_SEARCH_CHOICE_ITERATOR_HPP
 
 #include "engine.hpp"
+#include "typedefs.hpp"
+
 #include <vector>
 
 namespace pl_search {
@@ -49,7 +51,7 @@ public:
    * @param v Pointer to the variable.
    * @param ch Reference to the vector of choices.
    */
-  VarChoiceIterator(Engine *engine, PVar *v, std::vector<Term *> &ch)
+  VarChoiceIterator(Engine *engine, PVarPtr v, std::vector<TermPtr> &ch)
       : engine(engine), var(v), choices(ch), index(0) {}
 
   /**
@@ -63,15 +65,15 @@ public:
    * @return True if the choice is made successfully, false otherwise.
    */
   bool make_choice() override {
-    Term *t = choices[index++];
+    TermPtr t = choices[index++];
     return engine->unify(var, t);
   }
 
 private:
-  Engine *engine;              ///< Pointer to the Engine.
-  int index;                   ///< Current index in the choices vector.
-  PVar *var;                   ///< Pointer to the variable.
-  std::vector<Term *> choices; ///< Reference to the vector of choices.
+  Engine *engine;               ///< Pointer to the Engine.
+  int index;                    ///< Current index in the choices vector.
+  PVarPtr var;                  ///< Pointer to the variable.
+  std::vector<TermPtr> choices; ///< Reference to the vector of choices.
 };
 
 } // namespace pl_search

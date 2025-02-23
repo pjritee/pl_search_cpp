@@ -26,6 +26,8 @@ SOFTWARE.
 #define PL_SEARCH_PATOM_HPP
 
 #include "term.hpp"
+#include "typedefs.hpp"
+
 #include <string>
 #include <typeinfo>
 
@@ -54,14 +56,14 @@ public:
    * @brief Dereferences the term.
    * @return A pointer to the dereferenced term.
    */
-  Term *dereference() override { return this; }
+  TermPtr dereference() override { return shared_from_this(); }
 
   /**
    * @brief Binds the term to another term.
    * @param t The term to bind to.
    * @return False, as atoms cannot be bound to other terms.
    */
-  bool bind(Term *t) override {
+  bool bind(TermPtr t) override {
     return false; // Atoms cannot be bound to other terms
   }
 
@@ -69,7 +71,7 @@ public:
    * @brief Resets the term.
    * @param t The term to reset to.
    */
-  void reset(Term *t) override {
+  void reset(TermPtr t) override {
     // No-op for PAtom
   }
 
@@ -90,7 +92,7 @@ public:
    * @param t The term to compare to.
    * @return True if the terms are equal, false otherwise.
    */
-  bool isEqualTo(Term &t) override {
+  bool isEqualTo(Term &t) const override {
     PAtom *a = dynamic_cast<PAtom *>(&t);
     if (a == nullptr)
       return false;
@@ -102,7 +104,7 @@ public:
    * @param t The term to compare to.
    * @return True if the term is less than the other term, false otherwise.
    */
-  bool isLessThan(Term &t) override;
+  bool isLessThan(Term &t) const override;
 
 private:
   std::string name; ///< The name of the atom.

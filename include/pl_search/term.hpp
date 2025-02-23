@@ -28,6 +28,8 @@ SOFTWARE.
 #include <iostream>
 #include <string>
 
+#include "typedefs.hpp"
+
 /**
  * @file term.hpp
  * @brief Definition of the Term class.
@@ -45,26 +47,34 @@ class Engine;
  * strings. It also includes methods for comparing terms and unifying
  * user-defined classes.
  */
-class Term {
+class Term : public std::enable_shared_from_this<Term> {
+protected:
+  /**
+   * @brief Checks if the term is equal to another term.
+   * @param t The term to compare to.
+   * @return True if the terms are equal, false otherwise.
+   */
+  virtual bool isEqualTo(Term &t) const = 0;
+
 public:
   /**
    * @brief Dereferences the term.
    * @return A pointer to the dereferenced term.
    */
-  virtual Term *dereference() = 0;
+  virtual TermPtr dereference() = 0;
 
   /**
    * @brief Binds the term to another term.
    * @param t The term to bind to.
    * @return True if the binding is successful, false otherwise.
    */
-  virtual bool bind(Term *t) = 0;
+  virtual bool bind(TermPtr t) = 0;
 
   /**
    * @brief Resets the term.
    * @param t The term to reset to.
    */
-  virtual void reset(Term *t) = 0;
+  virtual void reset(TermPtr t) = 0;
 
   /**
    * @brief Returns a string representation of the term.
@@ -73,18 +83,11 @@ public:
   virtual std::string repr() const { return "TERM"; }
 
   /**
-   * @brief Checks if the term is equal to another term.
-   * @param t The term to compare to.
-   * @return True if the terms are equal, false otherwise.
-   */
-  virtual bool isEqualTo(Term &t) = 0;
-
-  /**
    * @brief Checks if the term is less than another term.
    * @param t The term to compare to.
    * @return True if the term is less than the other term, false otherwise.
    */
-  virtual bool isLessThan(Term &t) = 0;
+  virtual bool isLessThan(Term &t) const = 0;
 
   /**
    * @brief A hook for unification of user-defined classes.
@@ -93,13 +96,25 @@ public:
    * @param t The term to unify with.
    * @return True if the unification is successful, false otherwise.
    */
-  virtual bool unifyWith(Engine *engine, Term *t) { return false; }
+  virtual bool unifyWith(Engine *engine, TermPtr t) { return false; }
 
   /**
    * @brief Checks if the term is a variable.
    * @return True if the term is a variable, false otherwise.
    */
   virtual bool is_var() { return false; }
+
+  /**
+   * @brief Overloaded equality operator for Term.
+   *  @param t The term to compare to.
+   * @return True if the terms are equal, false otherwise.
+   */
+  bool operator==(Term const &t) {
+    return isEqualTo(const_cast<Term &>(t));
+    // TermPtr deref1 = dereference();
+    // TermPtr deref2 = t.dereference();
+    // return deref1->isEqualTo(*deref2);
+  }
 
   /**
    * @brief Default constructor.
@@ -128,11 +143,6 @@ public:
    * @param t2 The second term.
    * @return True if the terms are equal, false otherwise.
    */
-  friend bool operator==(Term &t1, Term &t2) {
-    Term *deref1 = t1.dereference();
-    Term *deref2 = t2.dereference();
-    return deref1->isEqualTo(*deref2);
-  }
 
   /**
    * @brief Overloaded less-than operator for Term.
@@ -161,8 +171,12 @@ public:
   friend bool operator<=(Term &t1, Term &t2) {
     return t1.isLessThan(t2) || t1.isEqualTo(t2);
   }
+  friend bool operator==(TermPtr t1, TermPtr t2);
 };
 
+// bool are_equal(TermPtr t1, TermPtr t2) {
+//   return t1->dereference()->isEqualTo(*(t2->dereference()));
+// }
 } // namespace pl_search
 
 #endif // PL_SEARCH_TERM_HPP

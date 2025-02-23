@@ -42,7 +42,7 @@ namespace pl_search {
  * @brief Trails a variable.
  * @param v The variable to trail.
  */
-void Engine::trail(PVar *v) {
+void Engine::trail(PVarPtr v) {
   shared_ptr<trail_entry> entry(new trail_entry);
   entry->var = v;
   entry->value = v->value;
@@ -68,9 +68,9 @@ void Engine::backtrack() {
  * @param t2 The second term.
  * @return True if the terms unify, false otherwise.
  */
-bool Engine::unify(Term *t1, Term *t2) {
-  Term *t1_deref = t1->dereference();
-  Term *t2_deref = t2->dereference();
+bool Engine::unify(TermPtr t1, TermPtr t2) {
+  TermPtr t1_deref = t1->dereference();
+  TermPtr t2_deref = t2->dereference();
   // Same pointers
   if (t1_deref == t2_deref) {
     return true;
@@ -79,16 +79,19 @@ bool Engine::unify(Term *t1, Term *t2) {
   if (*t1_deref == *t2_deref) {
     return true;
   }
-  if (PVar *v1 = dynamic_cast<PVar *>(t1_deref)) {
-    trail(v1);
+  Term *t1ptr = t1_deref.get();
+  Term *t2ptr = t2_deref.get();
+  if (PVar *v1 = dynamic_cast<PVar *>(t1ptr)) {
+    trail(std::dynamic_pointer_cast<PVar>(t1_deref));
     return v1->bind(t2_deref);
   }
-  if (PVar *v2 = dynamic_cast<PVar *>(t2_deref)) {
-    trail(v2);
+  if (PVar *v2 = dynamic_cast<PVar *>(t2ptr)) {
+    trail(std::dynamic_pointer_cast<PVar>(t2_deref));
     return v2->bind(t1_deref);
   }
-  CList *l1 = dynamic_cast<CList *>(t1_deref);
-  CList *l2 = dynamic_cast<CList *>(t2_deref);
+
+  CList *l1 = dynamic_cast<CList *>(t1ptr);
+  CList *l2 = dynamic_cast<CList *>(t2ptr);
   if ((l1 != nullptr) && (l2 != nullptr)) {
     if (l1->getElements().size() != l2->getElements().size()) {
       return false;

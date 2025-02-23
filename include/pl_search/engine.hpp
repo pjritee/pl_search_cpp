@@ -47,8 +47,8 @@ namespace pl_search {
  * @brief Represents a trail entry for backtracking.
  */
 struct trail_entry {
-  PVar *var;   ///< The variable being trailed.
-  Term *value; ///< The value of the variable.
+  PVarPtr var;   ///< The variable being trailed.
+  TermPtr value; ///< The value of the variable.
 };
 
 /**
@@ -76,7 +76,7 @@ public:
    * @param t2 The second term.
    * @return True if the terms unify, false otherwise.
    */
-  bool unify(Term *t1, Term *t2);
+  bool unify(TermPtr t1, TermPtr t2);
 
   /**
    * @brief Executes a predicate.
@@ -102,7 +102,7 @@ private:
    * @brief Trails a variable.
    * @param v The variable to trail.
    */
-  void trail(PVar *v);
+  void trail(PVarPtr v);
 
   /**
    * @brief Performs backtracking.

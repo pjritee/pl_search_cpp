@@ -39,17 +39,20 @@ int PVar::id = 0;
  * @brief Dereferences the variable to find the actual term it points to.
  * @return A pointer to the dereferenced term.
  */
-Term *PVar::dereference() {
-  Term *result = this;
+TermPtr PVar::dereference() {
+  TermPtr result = shared_from_this();
 
   while (true) {
     // Check if the current result is a PVar
-    if (PVar *next = dynamic_cast<PVar *>(result)) {
-      // If the PVar points to itself, return it
-      if (result == next->value)
+    if (typeid(*result) == typeid(PVar)) {
+      PVar *v = dynamic_cast<PVar *>(result.get());
+      assert(v != nullptr);
+      if (v->value == nullptr) {
+        // If the value is null, return the variable
         return result;
+      }
       // Otherwise, follow the chain
-      result = next->value;
+      result = v->value;
     } else {
       // If the result is not a PVar, return it
       return result;
@@ -65,8 +68,8 @@ Term *PVar::dereference() {
  * @return True if the term is a variable, false otherwise.
  */
 bool PVar::is_var() {
-  Term *deref = dereference();
-  if (PVar *v = dynamic_cast<PVar *>(deref)) {
+  TermPtr deref = dereference();
+  if (typeid(deref) == typeid(PVarPtr)) {
     return true;
   }
   return false;
@@ -77,11 +80,11 @@ bool PVar::is_var() {
  * @param t The term to bind to.
  * @return True if the binding is successful, false otherwise.
  */
-bool PVar::bind(Term *t) {
+bool PVar::bind(TermPtr t) {
   // Dereference the term to find its actual value
-  Term *deref = t->dereference();
+  TermPtr deref = t->dereference();
   // If the dereferenced term is the same as this variable, return true
-  if (this == deref)
+  if (shared_from_this() == deref)
     return true;
   // Otherwise, bind this variable to the dereferenced term
   value = deref;
@@ -92,18 +95,22 @@ bool PVar::bind(Term *t) {
  * @brief Resets the variable to point at the supplied term.
  * @param t The term to reset to.
  */
-void PVar::reset(Term *t) { value = t; }
+void PVar::reset(TermPtr t) { value = t; }
 
 /**
  * @brief Checks if the variable is less than another term.
  * @param t The term to compare to.
  * @return True if the variable is less than the other term, false otherwise.
  */
-bool PVar::isLessThan(Term &t) {
+bool PVar::isLessThan(Term &t) const {
   PVar *v = dynamic_cast<PVar *>(&t);
   if (v == nullptr)
     return true;
   return getVarId() < v->getVarId();
+}
+
+bool operator==(TermPtr t1, TermPtr t2) {
+  return t1->dereference()->isEqualTo(*(t2->dereference()));
 }
 
 } // namespace pl_search
