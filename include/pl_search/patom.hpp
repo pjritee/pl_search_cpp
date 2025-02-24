@@ -53,12 +53,6 @@ public:
   PAtom(const std::string &name) : name(name) {}
 
   /**
-   * @brief Dereferences the term.
-   * @return A pointer to the dereferenced term.
-   */
-  TermPtr dereference() override { return shared_from_this(); }
-
-  /**
    * @brief Binds the term to another term.
    * @param t The term to bind to.
    * @return False, as atoms cannot be bound to other terms.

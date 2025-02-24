@@ -69,12 +69,6 @@ public:
   CList(const std::list<TermPtr> &elements) : elements(elements) {}
 
   /**
-   * @brief Dereferences the term.
-   * @return A pointer to the dereferenced term.
-   */
-  TermPtr dereference() override { return shared_from_this(); }
-
-  /**
    * @brief Binds the term to another term.
    * @param t The term to bind to.
    * @return False, as lists cannot be bound to other terms.

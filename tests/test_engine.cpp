@@ -36,9 +36,9 @@ public:
 // A predicate that records the current value of a variable and then fails
 class CollectAndFail : public SemiDetPred {
 public:
-  std::list<Term *> &results;
-  PVar *var;
-  CollectAndFail(Engine *eng, PVar *v, std::list<Term *> &r)
+  std::list<TermPtr> &results;
+  PVarPtr var;
+  CollectAndFail(Engine *eng, PVarPtr v, std::list<TermPtr> &r)
       : SemiDetPred(eng), var(v), results(r) {}
 
   void initialize_call() override { results.push_back(var->dereference()); }
@@ -62,37 +62,37 @@ public:
 
 class DetPredTest : public DetPred {
 public:
-  DetPredTest(Engine *eng, Term *t1, Term *t2)
+  DetPredTest(Engine *eng, TermPtr t1, TermPtr t2)
       : DetPred(eng), term1(t1), term2(t2) {}
 
   void initialize_call() { engine->unify(term1, term2); }
 
 private:
-  Term *term1;
-  Term *term2;
+  TermPtr term1;
+  TermPtr term2;
 };
 
 // Loop body test pred
 class BodyPred : public DetPred {
 public:
-  BodyPred(Engine *eng, Term *t1, Term *t2)
+  BodyPred(Engine *eng, TermPtr t1, TermPtr t2)
       : DetPred(eng), term1(t1), term2(t2) {}
 
   void initialize_call() { engine->unify(term1, term2); }
 
 private:
-  Term *term1;
-  Term *term2;
+  TermPtr term1;
+  TermPtr term2;
 };
 
 //
 // Test Loop
 class TestBodyFactory : public LoopBodyFactory {
 public:
-  std::vector<PVar *> vars;
-  std::vector<Term *> values;
-  TestBodyFactory(Engine *eng, std::vector<PVar *> &vs,
-                  std::vector<Term *> vals)
+  std::vector<PVarPtr> vars;
+  std::vector<TermPtr> values;
+  TestBodyFactory(Engine *eng, std::vector<PVarPtr> &vs,
+                  std::vector<TermPtr> vals)
       : LoopBodyFactory(eng), vars(vs), values(vals) {
     index = 0;
   }
@@ -100,8 +100,8 @@ public:
   bool loop_continues() override { return index < vars.size(); }
 
   PredPtr make_body_pred() override {
-    Term *t1 = vars[index];
-    Term *t2 = values[index++];
+    TermPtr t1 = vars[index];
+    TermPtr t2 = values[index++];
     return std::make_shared<BodyPred>(engine, t1, t2);
   }
 
@@ -120,18 +120,18 @@ void print_pred_chain(PredPtr pred) {
 class EngineTest {
 public:
   static void do_push(Engine *engine, PredPtr pred) { engine->push(pred); }
-  static void test_trail(Engine *engine, PVar *var) {
+  static void test_trail(Engine *engine, PVarPtr var) {
     engine->trail(var);
     REQUIRE(engine->trail_stack.size() == 1);
     REQUIRE(engine->trail_stack.top()->var == var);
   }
 
-  static void test_backtrack(Engine *engine, PVar *var) {
+  static void test_backtrack(Engine *engine, PVarPtr var) {
     engine->trail(var);
-    var->bind(new PInt(42));
+    var->bind(std::make_shared<PInt>(42));
     engine->backtrack();
     REQUIRE(engine->trail_stack.size() == 0);
-    REQUIRE(var->value == var);
+    REQUIRE(var->value == nullptr);
   }
 
   static void test_push(Engine *engine, PredPtr pred) {
@@ -146,27 +146,28 @@ public:
 
 TEST_CASE("Engine private member tests", "[Engine]") {
   Engine engine;
-  PVar var;
+  PVarPtr var = std::make_shared<PVar>();
   PredPtr pred = std::make_shared<TestPred>(&engine);
   EngineTest::do_push(&engine, pred);
 
-  SECTION("Trail test") { EngineTest::test_trail(&engine, &var); }
+  SECTION("Trail test") { EngineTest::test_trail(&engine, var); }
 
-  SECTION("Backtrack test") { EngineTest::test_backtrack(&engine, &var); }
+  SECTION("Backtrack test") { EngineTest::test_backtrack(&engine, var); }
 
   SECTION("Push check") { EngineTest::test_push(&engine, pred); }
 }
 
 TEST_CASE("Engine execute test", "[Engine]") {
   Engine engine;
-  PVar var;
-  std::list<Term *> results;
-  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, &var, results);
-  PInt term1(42);
-  PInt term2(43);
-  std::vector<Term *> choices = {&term1, &term2};
-  VarChoiceIterator choice_iterator1(&engine, &var, choices);
-  VarChoiceIterator choice_iterator2(&engine, &var, choices);
+  PVarPtr var = std::make_shared<PVar>();
+  std::list<TermPtr> results;
+  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
+  PIntPtr term1 = std::make_shared<PInt>(42);
+  PIntPtr term2 = std::make_shared<PInt>(43);
+  std::vector<TermPtr> choices = {term1, term2};
+  VarChoiceIterator choice_iterator1(&engine, var, choices);
+  VarChoiceIterator choice_iterator2(&engine, var, choices);
+
   PredPtr choicePred1 =
       std::make_shared<ChoicePred>(&engine, &choice_iterator1);
   PredPtr choicePred2 =
@@ -182,47 +183,49 @@ TEST_CASE("Engine execute test", "[Engine]") {
   SECTION("Execute test - simple failure") {
     REQUIRE(!EngineTest::test_execute(&engine, failpred, false));
     REQUIRE(results.size() == 1);
-    REQUIRE(results.front() == &var);
+    REQUIRE(results.front() == var);
   }
 
   SECTION("Execute test - conjunction and backtrack over choice") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred1, false));
     REQUIRE(results.size() == 2);
-    REQUIRE(results.front() == &term1);
-    REQUIRE(results.back() == &term2);
+    REQUIRE(results.front() == term1);
+    REQUIRE(results.back() == term2);
   }
   SECTION("Execute test - once, conjunction and backtrack over choice") {
-    REQUIRE(var.dereference() == &var);
+    REQUIRE(var->value == nullptr);
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred2, false));
     REQUIRE(results.size() == 1);
-    REQUIRE(results.front() == &term1);
+    REQUIRE(results.front() == term1);
   }
 }
 
 TEST_CASE("Test backtracking over deterministic predicate", "[Engine]") {
   Engine engine;
-  PVar var;
-  PInt term42(42);
+  PVarPtr var = std::make_shared<PVar>();
+  PIntPtr term42 = std::make_shared<PInt>(42);
+
   PredPtr failpred = std::make_shared<Fail>(&engine);
-  PredPtr detpred = std::make_shared<DetPredTest>(&engine, &var, &term42);
+  PredPtr detpred = std::make_shared<DetPredTest>(&engine, var, term42);
   PredPtr conjunctionPred = conjunction({detpred, failpred});
 
   SECTION("Test backtracking over deterministic predicate") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
-    REQUIRE(var.dereference() == &var);
+    REQUIRE(var->value == nullptr);
   }
 }
 
 TEST_CASE("Engine execute disj test", "[Engine]") {
   Engine engine;
-  PVar var;
-  std::list<Term *> results;
-  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, &var, results);
-  PInt term1(42);
-  PInt term2(43);
-  std::vector<Term *> choices = {&term1, &term2};
-  VarChoiceIterator choice_iterator1(&engine, &var, choices);
-  VarChoiceIterator choice_iterator2(&engine, &var, choices);
+  PVarPtr var = std::make_shared<PVar>();
+  std::list<TermPtr> results;
+  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
+  PIntPtr term1 = std::make_shared<PInt>(42);
+  PIntPtr term2 = std::make_shared<PInt>(43);
+  std::vector<TermPtr> choices = {term1, term2};
+
+  VarChoiceIterator choice_iterator1(&engine, var, choices);
+  VarChoiceIterator choice_iterator2(&engine, var, choices);
   PredPtr choicePred1 =
       std::make_shared<ChoicePred>(&engine, &choice_iterator1);
   PredPtr choicePred2 =
@@ -241,27 +244,27 @@ TEST_CASE("Engine execute disj test", "[Engine]") {
   SECTION("Execute test - disjunction, backtrack over choice") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred3, false));
     REQUIRE(results.size() == 4);
-    std::list<Term *>::iterator it = results.begin();
-    REQUIRE(*it == &term1);
+    std::list<TermPtr>::iterator it = results.begin();
+    REQUIRE(*it == term1);
     ++it;
-    REQUIRE(*it == &term2);
+    REQUIRE(*it == term2);
     ++it;
-    REQUIRE(*it == &term1);
+    REQUIRE(*it == term1);
     ++it;
-    REQUIRE(*it == &term2);
+    REQUIRE(*it == term2);
   }
 }
 
 TEST_CASE("Engine execute notnot predicate - not not call succeeds",
           "[Engine]") {
   Engine engine;
-  PVar var;
-  std::list<Term *> results;
-  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, &var, results);
-  PInt term1(42);
-  PInt term2(43);
-  std::vector<Term *> choices = {&term1, &term2};
-  VarChoiceIterator choice_iterator1(&engine, &var, choices);
+  PVarPtr var = std::make_shared<PVar>();
+  std::list<TermPtr> results;
+  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
+  PIntPtr term1 = std::make_shared<PInt>(42);
+  PIntPtr term2 = std::make_shared<PInt>(43);
+  std::vector<TermPtr> choices = {term1, term2};
+  VarChoiceIterator choice_iterator1(&engine, var, choices);
   PredPtr choicePred1 =
       std::make_shared<ChoicePred>(&engine, &choice_iterator1);
   PredPtr notnot_pred = std::make_shared<NotNot>(&engine, choicePred1);
@@ -270,19 +273,16 @@ TEST_CASE("Engine execute notnot predicate - not not call succeeds",
   SECTION("Engine execute notnot predicate - execute") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
     REQUIRE(results.size() == 1);
-    REQUIRE(results.front() == &var);
+    REQUIRE(results.front() == var);
   }
 }
 
 TEST_CASE("Engine execute notnot predicate - not not call fails", "[Engine]") {
   Engine engine;
-  PVar var;
-  std::list<Term *> results;
-  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, &var, results);
-  // PInt term1(42);
-  // PInt term2(43);
-  // std::vector<Term*> choices = {&term1, &term2};
-  // VarChoiceIterator choice_iterator1(&engine, &var, choices);
+  PVarPtr var = std::make_shared<PVar>();
+  std::list<TermPtr> results;
+  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
+
   PredPtr fail = std::make_shared<Fail>(&engine);
   PredPtr notnotPred = std::make_shared<NotNot>(&engine, fail);
   PredPtr conjunctionPred = conjunction({notnotPred, failpred});
@@ -295,21 +295,27 @@ TEST_CASE("Engine execute notnot predicate - not not call fails", "[Engine]") {
 
 TEST_CASE("Test loop predicate", "[Engine]") {
   Engine engine;
-  PVar v1, v2, v3, v4;
-  PInt i1(1), i2(2), i3(3), i4(4);
+  PVarPtr v1 = std::make_shared<PVar>();
+  PVarPtr v2 = std::make_shared<PVar>();
+  PVarPtr v3 = std::make_shared<PVar>();
+  PVarPtr v4 = std::make_shared<PVar>();
+  PIntPtr i1 = std::make_shared<PInt>(1);
+  PIntPtr i2 = std::make_shared<PInt>(2);
+  PIntPtr i3 = std::make_shared<PInt>(3);
+  PIntPtr i4 = std::make_shared<PInt>(4);
 
-  std::vector<PVar *> vars = {&v1, &v2, &v3};
-  std::vector<Term *> values = {&i1, &i2, &i3};
-  PredPtr detpred = std::make_shared<DetPredTest>(&engine, &v4, &i4);
+  std::vector<PVarPtr> vars = {v1, v2, v3};
+  std::vector<TermPtr> values = {i1, i2, i3};
+  PredPtr detpred = std::make_shared<DetPredTest>(&engine, v4, i4);
   TestBodyFactory body_factory = TestBodyFactory(&engine, vars, values);
   PredPtr loop = std::make_shared<Loop>(&engine, &body_factory);
   PredPtr conjunctionPred = conjunction({loop, detpred});
 
   SECTION("Engine execute loop") {
     REQUIRE(EngineTest::test_execute(&engine, conjunctionPred, false));
-    REQUIRE(v1.dereference() == &i1);
-    REQUIRE(v2.dereference() == &i2);
-    REQUIRE(v3.dereference() == &i3);
-    REQUIRE(v4.dereference() == &i4);
+    REQUIRE(v1->dereference() == i1);
+    REQUIRE(v2->dereference() == i2);
+    REQUIRE(v3->dereference() == i3);
+    REQUIRE(v4->dereference() == i4);
   }
 }

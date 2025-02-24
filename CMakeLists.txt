@@ -20,6 +20,7 @@ include_directories(include)
 
 # Add source files
 set(SOURCES
+    src/term.cpp
     src/pvar.cpp
     src/p_lessthan.cpp
     src/pred.cpp

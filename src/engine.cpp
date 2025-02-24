@@ -76,7 +76,7 @@ bool Engine::unify(TermPtr t1, TermPtr t2) {
     return true;
   }
   // Same values
-  if (*t1_deref == *t2_deref) {
+  if (t1_deref == t2_deref) {
     return true;
   }
   Term *t1ptr = t1_deref.get();

@@ -23,10 +23,16 @@ private:
 };
 
 bool UserVar::bind(TermPtr t) {
+  TermPtr deref = t->dereference();
   for (auto it = disjoint.begin(); it != disjoint.end(); ++it) {
-    if (*t == *(*it))
+    std::cout << "Checking if " << *deref << " is equal to "
+              << *((*it)->dereference()) << std::endl;
+    if (deref == (*it)->dereference()) {
+      std::cout << "Cannot bind " << *this << " to " << *deref << std::endl;
       return false;
+    }
   }
+  std::cout << "bind " << *this << " to " << *deref << std::endl;
   return PVar::bind(t);
 }
 
@@ -40,86 +46,86 @@ TEST_CASE("PVar binding", "[PVar]") {
     REQUIRE(pvar->value == term);
   }
 
-  // SECTION("Reset test") {
-  //   pvar->reset(nullptr);
-  //   REQUIRE(pvar->value == nullptr);
-  // }
+  SECTION("Reset test") {
+    pvar->reset(nullptr);
+    REQUIRE(pvar->value == nullptr);
+  }
 
-  // SECTION("IsLessThan test") {
-  //   PVarPtr anotherPVar = std::make_shared<PVar>();
-  //   REQUIRE(pvar->isLessThan(*anotherPVar));
-  // }
+  SECTION("IsLessThan test") {
+    PVarPtr anotherPVar = std::make_shared<PVar>();
+    REQUIRE(pvar->isLessThan(*anotherPVar));
+  }
 }
 
-// TEST_CASE("PVar dereference", "[PVar]") {
-//   PVarPtr pvar = std::make_shared<PVar>();
-//   PIntPtr term =
-//       std::make_shared<PInt>(42); // Example term with integer value 42
+TEST_CASE("PVar dereference", "[PVar]") {
+  PVarPtr pvar = std::make_shared<PVar>();
+  PIntPtr term =
+      std::make_shared<PInt>(42); // Example term with integer value 42
 
-//   SECTION("Dereference unbound variable") {
-//     REQUIRE(*(pvar->dereference()) == *pvar);
-//   }
+  SECTION("Dereference unbound variable") {
+    REQUIRE(pvar->dereference() == pvar);
+  }
 
-//   SECTION("Dereference bound variable") {
-//     pvar->bind(term);
-//     REQUIRE(*(pvar->dereference()) == *term);
-//   }
-// }
+  SECTION("Dereference bound variable") {
+    pvar->bind(term);
+    REQUIRE(pvar->dereference() == term);
+  }
+}
 
-// TEST_CASE("UpdatablePVar functionality", "[UpdatablePVar]") {
+TEST_CASE("UpdatablePVar functionality", "[UpdatablePVar]") {
 
-//   PVarPtr v = std::make_shared<PVar>();
-//   PIntPtr term =
-//       std::make_shared<PInt>(42); // Example term with integer value 42
-//   UpdatablePVarPtr upvar = std::make_shared<UpdatablePVar>(
-//       v); // Updatable variable initialized with v
+  PVarPtr v = std::make_shared<PVar>();
+  PIntPtr term =
+      std::make_shared<PInt>(42); // Example term with integer value 42
+  UpdatablePVarPtr upvar = std::make_shared<UpdatablePVar>(
+      v); // Updatable variable initialized with v
 
-//   SECTION("Dereference test unbound") {
-//     REQUIRE(*(upvar->dereference()) == *upvar);
-//     REQUIRE(*(upvar->value->dereference()) == *v);
-//   }
-//   SECTION("Dereference test bound") {
-//     v->bind(term);
-//     REQUIRE(*(upvar->dereference()) == *upvar);
-//     REQUIRE(*(upvar->value->dereference()) == *term);
-//   }
-// }
+  SECTION("Dereference test unbound") {
+    REQUIRE(upvar->dereference() == upvar);
+    REQUIRE(upvar->value->dereference() == v);
+  }
+  SECTION("Dereference test bound") {
+    v->bind(term);
+    REQUIRE(upvar->dereference() == upvar);
+    REQUIRE(upvar->value->dereference() == term);
+  }
+}
 
-// TEST_CASE("Test user defined variable", "[UserVar]") {
-//   std::shared_ptr<UserVar> v1 = std::make_shared<UserVar>();
-//   std::shared_ptr<UserVar> v2 = std::make_shared<UserVar>();
-//   std::shared_ptr<UserVar> v3 = std::make_shared<UserVar>();
-//   PIntPtr n1 = std::make_shared<PInt>(1);
-//   PIntPtr n2 = std::make_shared<PInt>(2);
-//   PIntPtr n3 = std::make_shared<PInt>(3);
+TEST_CASE("Test user defined variable", "[UserVar]") {
+  std::shared_ptr<UserVar> v1 = std::make_shared<UserVar>();
+  std::shared_ptr<UserVar> v2 = std::make_shared<UserVar>();
+  std::shared_ptr<UserVar> v3 = std::make_shared<UserVar>();
+  PIntPtr n1 = std::make_shared<PInt>(1);
+  PIntPtr n2 = NewPInt(2);
+  PIntPtr n3 = std::make_shared<PInt>(3);
 
-//   v1->set_disjoint({v2, v3});
-//   v2->set_disjoint({v1, v3});
-//   v3->set_disjoint({v1, v2});
+  v1->set_disjoint({v2, v3});
+  v2->set_disjoint({v1, v3});
+  v3->set_disjoint({v1, v2});
 
-//   SECTION("Attempt to bind to disjoint var") { REQUIRE(!v1->bind(v2)); }
-//   SECTION("Attempt to bind to number") {
-//     REQUIRE(v1->bind(n1));
-//     REQUIRE(!v2->bind(n1));
-//   }
-// }
+  SECTION("Attempt to bind to disjoint var") { REQUIRE(!v1->bind(v2)); }
+  SECTION("Attempt to bind to number") {
+    REQUIRE(v1->bind(n1));
+    REQUIRE(!v2->bind(n1));
+  }
+}
 
-// TEST_CASE("TEST is_var", "[PVar]") {
-//   PVarPtr v1 = std::make_shared<PVar>();
-//   PVarPtr v2 = std::make_shared<PVar>();
-//   PIntPtr n1 = std::make_shared<PInt>(42);
+TEST_CASE("TEST is_var", "[PVar]") {
+  PVarPtr v1 = std::make_shared<PVar>();
+  PVarPtr v2 = std::make_shared<PVar>();
+  PIntPtr n1 = std::make_shared<PInt>(42);
 
-//   SECTION("Test is_var on unbound terms") {
-//     REQUIRE(v1->is_var());
-//     REQUIRE(!n1->is_var());
-//   }
+  SECTION("Test is_var on unbound terms") {
+    REQUIRE(v1->is_var());
+    REQUIRE(!n1->is_var());
+  }
 
-//   SECTION("Test is_var for var to var binding") {
-//     REQUIRE(v1->bind(v2));
-//     REQUIRE(v1->is_var());
-//   }
-//   SECTION("Test is_var for var to int binding") {
-//     REQUIRE(v1->bind(n1));
-//     REQUIRE(!v1->is_var());
-//   }
-// }
+  SECTION("Test is_var for var to var binding") {
+    REQUIRE(v1->bind(v2));
+    REQUIRE(v1->is_var());
+  }
+  SECTION("Test is_var for var to int binding") {
+    REQUIRE(v1->bind(n1));
+    REQUIRE(!v1->is_var());
+  }
+}

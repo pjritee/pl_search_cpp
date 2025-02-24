@@ -44,9 +44,7 @@ TermPtr PVar::dereference() {
 
   while (true) {
     // Check if the current result is a PVar
-    if (typeid(*result) == typeid(PVar)) {
-      PVar *v = dynamic_cast<PVar *>(result.get());
-      assert(v != nullptr);
+    if (PVar *v = dynamic_cast<PVar *>(result.get())) {
       if (v->value == nullptr) {
         // If the value is null, return the variable
         return result;
@@ -69,7 +67,7 @@ TermPtr PVar::dereference() {
  */
 bool PVar::is_var() {
   TermPtr deref = dereference();
-  if (typeid(deref) == typeid(PVarPtr)) {
+  if (typeid(*deref) == typeid(PVar)) {
     return true;
   }
   return false;
@@ -84,8 +82,9 @@ bool PVar::bind(TermPtr t) {
   // Dereference the term to find its actual value
   TermPtr deref = t->dereference();
   // If the dereferenced term is the same as this variable, return true
-  if (shared_from_this() == deref)
+  if (shared_from_this() == deref) {
     return true;
+  }
   // Otherwise, bind this variable to the dereferenced term
   value = deref;
   return true;
@@ -109,8 +108,5 @@ bool PVar::isLessThan(Term &t) const {
   return getVarId() < v->getVarId();
 }
 
-bool operator==(TermPtr t1, TermPtr t2) {
-  return t1->dereference()->isEqualTo(*(t2->dereference()));
-}
 
 } // namespace pl_search

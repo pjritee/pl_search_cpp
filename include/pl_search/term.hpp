@@ -58,10 +58,11 @@ protected:
 
 public:
   /**
-   * @brief Dereferences the term.
-   * @return A pointer to the dereferenced term.
+   * @brief Dereferences the term. The default is to return a shared pointer to
+   * term itself.
+   * @return A shared pointer to the dereferenced term.
    */
-  virtual TermPtr dereference() = 0;
+  virtual TermPtr dereference() { return shared_from_this(); };
 
   /**
    * @brief Binds the term to another term.
@@ -103,18 +104,6 @@ public:
    * @return True if the term is a variable, false otherwise.
    */
   virtual bool is_var() { return false; }
-
-  /**
-   * @brief Overloaded equality operator for Term.
-   *  @param t The term to compare to.
-   * @return True if the terms are equal, false otherwise.
-   */
-  bool operator==(Term const &t) {
-    return isEqualTo(const_cast<Term &>(t));
-    // TermPtr deref1 = dereference();
-    // TermPtr deref2 = t.dereference();
-    // return deref1->isEqualTo(*deref2);
-  }
 
   /**
    * @brief Default constructor.
@@ -171,12 +160,17 @@ public:
   friend bool operator<=(Term &t1, Term &t2) {
     return t1.isLessThan(t2) || t1.isEqualTo(t2);
   }
+
+  /**
+   * @brief == test for TermPtrs
+    * @param t1 The first term.
+    * @param t2 The second term.
+    * @return True if the terms are equal using the isEqualTo method, false
+   otherwise.
+  */
   friend bool operator==(TermPtr t1, TermPtr t2);
 };
 
-// bool are_equal(TermPtr t1, TermPtr t2) {
-//   return t1->dereference()->isEqualTo(*(t2->dereference()));
-// }
 } // namespace pl_search
 
 #endif // PL_SEARCH_TERM_HPP
