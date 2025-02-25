@@ -51,12 +51,12 @@ typedef std::shared_ptr<UpdatablePVar> UpdatablePVarPtr;
 /**
  * @brief Helper functions to create shared pointers to Terms and subclasses.
  */
-#define NewPVar std::make_shared<PVar>
-#define NewPInt std::make_shared<PInt>
-#define NewPFloat std::make_shared<PFloat>
-#define NewPAtom std::make_shared<PAtom>
-#define NewCList std::make_shared<CList>
-#define NewUpdatablePVar std::make_shared<UpdatablePVar>
+#define NEW_PVAR std::make_shared<PVar>
+#define NEW_PINT std::make_shared<PInt>
+#define NEW_PFLOAT std::make_shared<PFloat>
+#define NEW_PATOM std::make_shared<PAtom>
+#define NEW_CLIST std::make_shared<CList>
+#define NEW_UPDATABLE_PVAR std::make_shared<UpdatablePVar>
 
 } // namespace pl_search
 

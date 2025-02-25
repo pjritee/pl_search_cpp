@@ -55,10 +55,10 @@ private:
 
 TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
   Engine engine;
-  PIntPtr term1 = std::make_shared<PInt>(42);
-  PIntPtr term2 = std::make_shared<PInt>(43);
+  PIntPtr term1 = NEW_PINT(42);
+  PIntPtr term2 = NEW_PINT(43);
   std::vector<TermPtr> choices = {term1, term2};
-  PVarPtr var = std::make_shared<PVar>();
+  PVarPtr var = NEW_PVAR();
 
   VarChoiceIterator choice_iterator(&engine, var, choices);
 
@@ -74,8 +74,8 @@ TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
 
 TEST_CASE("SemiDetPred functionality", "[SemiDetPred]") {
   Engine engine;
-  PIntPtr term1 = std::make_shared<PInt>(42);
-  PIntPtr term2 = std::make_shared<PInt>(43);
+  PIntPtr term1 = NEW_PINT(42);
+  PIntPtr term2 = NEW_PINT(43);
   std::shared_ptr<SemiDetTestPred> semiDetPred12 =
       std::make_shared<SemiDetTestPred>(&engine, term1, term2);
   std::shared_ptr<SemiDetTestPred> semiDetPred11 =
@@ -92,8 +92,8 @@ TEST_CASE("SemiDetPred functionality", "[SemiDetPred]") {
 
 TEST_CASE("Conjunction functionality", "[Conjunction]") {
   Engine engine;
-  PIntPtr term1 = std::make_shared<PInt>(42);
-  PIntPtr term2 = std::make_shared<PInt>(43);
+  PIntPtr term1 = NEW_PINT(42);
+  PIntPtr term2 = NEW_PINT(43);
   std::shared_ptr<SemiDetTestPred> semiDetPred12 =
       std::make_shared<SemiDetTestPred>(&engine, term1, term2);
   std::shared_ptr<SemiDetTestPred> semiDetPred11 =

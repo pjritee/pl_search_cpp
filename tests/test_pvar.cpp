@@ -36,10 +36,13 @@ bool UserVar::bind(TermPtr t) {
   return PVar::bind(t);
 }
 
+// Making UserVar consistent with the rest of the library
+typedef std::shared_ptr<UserVar> UserVarPtr;
+#define NEW_USERVAR std::make_shared<UserVar>
+
 TEST_CASE("PVar binding", "[PVar]") {
-  PVarPtr pvar = std::make_shared<PVar>();
-  PIntPtr term =
-      std::make_shared<PInt>(42); // Example term with integer value 42
+  PVarPtr pvar = NEW_PVAR();
+  PIntPtr term = NEW_PINT(42); // Example term with integer value 42
 
   SECTION("Bind test") {
     REQUIRE(pvar->bind(term));
@@ -52,15 +55,14 @@ TEST_CASE("PVar binding", "[PVar]") {
   }
 
   SECTION("IsLessThan test") {
-    PVarPtr anotherPVar = std::make_shared<PVar>();
+    PVarPtr anotherPVar = NEW_PVAR();
     REQUIRE(pvar->isLessThan(*anotherPVar));
   }
 }
 
 TEST_CASE("PVar dereference", "[PVar]") {
-  PVarPtr pvar = std::make_shared<PVar>();
-  PIntPtr term =
-      std::make_shared<PInt>(42); // Example term with integer value 42
+  PVarPtr pvar = NEW_PVAR();
+  PIntPtr term = NEW_PINT(42); // Example term with integer value 42
 
   SECTION("Dereference unbound variable") {
     REQUIRE(pvar->dereference() == pvar);
@@ -74,9 +76,8 @@ TEST_CASE("PVar dereference", "[PVar]") {
 
 TEST_CASE("UpdatablePVar functionality", "[UpdatablePVar]") {
 
-  PVarPtr v = std::make_shared<PVar>();
-  PIntPtr term =
-      std::make_shared<PInt>(42); // Example term with integer value 42
+  PVarPtr v = NEW_PVAR();
+  PIntPtr term = NEW_PINT(42); // Example term with integer value 42
   UpdatablePVarPtr upvar = std::make_shared<UpdatablePVar>(
       v); // Updatable variable initialized with v
 
@@ -92,12 +93,12 @@ TEST_CASE("UpdatablePVar functionality", "[UpdatablePVar]") {
 }
 
 TEST_CASE("Test user defined variable", "[UserVar]") {
-  std::shared_ptr<UserVar> v1 = std::make_shared<UserVar>();
-  std::shared_ptr<UserVar> v2 = std::make_shared<UserVar>();
-  std::shared_ptr<UserVar> v3 = std::make_shared<UserVar>();
-  PIntPtr n1 = std::make_shared<PInt>(1);
-  PIntPtr n2 = NewPInt(2);
-  PIntPtr n3 = std::make_shared<PInt>(3);
+  UserVarPtr v1 = NEW_USERVAR();
+  UserVarPtr v2 = NEW_USERVAR();
+  UserVarPtr v3 = NEW_USERVAR();
+  PIntPtr n1 = NEW_PINT(1);
+  PIntPtr n2 = NEW_PINT(2);
+  PIntPtr n3 = NEW_PINT(3);
 
   v1->set_disjoint({v2, v3});
   v2->set_disjoint({v1, v3});
@@ -111,9 +112,9 @@ TEST_CASE("Test user defined variable", "[UserVar]") {
 }
 
 TEST_CASE("TEST is_var", "[PVar]") {
-  PVarPtr v1 = std::make_shared<PVar>();
-  PVarPtr v2 = std::make_shared<PVar>();
-  PIntPtr n1 = std::make_shared<PInt>(42);
+  PVarPtr v1 = NEW_PVAR();
+  PVarPtr v2 = NEW_PVAR();
+  PIntPtr n1 = NEW_PINT(42);
 
   SECTION("Test is_var on unbound terms") {
     REQUIRE(v1->is_var());

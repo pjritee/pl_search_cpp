@@ -21,7 +21,6 @@
  *
  * @code
  * #include "pl_search/engine.hpp"
-
  * #include "pl_search/pvar.hpp"
  * #include "pl_search/pint.hpp"
  * #include "pl_search/pfloat.hpp"

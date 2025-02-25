@@ -48,9 +48,6 @@ make
 This will build the pl_search library and place it in the lib directory.
 
 
-## Documentation
-
-The Doxygen documentation for this project is available [here](docs/html/index.html).
 
 ## License
 

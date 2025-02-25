@@ -72,15 +72,16 @@ public:
 };
 
 typedef std::shared_ptr<PrologList> PrologListPtr;
+#define NEW_PROLOG_LIST std::make_shared<PrologList>
 
 TEST_CASE("User defined term type - build and test", "[Term]") {
   Engine engine;
-  PVarPtr v1 = std::make_shared<PVar>();
-  PVarPtr v2 = std::make_shared<PVar>();
-  PVarPtr v3 = std::make_shared<PVar>();
-  PrologListPtr list1 = std::make_shared<PrologList>(v3, empty_list);
-  PrologListPtr list2 = std::make_shared<PrologList>(v2, list1);
-  PrologListPtr list3 = std::make_shared<PrologList>(v2, v1);
+  PVarPtr v1 = NEW_PVAR();
+  PVarPtr v2 = NEW_PVAR();
+  PVarPtr v3 = NEW_PVAR();
+  PrologListPtr list1 = NEW_PROLOG_LIST(v3, empty_list);
+  PrologListPtr list2 = NEW_PROLOG_LIST(v2, list1);
+  PrologListPtr list3 = NEW_PROLOG_LIST(v2, v1);
 
   SECTION("Test displaying list") {
     REQUIRE(list2->head == v2);

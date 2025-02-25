@@ -128,7 +128,7 @@ public:
 
   static void test_backtrack(Engine *engine, PVarPtr var) {
     engine->trail(var);
-    var->bind(std::make_shared<PInt>(42));
+    var->bind(NEW_PINT(42));
     engine->backtrack();
     REQUIRE(engine->trail_stack.size() == 0);
     REQUIRE(var->value == nullptr);
@@ -146,7 +146,7 @@ public:
 
 TEST_CASE("Engine private member tests", "[Engine]") {
   Engine engine;
-  PVarPtr var = std::make_shared<PVar>();
+  PVarPtr var = NEW_PVAR();
   PredPtr pred = std::make_shared<TestPred>(&engine);
   EngineTest::do_push(&engine, pred);
 
@@ -159,11 +159,11 @@ TEST_CASE("Engine private member tests", "[Engine]") {
 
 TEST_CASE("Engine execute test", "[Engine]") {
   Engine engine;
-  PVarPtr var = std::make_shared<PVar>();
+  PVarPtr var = NEW_PVAR();
   std::list<TermPtr> results;
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
-  PIntPtr term1 = std::make_shared<PInt>(42);
-  PIntPtr term2 = std::make_shared<PInt>(43);
+  PIntPtr term1 = NEW_PINT(42);
+  PIntPtr term2 = NEW_PINT(43);
   std::vector<TermPtr> choices = {term1, term2};
   VarChoiceIterator choice_iterator1(&engine, var, choices);
   VarChoiceIterator choice_iterator2(&engine, var, choices);
@@ -202,8 +202,8 @@ TEST_CASE("Engine execute test", "[Engine]") {
 
 TEST_CASE("Test backtracking over deterministic predicate", "[Engine]") {
   Engine engine;
-  PVarPtr var = std::make_shared<PVar>();
-  PIntPtr term42 = std::make_shared<PInt>(42);
+  PVarPtr var = NEW_PVAR();
+  PIntPtr term42 = NEW_PINT(42);
 
   PredPtr failpred = std::make_shared<Fail>(&engine);
   PredPtr detpred = std::make_shared<DetPredTest>(&engine, var, term42);
@@ -217,11 +217,11 @@ TEST_CASE("Test backtracking over deterministic predicate", "[Engine]") {
 
 TEST_CASE("Engine execute disj test", "[Engine]") {
   Engine engine;
-  PVarPtr var = std::make_shared<PVar>();
+  PVarPtr var = NEW_PVAR();
   std::list<TermPtr> results;
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
-  PIntPtr term1 = std::make_shared<PInt>(42);
-  PIntPtr term2 = std::make_shared<PInt>(43);
+  PIntPtr term1 = NEW_PINT(42);
+  PIntPtr term2 = NEW_PINT(43);
   std::vector<TermPtr> choices = {term1, term2};
 
   VarChoiceIterator choice_iterator1(&engine, var, choices);
@@ -259,11 +259,11 @@ TEST_CASE("Engine execute disj test", "[Engine]") {
 TEST_CASE("Engine execute notnot predicate - not not call succeeds",
           "[Engine]") {
   Engine engine;
-  PVarPtr var = std::make_shared<PVar>();
+  PVarPtr var = NEW_PVAR();
   std::list<TermPtr> results;
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
-  PIntPtr term1 = std::make_shared<PInt>(42);
-  PIntPtr term2 = std::make_shared<PInt>(43);
+  PIntPtr term1 = NEW_PINT(42);
+  PIntPtr term2 = NEW_PINT(43);
   std::vector<TermPtr> choices = {term1, term2};
   VarChoiceIterator choice_iterator1(&engine, var, choices);
   PredPtr choicePred1 =
@@ -280,7 +280,7 @@ TEST_CASE("Engine execute notnot predicate - not not call succeeds",
 
 TEST_CASE("Engine execute notnot predicate - not not call fails", "[Engine]") {
   Engine engine;
-  PVarPtr var = std::make_shared<PVar>();
+  PVarPtr var = NEW_PVAR();
   std::list<TermPtr> results;
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
 
@@ -296,14 +296,14 @@ TEST_CASE("Engine execute notnot predicate - not not call fails", "[Engine]") {
 
 TEST_CASE("Test loop predicate", "[Engine]") {
   Engine engine;
-  PVarPtr v1 = std::make_shared<PVar>();
-  PVarPtr v2 = std::make_shared<PVar>();
-  PVarPtr v3 = std::make_shared<PVar>();
-  PVarPtr v4 = std::make_shared<PVar>();
-  PIntPtr i1 = std::make_shared<PInt>(1);
-  PIntPtr i2 = std::make_shared<PInt>(2);
-  PIntPtr i3 = std::make_shared<PInt>(3);
-  PIntPtr i4 = std::make_shared<PInt>(4);
+  PVarPtr v1 = NEW_PVAR();
+  PVarPtr v2 = NEW_PVAR();
+  PVarPtr v3 = NEW_PVAR();
+  PVarPtr v4 = NEW_PVAR();
+  PIntPtr i1 = NEW_PINT(1);
+  PIntPtr i2 = NEW_PINT(2);
+  PIntPtr i3 = NEW_PINT(3);
+  PIntPtr i4 = NEW_PINT(4);
 
   std::vector<PVarPtr> vars = {v1, v2, v3};
   std::vector<TermPtr> values = {i1, i2, i3};
