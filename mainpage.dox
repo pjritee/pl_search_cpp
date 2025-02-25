@@ -21,6 +21,7 @@
  *
  * @code
  * #include "pl_search/engine.hpp"
+
  * #include "pl_search/pvar.hpp"
  * #include "pl_search/pint.hpp"
  * #include "pl_search/pfloat.hpp"
@@ -28,6 +29,7 @@
  * #include "pl_search/clist.hpp"
  * #include "pl_search/pred.hpp"
  * #include "pl_search/choice_iterator.hpp"
+ * #include "pl_search/typesdefs.hpp"
  * @endcode
  *
  * @section example Example
@@ -39,6 +41,7 @@
  * #include "pl_search/pvar.hpp"
  * #include "pl_search/pint.hpp"
  * #include "pl_search/pred.hpp"
+ * #include "pl_search/typesdefs.hpp"
  * #include <iostream>
  *
  * using namespace pl_search;
