@@ -1,0 +1,18 @@
+<map id="include/pl_search/typedefs.hpp" name="include/pl_search/typedefs.hpp">
+<area shape="rect" id="Node000001" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="9,5,212,31"/>
+<area shape="rect" id="Node000002" href="$engine_8hpp.html" title="Definition of the Engine class and related structures." alt="" coords="148,152,339,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,34,186,52,214,77,226,96,235,116,244,151,239,152,230,118,221,98,210,80,183,57,152,39"/>
+<area shape="rect" id="Node000005" href="$engine_8cpp.html" title="Implementation of the Engine class." alt="" coords="65,233,172,258"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="61,39,33,56,11,80,8,91,12,103,31,143,57,179,107,231,103,234,53,183,26,146,7,105,3,91,7,77,30,52,59,34"/>
+<area shape="rect" id="Node000006" href="$pred_8hpp.html" title="Definition of the Pred class and its derived classes." alt="" coords="22,79,199,104"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="113,44,113,79,108,79,108,44"/>
+<area shape="rect" id="Node000003" href="$choice__iterator_8hpp.html" title=" " alt="" coords="196,225,361,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="257,189,272,224,268,226,252,191"/>
+<area shape="rect" id="Node000004" href="$pred_8cpp.html" title="Implementation of the Pred class and its derived classes." alt="" coords="231,313,326,339"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="315,179,349,197,375,224,383,245,375,267,363,283,348,297,314,316,311,311,344,292,359,280,371,264,377,245,371,227,345,201,313,184"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="215,187,138,235,136,230,212,182"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="281,279,281,313,276,313,276,279"/>
+<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="145,108,223,149,221,154,143,113"/>
+<area shape="poly" id="edge9_Node000006_Node000004" title=" " alt="" coords="93,116,70,148,51,187,45,207,43,227,46,246,55,264,66,273,83,282,128,297,231,316,230,322,127,302,81,287,63,278,51,267,41,248,37,227,39,206,46,185,66,145,89,113"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="114,118,120,232,115,233,109,118"/>
+</map>

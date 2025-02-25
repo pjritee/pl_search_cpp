@@ -56,17 +56,15 @@ namespace pl_search {
  * might modify it or when binding a variable to a CList object.
  */
 class CList : public Term {
-public:
-  /**
-   * @brief Default constructor.
-   */
-  CList() {}
+private:
+  std::list<TermPtr> &elements; ///< The elements of the list.
 
+public:
   /**
    * @brief Constructs a CList with the given elements.
    * @param elements The elements of the list.
    */
-  CList(const std::list<TermPtr> &elements) : elements(elements) {}
+  CList(std::list<TermPtr> &elms) : elements(elms) {}
 
   /**
    * @brief Binds the term to another term.
@@ -134,9 +132,6 @@ public:
    * @return A reference to the list of elements.
    */
   const std::list<TermPtr> &getElements() const { return elements; }
-
-private:
-  std::list<TermPtr> elements; ///< The elements of the list.
 };
 
 } // namespace pl_search

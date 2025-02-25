@@ -1,0 +1,13 @@
+<map id="pl_search::DetPred" name="pl_search::DetPred">
+<area shape="rect" id="Node000001" title="Represents a deterministic predicate." alt="" coords="58,240,193,265"/>
+<area shape="rect" id="Node000005" href="$classpl__search_1_1Cut.html" title=" " alt="" coords="5,313,112,339"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="107,278,71,315,68,311,103,274"/>
+<area shape="rect" id="Node000006" href="$classpl__search_1_1Loop.html" title=" " alt="" coords="136,313,251,339"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="148,273,184,311,180,315,144,277"/>
+<area shape="rect" id="Node000002" href="$classpl__search_1_1SemiDetPred.html" title="Represents a semi&#45;deterministic predicate." alt="" coords="43,167,207,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,206,128,240,123,240,123,206"/>
+<area shape="rect" id="Node000003" href="$classpl__search_1_1Pred.html" title="Abstract base class for Prolog&#45;like predicates." alt="" coords="69,93,182,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="128,132,128,167,123,167,123,132"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="58,5,193,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="128,59,128,93,123,93,123,59"/>
+</map>

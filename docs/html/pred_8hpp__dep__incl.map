@@ -1,0 +1,14 @@
+<map id="include/pl_search/pred.hpp" name="include/pl_search/pred.hpp">
+<area shape="rect" id="Node000001" title="Definition of the Pred class and its derived classes." alt="" coords="250,5,427,31"/>
+<area shape="rect" id="Node000002" href="$engine_8hpp.html" title="Definition of the Engine class and related structures." alt="" coords="110,79,301,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="307,39,228,81,226,76,304,35"/>
+<area shape="rect" id="Node000004" href="$pred_8cpp.html" title="Implementation of the Pred class and its derived classes." alt="" coords="161,240,255,265"/>
+<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="354,42,368,74,379,113,380,155,376,175,366,194,344,217,315,233,285,244,256,250,255,245,284,239,313,228,340,213,362,190,371,173,375,154,374,114,363,76,349,44"/>
+<area shape="rect" id="Node000005" href="$engine_8cpp.html" title="Implementation of the Engine class." alt="" coords="245,159,352,185"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="335,45,304,160,299,158,330,43"/>
+<area shape="rect" id="Node000003" href="$choice__iterator_8hpp.html" title=" " alt="" coords="5,152,171,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="178,114,118,154,115,150,175,109"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="208,117,210,240,205,240,203,118"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="231,111,287,157,283,161,228,115"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="130,197,192,238,189,242,127,202"/>
+</map>

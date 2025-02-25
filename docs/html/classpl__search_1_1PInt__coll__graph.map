@@ -1,0 +1,5 @@
+<map id="pl_search::PInt" name="pl_search::PInt">
+<area shape="rect" id="Node000001" title="Represents a Prolog integer." alt="" coords="7,79,118,104"/>
+<area shape="rect" id="Node000002" href="$classpl__search_1_1Term.html" title="Abstract base class for terms that approximate Prolog terms." alt="" coords="5,5,120,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,44,65,79,60,79,60,44"/>
+</map>

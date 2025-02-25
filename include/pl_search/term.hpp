@@ -134,7 +134,7 @@ public:
    */
 
   /**
-   * @brief Overloaded less-than operator for Term.
+   * @brief < operator for TermPtrs.
    * Approximates the @< operator in Prolog.
    * The ordering is as follows:
    * pvar < pint, pfloat < patom < clist < user-defined classes
@@ -148,21 +148,19 @@ public:
    * @return True if the first term is less than the second term, false
    * otherwise.
    */
-  friend bool operator<(Term &t1, Term &t2) { return t1.isLessThan(t2); }
+  friend bool operator<(TermPtr t1, TermPtr t2);
 
   /**
-   * @brief Overloaded less-than-or-equal-to operator for Term.
+   * @brief <= operator for TermPtrs
    * @param t1 The first term.
    * @param t2 The second term.
    * @return True if the first term is less than or equal to the second term,
    * false otherwise.
    */
-  friend bool operator<=(Term &t1, Term &t2) {
-    return t1.isLessThan(t2) || t1.isEqualTo(t2);
-  }
+  friend bool operator<=(TermPtr t1, TermPtr t2);
 
   /**
-   * @brief == test for TermPtrs
+   * @brief == operator for TermPtrs
     * @param t1 The first term.
     * @param t2 The second term.
     * @return True if the terms are equal using the isEqualTo method, false

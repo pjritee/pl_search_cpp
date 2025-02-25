@@ -235,8 +235,9 @@ TEST_CASE("Engine execute disj test", "[Engine]") {
   std::cout << "choicepred1 " << repr(choicePred1) << std::endl;
   std::cout << "choicepred2 " << repr(choicePred2) << std::endl;
 
+  std::vector<PredPtr> disjPreds = {choicePred1, choicePred2};
   PredPtr disjPred = std::make_shared<DisjPred>(
-      &engine, std::vector<PredPtr>{choicePred1, choicePred2});
+      &engine, disjPreds); // Disjunction of choicePred1 and choicePred2
   std::cout << "disjPred " << repr(disjPred) << std::endl;
   PredPtr conjunctionPred3 = conjunction({disjPred, failpred});
   std::cout << "conjPred3 " << repr(conjunctionPred3) << std::endl;

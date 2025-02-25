@@ -42,4 +42,36 @@ bool operator==(TermPtr t1, TermPtr t2) {
   return t1->dereference()->isEqualTo(*(t2->dereference()));
 }
 
+/**
+   * @brief < operator for TermPtrs.
+   * Approximates the @< operator in Prolog.
+   * The ordering is as follows:
+   * pvar < pint, pfloat < patom < clist < user-defined classes
+   * "older" vars are less than "newer" vars
+   * patoms are ordered by name
+   * pints and pfloats are ordered by value
+   * clists are ordered by the first element, then the second, etc.
+
+   * @param t1 The first term.
+   * @param t2 The second term.
+   * @return True if the first term is less than the second term, false
+   * otherwise.
+   */
+bool operator<(TermPtr t1, TermPtr t2) {
+  return t1->dereference()->isLessThan(*(t2->dereference()));
+}
+
+/**
+ * @brief <= operator for TermPtrs
+ * @param t1 The first term.
+ * @param t2 The second term.
+ * @return True if the first term is less than or equal to the second term,
+ * false otherwise.
+ */
+bool operator<=(TermPtr t1, TermPtr t2) {
+  TermPtr deref1 = t1->dereference();
+  TermPtr deref2 = t2->dereference();
+  return deref1->isLessThan(*deref2) || deref1->isEqualTo(*deref2);
+}
+
 } // namespace pl_search
