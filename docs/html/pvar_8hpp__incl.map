@@ -1,9 +1,0 @@
-<map id="include/pl_search/pvar.hpp" name="include/pl_search/pvar.hpp">
-<area shape="rect" id="Node000001" title="Definition of the PVar class." alt="" coords="5,5,181,31"/>
-<area shape="rect" id="Node000002" href="$term_8hpp.html" title="Definition of the Term class." alt="" coords="57,79,130,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,31,96,65,91,65,91,31"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="13,152,85,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="88,106,66,142,61,139,84,103"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="110,152,165,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="103,103,125,139,121,142,98,106"/>
-</map>
