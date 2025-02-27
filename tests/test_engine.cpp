@@ -165,13 +165,14 @@ TEST_CASE("Engine execute test", "[Engine]") {
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
   std::vector<TermPtr> choices = {term1, term2};
-  VarChoiceIterator choice_iterator1(&engine, var, choices);
-  VarChoiceIterator choice_iterator2(&engine, var, choices);
 
-  PredPtr choicePred1 =
-      std::make_shared<ChoicePred>(&engine, &choice_iterator1);
-  PredPtr choicePred2 =
-      std::make_shared<ChoicePred>(&engine, &choice_iterator2);
+  std::shared_ptr<VarChoiceIterator> choice_iterator1 =
+      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+  std::shared_ptr<VarChoiceIterator> choice_iterator2 =
+      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+
+  PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, choice_iterator1);
+  PredPtr choicePred2 = std::make_shared<ChoicePred>(&engine, choice_iterator2);
   choicePred2->wrap_with_once();
 
   PredPtr conjunctionPred1 = conjunction({choicePred1, failpred});
@@ -224,12 +225,13 @@ TEST_CASE("Engine execute disj test", "[Engine]") {
   PIntPtr term2 = NEW_PINT(43);
   std::vector<TermPtr> choices = {term1, term2};
 
-  VarChoiceIterator choice_iterator1(&engine, var, choices);
-  VarChoiceIterator choice_iterator2(&engine, var, choices);
-  PredPtr choicePred1 =
-      std::make_shared<ChoicePred>(&engine, &choice_iterator1);
-  PredPtr choicePred2 =
-      std::make_shared<ChoicePred>(&engine, &choice_iterator2);
+  std::shared_ptr<VarChoiceIterator> choice_iterator1 =
+      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+  std::shared_ptr<VarChoiceIterator> choice_iterator2 =
+      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+
+  PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, choice_iterator1);
+  PredPtr choicePred2 = std::make_shared<ChoicePred>(&engine, choice_iterator2);
 
   std::cout << "failpred " << repr(failpred) << std::endl;
   std::cout << "choicepred1 " << repr(choicePred1) << std::endl;
@@ -265,9 +267,9 @@ TEST_CASE("Engine execute notnot predicate - not not call succeeds",
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
   std::vector<TermPtr> choices = {term1, term2};
-  VarChoiceIterator choice_iterator1(&engine, var, choices);
-  PredPtr choicePred1 =
-      std::make_shared<ChoicePred>(&engine, &choice_iterator1);
+  std::shared_ptr<VarChoiceIterator> choice_iterator1 =
+      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+  PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, choice_iterator1);
   PredPtr notnot_pred = std::make_shared<NotNot>(&engine, choicePred1);
   PredPtr conjunctionPred = conjunction({notnot_pred, failpred});
 

@@ -60,10 +60,11 @@ TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
   std::vector<TermPtr> choices = {term1, term2};
   PVarPtr var = NEW_PVAR();
 
-  VarChoiceIterator choice_iterator(&engine, var, choices);
+  std::shared_ptr<VarChoiceIterator> choice_iterator =
+      std::make_shared<VarChoiceIterator>(&engine, var, choices);
 
   std::shared_ptr<ChoicePred> choicePred =
-      std::make_shared<ChoicePred>(&engine, &choice_iterator);
+      std::make_shared<ChoicePred>(&engine, choice_iterator);
 
   SECTION("Apply choice test") { REQUIRE(choicePred->apply_choice() == true); }
 
@@ -78,6 +79,7 @@ TEST_CASE("SemiDetPred functionality", "[SemiDetPred]") {
   PIntPtr term2 = NEW_PINT(43);
   std::shared_ptr<SemiDetTestPred> semiDetPred12 =
       std::make_shared<SemiDetTestPred>(&engine, term1, term2);
+      
   std::shared_ptr<SemiDetTestPred> semiDetPred11 =
       std::make_shared<SemiDetTestPred>(&engine, term1, term1);
 

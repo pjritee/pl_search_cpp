@@ -67,7 +67,7 @@ TermPtr PVar::dereference() {
  */
 bool PVar::is_var() {
   TermPtr deref = dereference();
-  if (typeid(*deref) == typeid(PVar)) {
+  if (std::dynamic_pointer_cast<PVar>(deref)) {
     return true;
   }
   return false;
@@ -107,6 +107,5 @@ bool PVar::isLessThan(Term &t) const {
     return true;
   return getVarId() < v->getVarId();
 }
-
 
 } // namespace pl_search

@@ -22,7 +22,7 @@ include_directories(include)
 set(SOURCES
     src/term.cpp
     src/pvar.cpp
-    src/p_lessthan.cpp
+#    src/p_lessthan.cpp
     src/pred.cpp
     src/engine.cpp
 )

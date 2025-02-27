@@ -35,6 +35,13 @@ public:
   virtual bool make_choice() = 0;
 
   /**
+   * @brief Tests a choice which would tyically involve constraint dedections
+   * based on the choice.
+   * @return True if the choice is valid, false otherwise.
+   */
+  virtual bool test_choice() { return true; }
+
+  /**
    * @brief Virtual destructor for proper cleanup.
    */
   virtual ~ChoiceIterator() = default;
@@ -51,7 +58,7 @@ public:
    * @param v Pointer to the variable.
    * @param ch Reference to the vector of choices.
    */
-  VarChoiceIterator(Engine *engine, PVarPtr v, std::vector<TermPtr> &ch)
+  VarChoiceIterator(Engine *engine, PVarPtr v, std::vector<TermPtr> ch)
       : engine(engine), var(v), choices(ch), index(0) {}
 
   /**
@@ -62,14 +69,15 @@ public:
 
   /**
    * @brief Makes a choice.
-   * @return True if the choice is made successfully, false otherwise.
+   * @return True if the choice is made successfully and follow up
+   * deductions do not fail, false otherwise.
    */
-  bool make_choice() override {
+  virtual bool make_choice() override {
     TermPtr t = choices[index++];
-    return engine->unify(var, t);
+    return engine->unify(var, t) && test_choice();
   }
 
-private:
+protected:
   Engine *engine;               ///< Pointer to the Engine.
   int index;                    ///< Current index in the choices vector.
   PVarPtr var;                  ///< Pointer to the variable.

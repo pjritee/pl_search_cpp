@@ -47,7 +47,9 @@ make
 
 This will build the pl_search library and place it in the lib directory.
 
+## Example
 
+The examples directory contains a heavily commented solution to the SEND+MORE=MONEY puzzle along with a Makefile to build the executable.
 
 ## License
 

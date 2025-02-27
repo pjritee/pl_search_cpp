@@ -24,10 +24,16 @@ SOFTWARE.
 
 /**
  * @file term.cpp
- * @brief helper functions for term.hpp
+ * @brief comparison operators for TermPtrs and the isLessThan method for
+ * subclasses of Term.
  */
 
 #include "pl_search/term.hpp"
+#include "pl_search/clist.hpp"
+#include "pl_search/patom.hpp"
+#include "pl_search/pfloat.hpp"
+#include "pl_search/pint.hpp"
+#include "pl_search/pvar.hpp"
 
 namespace pl_search {
 
@@ -72,6 +78,60 @@ bool operator<=(TermPtr t1, TermPtr t2) {
   TermPtr deref1 = t1->dereference();
   TermPtr deref2 = t2->dereference();
   return deref1->isLessThan(*deref2) || deref1->isEqualTo(*deref2);
+}
+
+bool PInt::isLessThan(Term &t) const {
+  if (typeid(t) == typeid(PVar))
+    return false;
+  if (typeid(t) != typeid(PInt)) {
+    if (typeid(t) != typeid(PFloat))
+      return true;
+    PFloat f = static_cast<PFloat &>(t);
+    return value < f.getValue();
+  }
+  PInt i = static_cast<PInt &>(t);
+  return value < i.getValue();
+}
+
+bool PFloat::isLessThan(Term &t) const {
+  if (typeid(t) == typeid(PVar))
+    return false;
+  if (typeid(t) != typeid(PFloat)) {
+    if (typeid(t) != typeid(PInt))
+      return true;
+    PInt i = static_cast<PInt &>(t);
+    return value < i.getValue();
+  }
+  PFloat f = static_cast<PFloat &>(t);
+  return value < f.getValue();
+}
+
+bool PAtom::isLessThan(Term &t) const {
+  if (typeid(t) == typeid(PVar))
+    return false;
+  if (typeid(t) == typeid(PInt))
+    return false;
+  if (typeid(t) == typeid(PFloat))
+    return false;
+  if (typeid(t) != typeid(PAtom))
+    return true;
+  PAtom a = static_cast<PAtom &>(t);
+  return name < a.getName();
+}
+
+bool CList::isLessThan(Term &t) const {
+  if (typeid(t) == typeid(PVar))
+    return false;
+  if (typeid(t) == typeid(PInt))
+    return false;
+  if (typeid(t) == typeid(PFloat))
+    return false;
+  if (typeid(t) == typeid(PAtom))
+    return false;
+  if (typeid(t) != typeid(CList))
+    return true;
+  CList l = static_cast<CList &>(t);
+  return elements < l.elements;
 }
 
 } // namespace pl_search

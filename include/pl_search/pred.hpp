@@ -122,18 +122,20 @@ protected:
   Engine *engine;
 };
 
+typedef std::shared_ptr<ChoiceIterator> ChoiceIteratorPtr;
+
 /**
  * @brief Represents a choice predicate.
  */
 class ChoicePred : public Pred {
 public:
-  ChoiceIterator *choice_iterator; ///< Pointer to the choice iterator.
+  ChoiceIteratorPtr choice_iterator; ///< Pointer to the choice iterator.
 
   /**
    * @brief Constructs a ChoicePred with the given choice iterator.
    * @param ch Pointer to the choice iterator.
    */
-  ChoicePred(Engine *eng, ChoiceIterator *ch)
+  ChoicePred(Engine *eng, ChoiceIteratorPtr ch)
       : Pred(eng), choice_iterator(ch) {}
 
   void initialize_call() override {}

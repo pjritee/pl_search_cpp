@@ -65,11 +65,11 @@ public:
   virtual TermPtr dereference() { return shared_from_this(); };
 
   /**
-   * @brief Binds the term to another term.
+   * @brief Binds the term to another term. The default is to simply fail.
    * @param t The term to bind to.
    * @return True if the binding is successful, false otherwise.
    */
-  virtual bool bind(TermPtr t) = 0;
+  virtual bool bind(TermPtr t) { return false; }
 
   /**
    * @brief Resets the term.
