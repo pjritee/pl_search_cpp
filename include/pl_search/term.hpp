@@ -160,13 +160,13 @@ public:
   friend bool operator<=(TermPtr t1, TermPtr t2);
 
   /**
-   * @brief == operator for TermPtrs
+   * @brief == operator for Terms
     * @param t1 The first term.
     * @param t2 The second term.
     * @return True if the terms are equal using the isEqualTo method, false
    otherwise.
   */
-  friend bool operator==(TermPtr t1, TermPtr t2);
+  friend bool operator==(Term &t1, Term &t2);
 };
 
 } // namespace pl_search

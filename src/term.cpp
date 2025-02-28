@@ -44,8 +44,8 @@ namespace pl_search {
    * @return True if the terms are equal using the isEqualTo method, false
   otherwise.
  */
-bool operator==(TermPtr t1, TermPtr t2) {
-  return t1->dereference()->isEqualTo(*(t2->dereference()));
+bool operator==(Term &t1, Term &t2) {
+  return t1.dereference()->isEqualTo(*(t2.dereference()));
 }
 
 /**

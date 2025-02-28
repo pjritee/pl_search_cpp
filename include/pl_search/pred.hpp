@@ -189,20 +189,38 @@ public:
   /**
    * @brief Constructs a DisjPred with the given predicates.
    * @param preds A vector of shared pointers to the predicates.
+   *
+   * preds become the list of choices - when a choice is made that
+   * choice becomes the next predicate to be called.
    */
-  DisjPred(Engine *eng, std::vector<PredPtr> preds) : Pred(eng), preds(preds) {}
+  DisjPred(Engine *eng, std::vector<PredPtr> preds)
+      : Pred(eng), preds(preds), index(0) {}
 
-  void initialize_call() override;
-  bool apply_choice() override;
-  bool test_choice() override;
-  bool more_choices() override;
-  bool is_non_det() { return true; }
-  void set_continuation(PredPtr cont);
+  void initialize_call() override {
+    ///< Set the continuations for each of preds to this continuation
+    for (auto it = preds.begin(); it != preds.end(); it++) {
+      (*it)->set_continuation(continuation);
+    }
+  };
+
+  bool apply_choice() override {
+    ///< Get the next choice
+    PredPtr choice = preds[index++];
+    /**
+     * By setting continuation to choice, it will be the next predicate
+     * to be called
+     */
+    continuation = choice;
+    return true;
+  }
+
+  bool test_choice() override { return true; }
+
+  bool more_choices() override { return index < preds.size(); }
 
 private:
   std::vector<PredPtr> preds; ///< The predicates in the disjunction.
-  std::vector<PredPtr>::iterator
-      current_pred; ///< Iterator to the current predicate.
+  int index;                  // index of the current predicate choice
 };
 
 class Cut : public DetPred {

@@ -102,46 +102,6 @@ bool Cut::apply_choice() {
   return true;
 }
 
-/**
- * @brief Initializes the call for the disjunction predicate.
- */
-void DisjPred::initialize_call() { current_pred = preds.begin(); }
-
-/**
- * @brief Applies a choice for the disjunction predicate.
- * @return True if the choice is applied successfully, false otherwise.
- */
-bool DisjPred::apply_choice() {
-  PredPtr cont = *current_pred;
-  // the chosen disjunct should have the same continuation as the disjunction
-
-  cont->last_pred()->set_continuation(continuation);
-  continuation = cont;
-  ++current_pred; // move to the next disjunct
-  return true;
-}
-
-/**
- * @brief Tests a choice for the disjunction predicate.
- * @return True if the choice is valid, false otherwise.
- */
-bool DisjPred::test_choice() { return true; }
-
-/**
- * @brief Checks if there are more choices for the disjunction predicate.
- * @return True if there are more choices, false otherwise.
- */
-bool DisjPred::more_choices() { return current_pred != preds.end(); }
-
-/**
- * @brief Sets the continuation for the disjunction predicate.
- * @param cont A shared pointer to the continuation predicate.
- */
-void DisjPred::set_continuation(PredPtr cont) {
-  for (auto it = preds.begin(); it != preds.end(); ++it) {
-    (*it)->last_pred()->set_continuation(cont);
-  }
-}
 
 /**
  * @brief Applies a choice for the not-not-end predicate.

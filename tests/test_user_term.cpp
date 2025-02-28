@@ -44,7 +44,6 @@ public:
   bool unifyWith(Engine *engine, TermPtr t) override {
     // as unification with a variable is already handled so this will only
     // unify with t if t is a PrologList
-    std::cerr << "unify " << *this << " other " << t << std::endl;
     if (typeid(*this) != typeid(*t)) {
       return false;
     }
