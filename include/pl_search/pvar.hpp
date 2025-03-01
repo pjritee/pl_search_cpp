@@ -82,7 +82,7 @@ public:
    * @param t The term to compare to.
    * @return True if the variable is less than the other term, false otherwise.
    */
-  bool isLessThan(Term &t) const override;
+  bool isLessThan(Term &other) const override;
 
   /**
    * @brief Returns the variable ID.
@@ -93,25 +93,29 @@ public:
   std::string repr() const override { return "X" + std::to_string(var_id); }
 
 protected:
-  virtual bool isEqualTo(Term &t) const override {
-    if (typeid(*this) != typeid(t)) {
-      return false;
+  virtual bool isEqualTo(Term &other) const override {
+    if (PVar *v = dynamic_cast<PVar *>(&other)) {
+
+      return getVarId() == v->getVarId();
     }
-    PVar v = static_cast<PVar &>(t);
-    return getVarId() == v.getVarId();
+    return false;
   }
 
 private:
   int var_id; ///< The ID of the variable.
 };
 
-// UpdatableVar is used to implement what some Prologs call
-// updatable assignment. This is typically used to store (part of) the
-// state in a way that can be backtracked over. For example, after
-// binding a variable and then making some deductions the available choices
-// for another variable might have been reduced and we can use an UpdatableVar
-// to store that value as the computation moves forward but on backtracking
-// the old value will be restored
+/**
+ * @brief UpdatableVar implements what some Prologs call updatable assignment.
+ */
+/*
+ * This is typically used to store (part of) the
+ * state in a way that can be backtracked over. For example, after
+ * binding a variable and then making some deductions the available choices
+ * for another variable might have been reduced and we can use an UpdatableVar
+ * to store that value as the computation moves forward but on backtracking
+ * the old value will be restored.
+ */
 class UpdatablePVar : public PVar {
 public:
   UpdatablePVar(TermPtr t) : PVar() { value = t; }

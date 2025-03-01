@@ -6,7 +6,15 @@
 
 using namespace pl_search;
 
+// Copy of PrologList definition from examples/prolog_list.hpp
+
+// Defining  the empty list
 static PAtomPtr empty_list = std::make_shared<PAtom>("[]");
+
+// Making PrologList consistent with the typedefs and macros in typedefs.hpp
+class PrologList;
+typedef std::shared_ptr<PrologList> PrologListPtr;
+#define NEW_PROLOG_LIST std::make_shared<PrologList>
 
 class PrologList : public Term {
 
@@ -14,6 +22,9 @@ public:
   TermPtr head;
   TermPtr tail;
 
+  // A prolog list is the "cons" of the head of the list  and the
+  // tail of the list (in Prolog [] is also considered a list).
+  // The Prolog list is a recursive data type.
   PrologList(TermPtr h, TermPtr t) : Term(), head(h), tail(t) {}
 
   TermPtr dereference() override { return shared_from_this(); }
@@ -23,32 +34,34 @@ public:
   void reset(TermPtr) override {}
 
   bool isEqualTo(Term &t) const override {
-    if (typeid(*this) != typeid(t)) {
+    PrologList *lst = dynamic_cast<PrologList *>(&t);
+    if (lst == nullptr) {
       return false;
     }
-    PrologList lst = static_cast<PrologList &>(t);
-    return (head == lst.head) && (tail == lst.tail);
+    return (head == lst->head) && (tail == lst->tail);
   }
 
   bool isLessThan(Term &t) const override {
-    if (typeid(*this) != typeid(t)) {
+    PrologList *lst = dynamic_cast<PrologList *>(&t);
+    if (lst == nullptr) {
       return false;
     }
-    PrologList lst = static_cast<PrologList &>(t);
-    if (head->isLessThan(*(lst.head->dereference()))) {
+    if (head->isLessThan(*(lst->head->dereference()))) {
       return true;
     }
-    return tail->isLessThan(*(lst.tail->dereference()));
+    return tail->isLessThan(*(lst->tail->dereference()));
   }
 
   bool unifyWith(Engine *engine, TermPtr t) override {
     // as unification with a variable is already handled so this will only
     // unify with t if t is a PrologList
-    if (typeid(*this) != typeid(*t)) {
-      return false;
+    // A PrologList only unifies with a variable (already handled by the
+    // definition of PVar::unifyWith) or with another list and then only
+    // when the heads unify and the tails unify
+    if (PrologListPtr lst = std::dynamic_pointer_cast<PrologList>(t)) {
+      return engine->unify(head, lst->head) && engine->unify(tail, lst->tail);
     }
-    PrologList lst = static_cast<PrologList &>(*t);
-    return engine->unify(head, lst.head) && engine->unify(tail, lst.tail);
+    return false;
   }
 
   std::string repr() const {
@@ -56,12 +69,12 @@ public:
     oss << "[";
     oss << *(head->dereference());
     TermPtr list_tail = tail->dereference();
-    while (typeid(*list_tail) == typeid(PrologList)) {
-      PrologList tail_lst = static_cast<PrologList &>(*list_tail);
-      list_tail = tail_lst.tail->dereference();
-      oss << ", " << *(tail_lst.head->dereference());
+    while (PrologListPtr tail_lst =
+               std::dynamic_pointer_cast<PrologList>(list_tail)) {
+      list_tail = tail_lst->tail->dereference();
+      oss << ", " << *(tail_lst->head->dereference());
     }
-    if (list_tail == empty_list) {
+    if (*list_tail == *empty_list) {
       oss << "]";
       return oss.str();
     }
@@ -69,9 +82,6 @@ public:
     return oss.str();
   }
 };
-
-typedef std::shared_ptr<PrologList> PrologListPtr;
-#define NEW_PROLOG_LIST std::make_shared<PrologList>
 
 TEST_CASE("User defined term type - build and test", "[Term]") {
   Engine engine;

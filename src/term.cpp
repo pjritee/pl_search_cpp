@@ -49,7 +49,7 @@ bool operator==(Term &t1, Term &t2) {
 }
 
 /**
-   * @brief < operator for TermPtrs.
+   * @brief < operator for Terms.
    * Approximates the @< operator in Prolog.
    * The ordering is as follows:
    * pvar < pint, pfloat < patom < clist < user-defined classes
@@ -63,75 +63,94 @@ bool operator==(Term &t1, Term &t2) {
    * @return True if the first term is less than the second term, false
    * otherwise.
    */
-bool operator<(TermPtr t1, TermPtr t2) {
-  return t1->dereference()->isLessThan(*(t2->dereference()));
+bool operator<(Term &t1, Term &t2) {
+  return t1.dereference()->isLessThan(*(t2.dereference()));
 }
 
 /**
- * @brief <= operator for TermPtrs
+ * @brief <= operator for Terms
  * @param t1 The first term.
  * @param t2 The second term.
  * @return True if the first term is less than or equal to the second term,
  * false otherwise.
  */
-bool operator<=(TermPtr t1, TermPtr t2) {
-  TermPtr deref1 = t1->dereference();
-  TermPtr deref2 = t2->dereference();
+bool operator<=(Term &t1, Term &t2) {
+  TermPtr deref1 = t1.dereference();
+  TermPtr deref2 = t2.dereference();
   return deref1->isLessThan(*deref2) || deref1->isEqualTo(*deref2);
 }
 
-bool PInt::isLessThan(Term &t) const {
-  if (typeid(t) == typeid(PVar))
+/**
+ * @brief < operator for a PInt and a Term
+ * @param other The term being compared
+ * @return True if the this PInt is < other, false otherwise.
+ */
+bool PInt::isLessThan(Term &other) const {
+  if (dynamic_cast<PVar *>(&other))
     return false;
-  if (typeid(t) != typeid(PInt)) {
-    if (typeid(t) != typeid(PFloat))
-      return true;
-    PFloat f = static_cast<PFloat &>(t);
-    return value < f.getValue();
+  if (PInt *i = dynamic_cast<PInt *>(&other)) {
+    return value < i->getValue();
   }
-  PInt i = static_cast<PInt &>(t);
-  return value < i.getValue();
-}
+  if (PFloat *f = dynamic_cast<PFloat *>(&other)) {
 
-bool PFloat::isLessThan(Term &t) const {
-  if (typeid(t) == typeid(PVar))
-    return false;
-  if (typeid(t) != typeid(PFloat)) {
-    if (typeid(t) != typeid(PInt))
-      return true;
-    PInt i = static_cast<PInt &>(t);
-    return value < i.getValue();
+    return value < f->getValue();
   }
-  PFloat f = static_cast<PFloat &>(t);
-  return value < f.getValue();
+  return true;
 }
 
-bool PAtom::isLessThan(Term &t) const {
-  if (typeid(t) == typeid(PVar))
+/**
+ * @brief < operator for a PFloat and a Term
+ * @param other The term being compared
+ * @return True if the this PFloat is < other, false otherwise.
+ */
+bool PFloat::isLessThan(Term &other) const {
+  if (dynamic_cast<PVar *>(&other))
     return false;
-  if (typeid(t) == typeid(PInt))
-    return false;
-  if (typeid(t) == typeid(PFloat))
-    return false;
-  if (typeid(t) != typeid(PAtom))
-    return true;
-  PAtom a = static_cast<PAtom &>(t);
-  return name < a.getName();
+  if (PInt *i = dynamic_cast<PInt *>(&other)) {
+    return value < i->getValue();
+  }
+  if (PFloat *f = dynamic_cast<PFloat *>(&other)) {
+    return value < f->getValue();
+  }
+  return true;
 }
 
-bool CList::isLessThan(Term &t) const {
-  if (typeid(t) == typeid(PVar))
+/**
+ * @brief < operator for a PAtom and a Term
+ * @param other The term being compared
+ * @return True if the this PAtom is < other, false otherwise.
+ */
+bool PAtom::isLessThan(Term &other) const {
+  if (dynamic_cast<PVar *>(&other))
     return false;
-  if (typeid(t) == typeid(PInt))
+  if (dynamic_cast<PInt *>(&other))
     return false;
-  if (typeid(t) == typeid(PFloat))
+  if (dynamic_cast<PFloat *>(&other))
     return false;
-  if (typeid(t) == typeid(PAtom))
+  if (PAtom *f = dynamic_cast<PAtom *>(&other)) {
+    return name < f->getName();
+  }
+  return true;
+}
+
+/**
+ * @brief < operator for a CList and a Term
+ * @param other The term being compared
+ * @return True if the this CList is < other, false otherwise.
+ */
+bool CList::isLessThan(Term &other) const {
+  if (dynamic_cast<PVar *>(&other))
     return false;
-  if (typeid(t) != typeid(CList))
-    return true;
-  CList l = static_cast<CList &>(t);
-  return elements < l.elements;
+  if (dynamic_cast<PInt *>(&other))
+    return false;
+  if (dynamic_cast<PFloat *>(&other))
+    return false;
+  if (dynamic_cast<PAtom *>(&other))
+    return false;
+  if (CList *list = dynamic_cast<CList *>(&other)) {
+    return elements < list->elements;
+  }
+  return true;
 }
 
 } // namespace pl_search

@@ -5,7 +5,9 @@
  *
  * PLSearchCPP is a C++ library that approximates Prolog predicates using a continuation-passing style. 
  * It provides a framework for defining and executing Prolog-like predicates, including support for 
- * backtracking, choice points, and unification.
+ * backtracking, choice points, and unification. Its intended use is to support
+ * backtrack search in a wide range of problem domains, not as a pathway to a Prolog
+ * implementation.
  *
  * @section features Features
  *
@@ -13,7 +15,7 @@
  * - Continuation-passing style execution
  * - Backtracking and choice points
  * - Unification of terms
- * - Support for variables, integers, floats, atoms, and lists
+ * - Support for variables, integers, floats, atoms, and C-like lists as well as user defined term types.
  *
  * @section usage Usage
  *
@@ -28,55 +30,15 @@
  * #include "pl_search/clist.hpp"
  * #include "pl_search/pred.hpp"
  * #include "pl_search/choice_iterator.hpp"
- * #include "pl_search/typesdefs.hpp"
+ * #include "pl_search/typedefs.hpp"
  * @endcode
  *
- * @section example Example
- *
- * Here is a simple example of defining and executing a predicate:
- *
- * @code
- * #include "pl_search/engine.hpp"
- * #include "pl_search/pvar.hpp"
- * #include "pl_search/pint.hpp"
- * #include "pl_search/pred.hpp"
- * #include "pl_search/typesdefs.hpp"
- * #include <iostream>
- *
- * using namespace pl_search;
- *
- * class TestPred : public Pred {
- * public:
- *     TestPred() : Pred() {}
- *
- *     void initialize_call() override {
- *         // Initialize the call
- *     }
- *
- *     bool apply_choice() override {
- *         // Apply choice logic
- *         return true;
- *     }
- *
- *     bool test_choice() override {
- *         // Test choice logic
- *         return true;
- *     }
- *
- *     bool more_choices() override {
- *         // Determine if there are more choices
- *         return false;
- *     }
- * };
- *
- * int main() {
- *     Engine engine;
- *     PredPtr pred = std::make_shared<TestPred>();
- *     bool result = engine.execute(pred, true);
- *     std::cout << "Execution result: " << result << std::endl;
- *     return 0;
- * }
- * @endcode
+ * @section examples Examples
+ * The examples directory contains the following examples of using the library.
+ * - A solver for the SEND+MORE=MONEY puzzle (<code>send_more_money.cpp</code>).
+ * - An example of a user defined Term type (<code>prolog_list.hpp</code>).
+ * - An implementation of the Prolog append predicate using the above type (<code>append_pred.hpp</code>).
+ * - A main program ( <code>prolog_list.cpp</code>) that exercises the definitions above.
  *
  * @section license License
  *

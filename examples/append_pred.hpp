@@ -24,7 +24,7 @@ SOFTWARE.
 
 // An example of writing a Prolog-like predicate. Although this
 // project isn't about making a version of Prolog some might
-// find this interesting.
+// find this example interesting.
 
 #include "pl_search/engine.hpp"
 #include "pl_search/pred.hpp"
@@ -43,7 +43,7 @@ using namespace pl_search;
 //
 // append(L1,L2,L3) :-
 //     (
-//        L1 = [], L2 = L3        % AppendClause1
+//        L1 = [], L2 = L3                          % AppendClause1
 //     ;
 //       L1 = [H|T], L3 = [H|L4], append(T, L2, L4) % AppendClause2
 //     ).
@@ -78,27 +78,31 @@ public:
   AppendClause2(Engine *eng, TermPtr arg1, TermPtr arg2, TermPtr arg3)
       : SemiDetPred(eng), l1(arg1), l2(arg2), l3(arg3) {}
 
-  void initialize_call() override { saved_continuation = continuation; }
+  void initialize_call() override {}
 
+  // see later for implementation
   bool apply_choice() override;
 
   bool test_choice() override { return true; }
 
 private:
-  PredPtr saved_continuation;
   TermPtr l1;
   TermPtr l2;
   TermPtr l3;
 };
 
+// Combining the above 2 predicates - this is a variant of ChoicePred -
+// The two choices are the two clauses above.
 class Append : public Pred {
 public:
   Append(Engine *eng, TermPtr arg1, TermPtr arg2, TermPtr arg3)
       : Pred(eng), l1(arg1), l2(arg2), l3(arg3), index(0) {}
 
   void initialize_call() override {
+    // set up the choices as calls on the two clauses
     preds = {std::make_shared<AppendClause1>(engine, l1, l2, l3),
              std::make_shared<AppendClause2>(engine, l1, l2, l3)};
+    // each clause should have the same continuation as this Append
     preds[0]->set_continuation(continuation);
     preds[1]->set_continuation(continuation);
   }
@@ -107,6 +111,8 @@ public:
 
   bool apply_choice() {
     PredPtr clause = preds[index++];
+    // By setting this continuation to the clause choice that choice will be
+    // the next predicate to be called
     continuation = clause;
     return true;
   }

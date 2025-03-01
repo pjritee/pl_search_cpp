@@ -35,7 +35,7 @@ typedef std::shared_ptr<Pred> PredPtr;
 /**
  * @brief Helper function to create a shared pointer to a Pred object.
  */
-#define NewPred std::make_shared<Pred>
+#define NEW_PRED std::make_shared<Pred>
 
 /**
  * @brief Typedefs for shared pointers to Terms and subclasses.

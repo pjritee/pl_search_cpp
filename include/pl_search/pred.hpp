@@ -115,6 +115,9 @@ public:
    */
   virtual ~Pred() = default;
 
+  /**
+   * @brief For debugging
+   */
   std::string get_name() { return typeid(this).name(); }
 
 protected:
@@ -133,6 +136,7 @@ public:
 
   /**
    * @brief Constructs a ChoicePred with the given choice iterator.
+   * @param eng Pointer to the engine.
    * @param ch Pointer to the choice iterator.
    */
   ChoicePred(Engine *eng, ChoiceIteratorPtr ch)
@@ -188,6 +192,7 @@ class DisjPred : public Pred {
 public:
   /**
    * @brief Constructs a DisjPred with the given predicates.
+   * @param eng Pointer to the engine.
    * @param preds A vector of shared pointers to the predicates.
    *
    * preds become the list of choices - when a choice is made that
@@ -220,11 +225,21 @@ public:
 
 private:
   std::vector<PredPtr> preds; ///< The predicates in the disjunction.
-  int index;                  // index of the current predicate choice
+  int index;                  ///< index of the current predicate choice
 };
 
+/**
+ * @brief Represents a Prolog like cut. When called it pops env_stack
+ * thus removing choicepoints.
+ */
 class Cut : public DetPred {
 public:
+  /**
+   * @brief Constructs a Cut predicate.
+   * @param eng Pointer to the engine.
+   * @param index An index into env_stack. When called, env_stack is popped
+   * to index.
+   */
   Cut(Engine *eng, int index) : DetPred(eng), env_index(index) {}
 
   void initialize_call() override {}
@@ -237,8 +252,19 @@ private:
   int env_index;
 };
 
+/**
+ * @brief Intended for internal use by NotNot which injects this call
+ * directly after the predicate supplied to the NotNot constructor.
+ */
 class NotNotEnd : public SemiDetPred {
 public:
+  /**
+   * @brief NotNot::initialize_call uses this to "terminate" the call
+   * supplied to NotNot.
+   * @param eng Pointer to the engine.
+   * @param succ is used to flag if this object is called - i.e. the
+   * call to NotNot succeeded.
+   */
   NotNotEnd(Engine *eng, bool *succ) : SemiDetPred(eng), succeeded(succ) {}
 
   void initialize_call() override {};
@@ -249,8 +275,17 @@ private:
   bool *succeeded;
 };
 
+/**
+ * @brief Represents an equivalent of the Prolog call \\+\\+Call. The aim
+ * is to determine if Call succeeds without binding any variables in the call.
+ */
 class NotNot : public Pred {
 public:
+  /**
+   * @brief Create the equivalent of Prolog's \\+\\+p call.
+   * @param eng Pointer to the engine.
+   * @param p is the predicate called within NotNot.
+   */
   NotNot(Engine *eng, PredPtr p) : Pred(eng), pred(p) {}
 
   void initialize_call() override;
@@ -266,7 +301,7 @@ private:
 };
 
 /**
- * LoopBodyFactory is an abstract base class used for  generating
+ * @brief LoopBodyFactory is an abstract base class used for  generating
  * instances of a predicate class used in the body of a loop.
  */
 class LoopBodyFactory {
@@ -282,10 +317,21 @@ public:
   virtual PredPtr make_body_pred() = 0;
 };
 
+/**
+ * @brief Constructs a predicate that loops over (instances of) a predicate
+ * while some condition (loop_continues) is satisfied.
+ */
 class Loop : public DetPred {
 public:
   LoopBodyFactory *body_factory;
 
+  /**
+   * @brief Constructs a predicate that loops over (instances of) a predicate
+   * while some condition (loop_continues) is satisfied.
+   * @param eng Pointer to the engine.
+   * @param bf a subclass of LoopBodyFactory that is used to generate
+   * body predicates to call and to test if the loop should continue.
+   */
   Loop(Engine *eng, LoopBodyFactory *bf) : DetPred(eng), body_factory(bf) {}
 
   void initialize_call() override;

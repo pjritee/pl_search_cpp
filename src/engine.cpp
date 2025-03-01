@@ -144,7 +144,7 @@ bool Engine::call_predicate(PredPtr p) {
 }
 
 /**
- *
+ * @brief Retry the predicate
  * @param p The predicate to retry.
  * @return True if the retry succeeds, false otherwise.
  */
@@ -160,7 +160,6 @@ bool Engine::retry_predicate(PredPtr p) {
  * @brief Makes a choice and continues execution.
  * @param p The predicate to continue with.
  * @return True if the continuation succeeds, false otherwise.
-
  */
 bool Engine::make_choice_and_continue(PredPtr p) {
   if (p->apply_choice() && p->test_choice()) {

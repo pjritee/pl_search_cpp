@@ -127,37 +127,38 @@ public:
   }
 
   /**
-   * @brief Overloaded equality operator for Term.
+   * @brief Overloaded equality operator for Terms.
    * @param t1 The first term.
    * @param t2 The second term.
    * @return True if the terms are equal, false otherwise.
    */
 
   /**
-   * @brief < operator for TermPtrs.
-   * Approximates the @< operator in Prolog.
+   * @brief < operator for Terms.
+   *
+   * Approximates the @@< operator in Prolog.
    * The ordering is as follows:
-   * pvar < pint, pfloat < patom < clist < user-defined classes
-   * "older" vars are less than "newer" vars
-   * patoms are ordered by name
-   * pints and pfloats are ordered by value
-   * clists are ordered by the first element, then the second, etc.
+   *  - pvar < pint, pfloat < patom < clist < user-defined classes;
+   *  - "older" vars are less than "newer" vars;
+   *  - patoms are ordered by name;
+   *  - pints and pfloats are ordered by value;
+   *  - clists are ordered by the first element, then the second, etc.
 
    * @param t1 The first term.
    * @param t2 The second term.
    * @return True if the first term is less than the second term, false
    * otherwise.
    */
-  friend bool operator<(TermPtr t1, TermPtr t2);
+  friend bool operator<(Term &t1, Term &t2);
 
   /**
-   * @brief <= operator for TermPtrs
+   * @brief <= operator for Term
    * @param t1 The first term.
    * @param t2 The second term.
    * @return True if the first term is less than or equal to the second term,
    * false otherwise.
    */
-  friend bool operator<=(TermPtr t1, TermPtr t2);
+  friend bool operator<=(Term &t1, Term &t2);
 
   /**
    * @brief == operator for Terms

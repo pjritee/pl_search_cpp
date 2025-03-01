@@ -62,9 +62,9 @@ private:
 public:
   /**
    * @brief Constructs a CList with the given elements.
-   * @param elements The elements of the list.
+   * @param elems The elements of the list.
    */
-  CList(std::list<TermPtr> &elms) : elements(elms) {}
+  CList(std::list<TermPtr> &elems) : elements(elems) {}
 
   /**
    * @brief Binds the term to another term.
@@ -102,16 +102,14 @@ public:
 
   /**
    * @brief Checks if the term is equal to another term.
-   * @param t The term to compare to.
+   * @param other The term to compare to.
    * @return True if the terms are equal, false otherwise.
    */
-  bool isEqualTo(Term &t) const override {
-    if (typeid(*this) != typeid(t)) {
-      return false;
+  bool isEqualTo(Term &other) const override {
+    if (CList *list = dynamic_cast<CList *>(&other)) {
+      return elements == list->elements;
     }
-    CList l = static_cast<CList &>(t);
-
-    return elements == l.elements;
+    return false;
   }
 
   /**
@@ -119,7 +117,7 @@ public:
    * @param t The term to compare to.
    * @return True if the term is less than the other term, false otherwise.
    */
-  bool isLessThan(Term &t) const override;
+  bool isLessThan(Term &other) const override;
 
   /**
    * @brief Adds an element to the list.
