@@ -1,0 +1,18 @@
+<map id="src/pvar.cpp" name="src/pvar.cpp">
+<area shape="rect" id="Node000001" title="Implementation of the PVar class." alt="" coords="193,5,287,31"/>
+<area shape="rect" id="Node000002" href="$pvar_8hpp.html" title="Definition of the PVar class." alt="" coords="113,79,244,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,33,200,70,196,66,228,29"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="269,79,334,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="252,29,284,66,280,70,248,33"/>
+<area shape="rect" id="Node000003" href="$term_8hpp.html" title="Definition of the Term class." alt="" coords="105,152,178,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="175,106,156,141,151,139,170,103"/>
+<area shape="rect" id="Node000006" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="181,225,278,251"/>
+<area shape="poly" id="edge7_Node000002_Node000006" title=" " alt="" coords="185,104,223,212,218,213,180,105"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,77,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="127,180,70,219,67,215,124,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="102,225,157,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="142,178,136,212,131,211,137,177"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="157,175,206,214,203,219,154,179"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="195,299,264,324"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="232,251,232,285,227,285,227,251"/>
+</map>

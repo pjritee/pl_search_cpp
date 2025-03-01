@@ -1,0 +1,5 @@
+<map id="pl_search::LoopBodyFactory" name="pl_search::LoopBodyFactory">
+<area shape="rect" id="Node000001" title="LoopBodyFactory is an abstract base class used for generating instances of a predicate class used in ..." alt="" coords="5,93,193,119"/>
+<area shape="rect" id="Node000002" href="$classpl__search_1_1Engine.html" title="The Engine class manages the execution of predicates and backtracking." alt="" coords="36,5,163,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,45,102,93,97,93,97,45"/>
+</map>

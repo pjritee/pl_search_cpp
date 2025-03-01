@@ -1,0 +1,19 @@
+<map id="include/pl_search/pred.hpp" name="include/pl_search/pred.hpp">
+<area shape="rect" id="Node000001" title="Definition of the Pred class and its derived classes." alt="" coords="227,5,405,31"/>
+<area shape="rect" id="Node000002" href="$term_8hpp.html" title="Definition of the Term class." alt="" coords="109,79,182,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="290,33,187,76,185,71,288,28"/>
+<area shape="rect" id="Node000005" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="181,152,278,177"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="311,32,246,141,241,139,307,30"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="237,225,307,251"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="317,31,309,94,293,178,283,213,278,211,288,177,304,93,312,31"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="354,79,409,104"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="329,29,363,67,360,70,325,33"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="433,79,492,104"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="341,28,428,70,425,75,338,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,77,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,106,71,146,68,142,127,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="102,152,157,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="145,105,137,139,132,138,140,104"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="161,102,207,141,203,145,157,106"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="239,176,260,212,256,215,234,179"/>
+</map>

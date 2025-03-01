@@ -61,13 +61,7 @@ public:
     return false; // Atoms cannot be bound to other terms
   }
 
-  /**
-   * @brief Resets the term.
-   * @param t The term to reset to.
-   */
-  void reset(TermPtr t) override {
-    // No-op for PAtom
-  }
+
 
   /**
    * @brief Returns the name of the atom.
@@ -94,9 +88,9 @@ public:
   }
 
   /**
-   * @brief Checks if the term is less than another term.
-   * @param t The term to compare to.
-   * @return True if the term is less than the other term, false otherwise.
+   * @brief < operator for a PAtom and a Term
+   * @param other The term being compared
+   * @return True if the this PAtom is < other, false otherwise.
    */
   bool isLessThan(Term &t) const override;
 

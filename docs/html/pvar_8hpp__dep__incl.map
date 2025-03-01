@@ -1,0 +1,16 @@
+<map id="include/pl_search/pvar.hpp" name="include/pl_search/pvar.hpp">
+<area shape="rect" id="Node000001" title="Definition of the PVar class." alt="" coords="287,5,463,31"/>
+<area shape="rect" id="Node000002" href="$engine_8hpp.html" title="Definition of the Engine class and related structures." alt="" coords="113,79,303,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="336,38,236,81,234,76,334,34"/>
+<area shape="rect" id="Node000006" href="$pvar_8cpp.html" title="Implementation of the PVar class." alt="" coords="328,79,421,104"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="377,44,377,79,372,79,372,44"/>
+<area shape="rect" id="Node000007" href="$term_8cpp.html" title="comparison operators for TermPtrs and the isLessThan method for subclasses of Term." alt="" coords="446,79,541,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="407,35,475,76,473,81,404,40"/>
+<area shape="rect" id="Node000003" href="$choice__iterator_8hpp.html" title=" " alt="" coords="5,152,171,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="180,114,118,154,115,150,177,109"/>
+<area shape="rect" id="Node000004" href="$pred_8cpp.html" title="Implementation of the Pred class and its derived classes." alt="" coords="101,240,195,265"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="206,118,198,154,185,193,159,241,154,238,180,191,193,153,201,117"/>
+<area shape="rect" id="Node000005" href="$engine_8cpp.html" title="Implementation of the Engine class." alt="" coords="245,159,352,185"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="233,111,287,157,283,161,230,115"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="113,201,141,238,137,241,109,205"/>
+</map>

@@ -76,14 +76,6 @@ public:
   }
 
   /**
-   * @brief Resets the term.
-   * @param t The term to reset to.
-   */
-  void reset(TermPtr t) override {
-    // No-op for CList
-  }
-
-  /**
    * @brief Returns a string representation of the list.
    * @return A string representation of the list.
    */
@@ -113,15 +105,16 @@ public:
   }
 
   /**
-   * @brief Checks if the term is less than another term.
-   * @param t The term to compare to.
-   * @return True if the term is less than the other term, false otherwise.
+   * @brief < operator for a CList and a Term
+   * @param other The term being compared
+   * @return True if the this CList is < other, false otherwise.
    */
   bool isLessThan(Term &other) const override;
 
   /**
    * @brief Adds an element to the list.
    * @param element The element to add.
+   * Warning: the engine does not backtrack over adding elements to a CList.
    */
   void addElement(TermPtr element) { elements.push_back(element); }
 

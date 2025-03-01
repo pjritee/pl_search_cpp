@@ -144,9 +144,14 @@ bool Engine::call_predicate(PredPtr p) {
 }
 
 /**
- * @brief Retry the predicate
+ * @brief Retries the call on a predicate.
+ *
+ * If the predicate has no more choices, it is popped from the
+ * environment stack. Otherwise, the predicate is called.
+ * Note that only predicates that have been pushed onto the
+ * environment stack can be retried (as they are non-deterministic).
+ *
  * @param p The predicate to retry.
- * @return True if the retry succeeds, false otherwise.
  */
 bool Engine::retry_predicate(PredPtr p) {
   if (!p->more_choices()) {
@@ -157,9 +162,11 @@ bool Engine::retry_predicate(PredPtr p) {
 }
 
 /**
- * @brief Makes a choice and continues execution.
- * @param p The predicate to continue with.
- * @return True if the continuation succeeds, false otherwise.
+ * @brief Makes the current choice, checks it, and continues
+ * execution (using the predicates continuation) if the choice is valid.
+ * @param p The predicate to make a choice on.
+ * @return True if the choice is valid and the predicates continuation
+ * succeeds, false otherwise.
  */
 bool Engine::make_choice_and_continue(PredPtr p) {
   if (p->apply_choice() && p->test_choice()) {

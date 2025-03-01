@@ -1,0 +1,15 @@
+<map id="pl_search::SemiDetPred" name="pl_search::SemiDetPred">
+<area shape="rect" id="Node000001" title="Represents a semi&#45;deterministic predicate." alt="" coords="126,167,290,192"/>
+<area shape="rect" id="Node000004" href="$classpl__search_1_1DetPred.html" title="Represents a deterministic predicate." alt="" coords="58,240,193,265"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="186,203,141,242,137,238,183,199"/>
+<area shape="rect" id="Node000007" href="$classpl__search_1_1NotNotEnd.html" title="Intended for internal use by NotNot which injects this call directly after the predicate supplied to ..." alt="" coords="217,240,367,265"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="234,199,280,238,277,242,230,203"/>
+<area shape="rect" id="Node000002" href="$classpl__search_1_1Pred.html" title="Abstract base class for Prolog&#45;like predicates." alt="" coords="151,93,265,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,132,211,167,205,167,205,132"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="141,5,275,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="211,59,211,93,205,93,205,59"/>
+<area shape="rect" id="Node000005" href="$classpl__search_1_1Cut.html" title="Represents a Prolog like cut. When called it pops env_stack thus removing choicepoints." alt="" coords="5,313,112,339"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="107,278,71,315,68,311,103,274"/>
+<area shape="rect" id="Node000006" href="$classpl__search_1_1Loop.html" title="Constructs a predicate that loops over (instances of) a predicate while some condition (loop_continue..." alt="" coords="136,313,251,339"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="148,273,184,311,180,315,144,277"/>
+</map>

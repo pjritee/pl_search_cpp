@@ -62,14 +62,6 @@ public:
   }
 
   /**
-   * @brief Resets the term.
-   * @param t The term to reset to.
-   */
-  void reset(TermPtr t) override {
-    // No-op for PInt
-  }
-
-  /**
    * @brief Returns a string representation of the integer.
    * @return A string representation of the integer.
    */
@@ -88,9 +80,9 @@ public:
   }
 
   /**
-   * @brief Checks if the term is less than another term.
-   * @param t The term to compare to.
-   * @return True if the term is less than the other term, false otherwise.
+   * @brief < operator for a PInt and a Term
+   * @param other The term being compared
+   * @return True if the this PInt is < other, false otherwise.
    */
   bool isLessThan(Term &t) const override;
 

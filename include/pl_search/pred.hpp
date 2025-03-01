@@ -154,10 +154,15 @@ public:
 class SemiDetPred : public Pred {
 public:
   /**
-   * @brief Default constructor.
+   * @brief Represents a semi-deterministic predicate.
+   * @param eng Pointer to the engine.
    */
   SemiDetPred(Engine *eng) : Pred(eng) {}
 
+  /**
+   * @brief  Applies a choice.
+   * @return False
+   */
   bool more_choices() override { return false; }
 
   bool is_non_det() { return false; }
@@ -169,11 +174,20 @@ public:
 class DetPred : public SemiDetPred {
 public:
   /**
-   * @brief Default constructor.
+   * @brief Represents a deterministic predicate.
+   * @param eng Pointer to the engine.
    */
   DetPred(Engine *eng) : SemiDetPred(eng) {}
 
+  /**
+   * @brief Noop - all the work is done in initialize_call.
+   * @return True
+   */
   bool apply_choice() override { return true; }
+  /**
+   * @brief Noop - all the work is done in initialize_call.
+   * @return True
+   */
   bool test_choice() override { return true; }
 };
 

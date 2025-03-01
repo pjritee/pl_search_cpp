@@ -72,12 +72,6 @@ public:
   virtual bool bind(TermPtr t) { return false; }
 
   /**
-   * @brief Resets the term.
-   * @param t The term to reset to.
-   */
-  virtual void reset(TermPtr t) = 0;
-
-  /**
    * @brief Returns a string representation of the term.
    * @return A string representation of the term.
    */
@@ -127,16 +121,9 @@ public:
   }
 
   /**
-   * @brief Overloaded equality operator for Terms.
-   * @param t1 The first term.
-   * @param t2 The second term.
-   * @return True if the terms are equal, false otherwise.
-   */
-
-  /**
    * @brief < operator for Terms.
    *
-   * Approximates the @@< operator in Prolog.
+   * Approximates the \@< operator in Prolog.
    * The ordering is as follows:
    *  - pvar < pint, pfloat < patom < clist < user-defined classes;
    *  - "older" vars are less than "newer" vars;
@@ -164,8 +151,8 @@ public:
    * @brief == operator for Terms
     * @param t1 The first term.
     * @param t2 The second term.
-    * @return True if the terms are equal using the isEqualTo method, false
-   otherwise.
+    * @return True if the terms are equal using the appropriate isEqualTo
+   method, false otherwise.
   */
   friend bool operator==(Term &t1, Term &t2);
 };

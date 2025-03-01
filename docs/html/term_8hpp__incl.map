@@ -1,0 +1,11 @@
+<map id="include/pl_search/term.hpp" name="include/pl_search/term.hpp">
+<area shape="rect" id="Node000001" title="Definition of the Term class." alt="" coords="40,5,219,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,77,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,33,68,72,65,68,114,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="102,79,157,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="132,31,132,65,127,65,127,31"/>
+<area shape="rect" id="Node000004" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="181,79,278,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,29,203,68,200,73,144,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="195,152,264,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="232,104,232,138,227,138,227,104"/>
+</map>

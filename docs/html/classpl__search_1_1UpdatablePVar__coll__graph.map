@@ -1,0 +1,9 @@
+<map id="pl_search::UpdatablePVar" name="pl_search::UpdatablePVar">
+<area shape="rect" id="Node000001" title="UpdatableVar implements what some Prologs call updatable assignment." alt="" coords="5,240,179,265"/>
+<area shape="rect" id="Node000002" href="$classpl__search_1_1PVar.html" title="Represents a Prolog variable." alt="" coords="35,167,149,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,206,95,240,89,240,89,206"/>
+<area shape="rect" id="Node000003" href="$classpl__search_1_1Term.html" title="Abstract base class for terms that approximate Prolog terms." alt="" coords="35,93,149,119"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,132,95,167,89,167,89,132"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="24,5,160,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="95,59,95,93,89,93,89,59"/>
+</map>

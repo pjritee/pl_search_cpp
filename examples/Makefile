@@ -37,4 +37,4 @@ clean:
 
 # Dependencies
 send_more_money.o: send_more_money.cpp
-prolog_list.o : prolog_list.cpp
+prolog_list.o : prolog_list.cpp 

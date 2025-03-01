@@ -95,17 +95,16 @@ PredPtr conjunction(std::vector<PredPtr> preds) {
 
 /**
  * @brief Applies a choice for the cut predicate.
- * @return True if the choice is applied successfully, false otherwise.
+ * @return True
  */
 bool Cut::apply_choice() {
   engine->cut_to_choice_point(env_index);
   return true;
 }
 
-
 /**
  * @brief Applies a choice for the not-not-end predicate.
- * @return True if the choice is applied successfully, false otherwise.
+ * @return False
  */
 bool NotNotEnd::apply_choice() {
   *succeeded = true;
@@ -131,9 +130,12 @@ void NotNot::initialize_call() {
  */
 bool NotNot::apply_choice() {
   if (another_choice) {
-    return true;
+    return true; ///< simply succeed for the first choice
   }
   if (succeeded) {
+    ///< for the second choice we test if we reached NotNotEnd
+    ///< if so then the call of NotNot succeeded and so we move to the next
+    ///< predicate.
     continuation = saved_continuation;
     return true;
   }
@@ -142,7 +144,7 @@ bool NotNot::apply_choice() {
 
 /**
  * @brief Tests a choice for the not-not predicate.
- * @return True if the choice is valid, false otherwise.
+ * @return True
  */
 bool NotNot::test_choice() { return true; }
 
@@ -152,7 +154,7 @@ bool NotNot::test_choice() { return true; }
  */
 bool NotNot::more_choices() {
   if (another_choice) {
-    another_choice = false;
+    another_choice = false; ///< only two choices
     return true;
   }
   return false;

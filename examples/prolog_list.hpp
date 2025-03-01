@@ -58,8 +58,6 @@ public:
 
   bool bind(TermPtr t) override { return false; }
 
-  void reset(TermPtr) override {}
-
   bool isEqualTo(Term &t) const override {
     PrologList *lst = dynamic_cast<PrologList *>(&t);
     if (lst == nullptr) {

@@ -154,8 +154,8 @@ private:
   void pop_pred_call();
 
   /**
-   * @brief Pop env_stack back to the given index.
-   * @param index The index to pop back to.
+   * @brief Cuts the environment stack to the choice point at the given index.
+   * @param env_index The index to cut back to.
    */
   void cut_to_choice_point(int env_index);
 

@@ -69,7 +69,7 @@ public:
    * @brief Resets the variable to point at the supplied term.
    * @param t The term to reset to.
    */
-  void reset(TermPtr t) override;
+  void reset(TermPtr t);
 
   /**
    * @brief Checks if the term is a variable.
