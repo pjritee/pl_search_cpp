@@ -47,9 +47,15 @@ make
 
 This will build the pl_search library and place it in the lib directory.
 
-## Example
+## Examples
 
-The examples directory contains a heavily commented solution to the SEND+MORE=MONEY puzzle along with a Makefile to build the executable.
+The examples directory contains the following examples of using the library.
+
+- A solver for the SEND+MORE=MONEY puzzle (<code>send_more_money.cpp</code>).
+- An example of a user defined Term type (<code>prolog_list.hpp</code>).
+- An implementation of the Prolog append predicate using the above type (<code>append_pred.hpp</code>).
+- A main program ( <code>prolog_list.cpp</code>) that exercises the definitions above.
+- A Makefile to build the executables.
 
 ## License
 
