@@ -51,7 +51,7 @@ This will build the pl_search library and place it in the lib directory.
 
 The examples directory contains the following examples of using the library.
 
-- A solver for the SEND+MORE=MONEY puzzle (<code>send_more_money.cpp</code>).
+- A solver for the SEND+MORE=MONEY puzzle with lots of comments about the approach and code details (<code>send_more_money.cpp</code>).
 - An example of a user defined Term type (<code>prolog_list.hpp</code>).
 - An implementation of the Prolog append predicate using the above type (<code>append_pred.hpp</code>).
 - A main program ( <code>prolog_list.cpp</code>) that exercises the definitions above.
