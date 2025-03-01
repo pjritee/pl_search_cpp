@@ -57,6 +57,10 @@ The examples directory contains the following examples of using the library.
 - A main program ( <code>prolog_list.cpp</code>) that exercises the definitions above.
 - A Makefile to build the executables.
 
+## Documentation
+
+Documentation can be found here [docs/index.html](docs.index.html)
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
