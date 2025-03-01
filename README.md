@@ -59,7 +59,7 @@ The examples directory contains the following examples of using the library.
 
 ## Documentation
 
-Documentation can be found here [docs/index.html](docs/index.htmlindex.html)
+Documentation can be found here [docs/index.html](docs/index.html)
 
 ## License
 
