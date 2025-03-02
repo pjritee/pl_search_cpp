@@ -28,6 +28,10 @@ SOFTWARE.
  */
 
 #include "pl_search/engine.hpp"
+#include "pl_search/clist.hpp"
+#include "pl_search/patom.hpp"
+#include "pl_search/pfloat.hpp"
+#include "pl_search/pint.hpp"
 #include "pl_search/pred.hpp"
 #include "pl_search/typedefs.hpp"
 
@@ -76,26 +80,52 @@ bool Engine::unify(TermPtr t1, TermPtr t2) {
     return true;
   }
   // Same values
-  if (t1_deref == t2_deref) {
+  if (*t1_deref == *t2_deref) {
     return true;
   }
-  Term *t1ptr = t1_deref.get();
-  Term *t2ptr = t2_deref.get();
-  if (PVar *v1 = dynamic_cast<PVar *>(t1ptr)) {
-    trail(std::dynamic_pointer_cast<PVar>(t1_deref));
+  // Deal with variables first as this situation is more likely
+  if (PVarPtr v1 = std::dynamic_pointer_cast<PVar>(t1_deref)) {
+    trail(v1);
     return v1->bind(t2_deref);
   }
-  if (PVar *v2 = dynamic_cast<PVar *>(t2ptr)) {
-    trail(std::dynamic_pointer_cast<PVar>(t2_deref));
+  if (PVarPtr v2 = std::dynamic_pointer_cast<PVar>(t2_deref)) {
+    trail(v2);
     return v2->bind(t1_deref);
   }
 
-  CList *l1 = dynamic_cast<CList *>(t1ptr);
-  CList *l2 = dynamic_cast<CList *>(t2ptr);
-  if ((l1 != nullptr) && (l2 != nullptr)) {
+  // Below here neither term is a variable
+  if (std::dynamic_pointer_cast<PAtom>(t1_deref)) {
+    // t1 is a PAtom with a different value to t2 and so they don't unify
+    return false;
+  }
+  if (std::dynamic_pointer_cast<PAtom>(t2_deref)) {
+    // t2 is a PAtom with a different value to t1 and so they don't unify
+    return false;
+  }
+  // ditto for PInt
+  if (std::dynamic_pointer_cast<PInt>(t1_deref)) {
+    return false;
+  }
+  if (std::dynamic_pointer_cast<PInt>(t2_deref)) {
+    return false;
+  }
+  // ditto for PFloat
+  if (std::dynamic_pointer_cast<PInt>(t1_deref)) {
+    return false;
+  }
+  if (std::dynamic_pointer_cast<PInt>(t2_deref)) {
+    return false;
+  }
+
+  // If one term is a CList then the other must be for them to unify
+  CListPtr l1 = std::dynamic_pointer_cast<CList>(t1_deref);
+  CListPtr l2 = std::dynamic_pointer_cast<CList>(t2_deref);
+  if (l1 && l2) {
     if (l1->getElements().size() != l2->getElements().size()) {
+      // different sizes so they can't unify
       return false;
     }
+    // unify elements pairwise
     auto it1 = l1->getElements().begin();
     auto it2 = l2->getElements().begin();
     while (it1 != l1->getElements().end()) {
@@ -107,7 +137,11 @@ bool Engine::unify(TermPtr t1, TermPtr t2) {
     }
     return true;
   }
-
+  if (l1 || l2) {
+    // exactly one is a CList and so they can't unify
+    return false;
+  }
+  // both are user defined types
   return t1_deref->unifyWith(this, t2_deref);
 }
 
@@ -126,7 +160,7 @@ void Engine::push(PredPtr p) {
  * @brief Call a predicate.
  *
  * If the call is non-deterministic, the predicate is pushed onto the
- * environment stack before the call. Otherwise the is not pushed
+ * environment stack before the call. Otherwise it is not pushed
  * and the call is made directly.
  *
  * @param p The predicate to call.
@@ -169,7 +203,7 @@ bool Engine::retry_predicate(PredPtr p) {
  * succeeds, false otherwise.
  */
 bool Engine::make_choice_and_continue(PredPtr p) {
-  if (p->apply_choice() && p->test_choice()) {
+  if (p->apply_choice()) {
     return call_predicate(p->get_continuation());
   }
   return false;

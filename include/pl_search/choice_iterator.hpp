@@ -35,7 +35,7 @@ public:
   virtual bool make_choice() = 0;
 
   /**
-   * @brief Tests a choice which would tyically involve constraint dedections
+   * @brief Tests a choice which would tyically involve constraint deductions
    * based on the choice.
    * @return True if the choice is valid, false otherwise.
    */
@@ -74,7 +74,7 @@ public:
    */
   virtual bool make_choice() override {
     TermPtr t = choices[index++];
-    return engine->unify(var, t) && test_choice();
+    return engine->unify(var, t)  && test_choice();
   }
 
 protected:

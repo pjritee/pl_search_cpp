@@ -64,3 +64,12 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Version History
+
+* 1.1 
+  - Fix problems in unify
+  - Remove the test_choice method from Pred
+  - merge solve into main in send_more_money.cpp for better testing with valgrind
+* 1.0  
+  - Initial release.

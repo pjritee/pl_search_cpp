@@ -62,7 +62,6 @@ public:
     return engine->unify(l1, empty_list) && engine->unify(l2, l3);
   }
 
-  bool test_choice() override { return true; }
 
 private:
   TermPtr l1;
@@ -82,8 +81,6 @@ public:
 
   // see later for implementation
   bool apply_choice() override;
-
-  bool test_choice() override { return true; }
 
 private:
   TermPtr l1;
@@ -117,7 +114,6 @@ public:
     return true;
   }
 
-  bool test_choice() override { return true; }
 
 private:
   TermPtr l1;
@@ -162,7 +158,6 @@ public:
 
   bool apply_choice() override { return false; }
 
-  bool test_choice() override { return false; }
 
 private:
   TermPtr l1;

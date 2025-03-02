@@ -2,7 +2,7 @@
 
 # Project related settings
 PROJECT_NAME           = PLSearchCPP
-PROJECT_NUMBER         = 1.0
+PROJECT_NUMBER         = 1.1
 OUTPUT_DIRECTORY       = docs
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO

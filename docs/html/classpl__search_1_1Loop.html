@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.0</span>
+   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.1</span>
    </div>
   </td>
  </tr>
@@ -135,9 +135,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac0f68eb47ecef71b2b980919e6a554c1" id="r_ac0f68eb47ecef71b2b980919e6a554c1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Loop.html#ac0f68eb47ecef71b2b980919e6a554c1">apply_choice</a> () override</td></tr>
 <tr class="memdesc:ac0f68eb47ecef71b2b980919e6a554c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a choice for the loop predicate.  <br /></td></tr>
 <tr class="separator:ac0f68eb47ecef71b2b980919e6a554c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a073f9010b00312dd990d7b65c2beaf75" id="r_a073f9010b00312dd990d7b65c2beaf75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Loop.html#a073f9010b00312dd990d7b65c2beaf75">test_choice</a> () override</td></tr>
-<tr class="memdesc:a073f9010b00312dd990d7b65c2beaf75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests a choice for the loop predicate.  <br /></td></tr>
-<tr class="separator:a073f9010b00312dd990d7b65c2beaf75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab299d88c3ffee0cb735c26acdb5d5dc2" id="r_ab299d88c3ffee0cb735c26acdb5d5dc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Loop.html#ab299d88c3ffee0cb735c26acdb5d5dc2">set_continuation</a> (<a class="el" href="namespacepl__search.html#a97cbaf44aa4107d7b58c2ce227bf43e6">PredPtr</a> cont)</td></tr>
 <tr class="memdesc:ab299d88c3ffee0cb735c26acdb5d5dc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the continuation for the loop predicate.  <br /></td></tr>
 <tr class="separator:ab299d88c3ffee0cb735c26acdb5d5dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,36 +335,6 @@ Additional Inherited Members</h2></td></tr>
 <p>When the loop body predicate is created in apply_choice, continuation is set to the newely created predicate. When the loop exits continuation is reset to the original continuation (the predicate to call after the loop body). Therefore the set continuation needs to be saved.</p>
 
 <p>Reimplemented from <a class="el" href="classpl__search_1_1Pred.html#aec2125e947de4ccd8ca28914b15966d0">pl_search::Pred</a>.</p>
-
-</div>
-</div>
-<a id="a073f9010b00312dd990d7b65c2beaf75" name="a073f9010b00312dd990d7b65c2beaf75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a073f9010b00312dd990d7b65c2beaf75">&#9670;&#160;</a></span>test_choice()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool pl_search::Loop::test_choice </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tests a choice for the loop predicate. </p>
-<dl class="section return"><dt>Returns</dt><dd>True if the choice is valid, false otherwise. </dd></dl>
-
-<p>Reimplemented from <a class="el" href="classpl__search_1_1DetPred.html#ab886f0822c4b9c5d0eef3b452fd058bc">pl_search::DetPred</a>.</p>
 
 </div>
 </div>

@@ -65,12 +65,6 @@ void Pred::wrap_with_once() {
 bool ChoicePred::apply_choice() { return choice_iterator->make_choice(); }
 
 /**
- * @brief Tests a choice for the choice predicate.
- * @return True if the choice is valid, false otherwise.
- */
-bool ChoicePred::test_choice() { return true; }
-
-/**
  * @brief Checks if there are more choices for the choice predicate.
  * @return True if there are more choices, false otherwise.
  */
@@ -142,11 +136,6 @@ bool NotNot::apply_choice() {
   return false;
 }
 
-/**
- * @brief Tests a choice for the not-not predicate.
- * @return True
- */
-bool NotNot::test_choice() { return true; }
 
 /**
  * @brief Checks if there are more choices for the not-not predicate.
@@ -192,12 +181,6 @@ bool Loop::apply_choice() {
   }
   return true;
 }
-
-/**
- * @brief Tests a choice for the loop predicate.
- * @return True if the choice is valid, false otherwise.
- */
-bool Loop::test_choice() { return true; }
 
 // for debugging
 std::string repr(PredPtr pred) {

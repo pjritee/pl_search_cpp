@@ -1,5 +1,7 @@
 <map id="include/pl_search/patom.hpp" name="include/pl_search/patom.hpp">
-<area shape="rect" id="Node000001" title="Definition of the PAtom class." alt="" coords="5,5,193,31"/>
-<area shape="rect" id="Node000002" href="$term_8cpp.html" title="comparison operators for TermPtrs and the isLessThan method for subclasses of Term." alt="" coords="52,79,147,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,44,102,79,97,79,97,44"/>
+<area shape="rect" id="Node000001" title="Definition of the PAtom class." alt="" coords="27,5,215,31"/>
+<area shape="rect" id="Node000002" href="$engine_8cpp.html" title="Implementation of the Engine class." alt="" coords="5,79,112,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,43,71,80,67,77,100,39"/>
+<area shape="rect" id="Node000003" href="$term_8cpp.html" title="comparison operators for TermPtrs and the isLessThan method for subclasses of Term." alt="" coords="137,79,231,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="143,39,176,77,172,80,139,43"/>
 </map>

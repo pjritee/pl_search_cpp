@@ -69,11 +69,6 @@ public:
    */
   virtual bool apply_choice() { return false; }
 
-  /**
-   * @brief Tests a choice.
-   * @return True if the choice is valid, false otherwise.
-   */
-  virtual bool test_choice() { return false; }
 
   /**
    * @brief Checks if there are more choices.
@@ -144,7 +139,6 @@ public:
 
   void initialize_call() override {}
   bool apply_choice() override;
-  bool test_choice() override;
   bool more_choices() override;
 };
 
@@ -184,11 +178,7 @@ public:
    * @return True
    */
   bool apply_choice() override { return true; }
-  /**
-   * @brief Noop - all the work is done in initialize_call.
-   * @return True
-   */
-  bool test_choice() override { return true; }
+  
 };
 
 /**
@@ -233,8 +223,6 @@ public:
     return true;
   }
 
-  bool test_choice() override { return true; }
-
   bool more_choices() override { return index < preds.size(); }
 
 private:
@@ -260,8 +248,6 @@ public:
 
   bool apply_choice() override;
 
-  bool test_choice() override { return true; }
-
 private:
   int env_index;
 };
@@ -283,7 +269,6 @@ public:
 
   void initialize_call() override {};
   bool apply_choice() override;
-  bool test_choice() override { return true; };
 
 private:
   bool *succeeded;
@@ -304,7 +289,6 @@ public:
 
   void initialize_call() override;
   bool apply_choice() override;
-  bool test_choice() override;
   bool more_choices() override;
 
 private:
@@ -350,7 +334,6 @@ public:
 
   void initialize_call() override;
   bool apply_choice() override;
-  bool test_choice() override;
   void set_continuation(PredPtr cont);
 
 private:

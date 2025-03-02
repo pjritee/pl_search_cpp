@@ -68,8 +68,6 @@ TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
 
   SECTION("Apply choice test") { REQUIRE(choicePred->apply_choice() == true); }
 
-  SECTION("Test choice test") { REQUIRE(choicePred->test_choice() == true); }
-
   SECTION("More choices test") { REQUIRE(choicePred->more_choices() == true); }
 }
 

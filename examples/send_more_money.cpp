@@ -404,7 +404,11 @@ private:
   ChoiceIteratorPtr choice_iterator;
 };
 
-void solve() {
+int main() {
+  std::cout << std::endl
+            << "Solutions of the SEND+MORE=MONEY puzzle: " << std::endl
+            << std::endl;
+
   Engine engine;
   // The PuzzleVars - pass in the variable name for debugging
   PuzzleVarPtr S = NEW_PUZZLE_VAR(1, 9, "S");
@@ -458,7 +462,7 @@ void solve() {
   // It migth be possible that some of the constraints can be solved
   // up front
   if (!all_constraints.try_solve()) {
-    return;
+    return 0;
   }
 
   // Create the loop predicate
@@ -472,13 +476,6 @@ void solve() {
   // that pretty-prints a solution and then fails (to trigger backtracking).
   PredPtr conjunction_pred = conjunction({loop, print_and_fail});
   engine.execute(conjunction_pred, false);
-}
-
-int main() {
-  std::cout << std::endl
-            << "Solutions of the SEND+MORE=MONEY puzzle: " << std::endl
-            << std::endl;
-  solve();
   std::cout << std::endl << std::endl << "End of solutions" << std::endl;
   return 0;
 }

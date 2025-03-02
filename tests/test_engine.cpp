@@ -22,11 +22,6 @@ public:
     return true;
   }
 
-  bool test_choice() override {
-    // Test choice logic
-    return true;
-  }
-
   bool more_choices() override {
     // Determine if there are more choices
     return false;
@@ -45,7 +40,6 @@ public:
 
   bool apply_choice() override { return false; }
 
-  bool test_choice() override { return false; }
 };
 
 // Equivalent of Prolog fail
@@ -56,8 +50,6 @@ public:
   void initialize_call() override {}
 
   bool apply_choice() override { return false; }
-
-  bool test_choice() override { return false; }
 };
 
 class DetPredTest : public DetPred {
