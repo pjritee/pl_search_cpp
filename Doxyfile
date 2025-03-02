@@ -19,4 +19,3 @@ EXTRACT_STATIC         = YES
 # Enable class diagrams
 HAVE_DOT               = YES
 DOT_PATH               = /usr/bin/dot
-CLASS_DIAGRAMS         = YES
