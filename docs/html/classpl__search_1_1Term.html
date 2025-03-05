@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.1</span>
+   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.2</span>
    </div>
   </td>
  </tr>
@@ -124,9 +124,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae6ce50d1657bdace7e09e4b4821680cb" id="r_ae6ce50d1657bdace7e09e4b4821680cb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Term.html#ae6ce50d1657bdace7e09e4b4821680cb">dereference</a> ()</td></tr>
 <tr class="memdesc:ae6ce50d1657bdace7e09e4b4821680cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereferences the term. The default is to return a shared pointer to term itself.  <br /></td></tr>
 <tr class="separator:ae6ce50d1657bdace7e09e4b4821680cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae9c143b98931c183ce748530eb2548" id="r_a8ae9c143b98931c183ce748530eb2548"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Term.html#a8ae9c143b98931c183ce748530eb2548">bind</a> (<a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> t)</td></tr>
-<tr class="memdesc:a8ae9c143b98931c183ce748530eb2548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the term to another term. The default is to simply fail.  <br /></td></tr>
-<tr class="separator:a8ae9c143b98931c183ce748530eb2548"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af09394223a484098ad5356b7043a72b7" id="r_af09394223a484098ad5356b7043a72b7"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Term.html#af09394223a484098ad5356b7043a72b7">repr</a> () const</td></tr>
 <tr class="memdesc:af09394223a484098ad5356b7043a72b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string representation of the term.  <br /></td></tr>
 <tr class="separator:af09394223a484098ad5356b7043a72b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,6 +148,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ab226736c222b88d480672415aaeb6a84" id="r_ab226736c222b88d480672415aaeb6a84"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Term.html#ab226736c222b88d480672415aaeb6a84">isEqualTo</a> (<a class="el" href="classpl__search_1_1Term.html">Term</a> &amp;t) const =0</td></tr>
 <tr class="memdesc:ab226736c222b88d480672415aaeb6a84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the term is equal to another term.  <br /></td></tr>
 <tr class="separator:ab226736c222b88d480672415aaeb6a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2559f440e0975018c0260d6394792b12" id="r_a2559f440e0975018c0260d6394792b12"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpl__search_1_1Term.html">Term</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Term.html#a2559f440e0975018c0260d6394792b12">deref_term</a> ()</td></tr>
+<tr class="memdesc:a2559f440e0975018c0260d6394792b12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to dereference but returning the "raw" pointer.  <br /></td></tr>
+<tr class="separator:a2559f440e0975018c0260d6394792b12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -226,8 +226,8 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8ae9c143b98931c183ce748530eb2548" name="a8ae9c143b98931c183ce748530eb2548"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ae9c143b98931c183ce748530eb2548">&#9670;&#160;</a></span>bind()</h2>
+<a id="a2559f440e0975018c0260d6394792b12" name="a2559f440e0975018c0260d6394792b12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2559f440e0975018c0260d6394792b12">&#9670;&#160;</a></span>deref_term()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,30 +236,23 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool pl_search::Term::bind </td>
+          <td class="memname">virtual <a class="el" href="classpl__search_1_1Term.html">Term</a> * pl_search::Term::deref_term </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a>&#160;</td>
-          <td class="paramname"><em>t</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Binds the term to another term. The default is to simply fail. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">t</td><td>The term to bind to. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the binding is successful, false otherwise. </dd></dl>
+<p>Similar to dereference but returning the "raw" pointer. </p>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the dereferenced term. WARNING: This should only be used for testing as it returns the raw pointer of a shared_ptr. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classpl__search_1_1CList.html#a2e3c62be7d4e46795372b747def6195e">pl_search::CList</a>, <a class="el" href="classpl__search_1_1PAtom.html#a00b38b5673d1ddcd5cbe47e7da919edd">pl_search::PAtom</a>, <a class="el" href="classpl__search_1_1PFloat.html#a516242964933b540f829b2b0880fa992">pl_search::PFloat</a>, <a class="el" href="classpl__search_1_1PInt.html#aedd1ebbe7403f23f5350ef407939b2d3">pl_search::PInt</a>, and <a class="el" href="classpl__search_1_1PVar.html#a89cf3584422a4b5efd373048a40c6870">pl_search::PVar</a>.</p>
+<p>Reimplemented in <a class="el" href="classpl__search_1_1PVar.html#a7fad23c98d085162b077a091966f453c">pl_search::PVar</a>, and <a class="el" href="classpl__search_1_1UpdatablePVar.html#a8e219e611d6ab2abfe56c5458034d2db">pl_search::UpdatablePVar</a>.</p>
 
 </div>
 </div>

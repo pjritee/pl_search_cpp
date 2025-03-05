@@ -53,15 +53,6 @@ public:
   PInt(int value) : value(value) {}
 
   /**
-   * @brief Binds the term to another term.
-   * @param t The term to bind to.
-   * @return False, as integers cannot be bound to other terms.
-   */
-  bool bind(TermPtr t) override {
-    return false; // Integers cannot be bound to other terms
-  }
-
-  /**
    * @brief Returns a string representation of the integer.
    * @return A string representation of the integer.
    */

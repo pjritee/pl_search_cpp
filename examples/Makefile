@@ -1,4 +1,4 @@
-# Makefile for building the example program
+# Makefile for building the example programs
 
 # Compiler
 CXX = g++

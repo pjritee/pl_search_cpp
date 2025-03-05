@@ -9,7 +9,9 @@
 build/
 bin/
 
+timing/
 
 send_more_money
+prolog_list
 
 # Other ignore rules...

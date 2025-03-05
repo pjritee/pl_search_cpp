@@ -93,10 +93,8 @@ public:
   friend class ::EngineTest;
 
 private:
-  std::stack<std::shared_ptr<trail_entry>>
-      trail_stack; ///< Stack for trail entries.
-  std::stack<std::shared_ptr<env_entry>>
-      env_stack; ///< Stack for environment entries.
+  std::stack<trail_entry *> trail_stack; ///< Stack for trail entries.
+  std::stack<env_entry *> env_stack;     ///< Stack for environment entries.
 
   /**
    * @brief Trails a variable.
@@ -140,7 +138,9 @@ private:
    * @return True if the choice is valid and the predicates continuation
    * succeeds, false otherwise.
    */
-  bool make_choice_and_continue(PredPtr p);
+  inline bool make_choice_and_continue(PredPtr p) {
+    return p->apply_choice() && call_predicate(p->get_continuation());
+  }
 
   /**
    * @brief Pushes a predicate onto the environment stack.

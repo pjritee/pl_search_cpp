@@ -66,7 +66,14 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Version History
-
+* 1.2
+  - Several (small) code optimizations - improved send_more_money by about 30%
+      - dynamic_cast<PInt*>(t.get()) is faster than dynamic_pointer_cast<PInt>(t)
+      - redo PVar::dereference to avoid shared_ptr copies
+      - Term* Term::deref_term() to avoid copying copying shared_ptr (for internal use)
+      - In Var::bind use raw pointer for pointer test
+      - change env_stack and trail_stack to use normal pointers 
+  - Turned on -O2 optimization in cmake - approximately another 10% improvement
 * 1.1 
   - Fix problems in unify
   - Remove the test_choice method from Pred

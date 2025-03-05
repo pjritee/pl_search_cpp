@@ -47,7 +47,7 @@ namespace pl_search {
  * @param v The variable to trail.
  */
 void Engine::trail(PVarPtr v) {
-  shared_ptr<trail_entry> entry(new trail_entry);
+  trail_entry *entry = new trail_entry();
   entry->var = v;
   entry->value = v->value;
   trail_stack.push(entry);
@@ -60,9 +60,10 @@ void Engine::backtrack() {
   int old_top = env_stack.top()->trail_index;
 
   while (trail_stack.size() > old_top) {
-    shared_ptr<trail_entry> entry = trail_stack.top();
+    trail_entry *entry = trail_stack.top();
     entry->var->reset(entry->value);
     trail_stack.pop();
+    delete entry;
   }
 }
 
@@ -150,7 +151,7 @@ bool Engine::unify(TermPtr t1, TermPtr t2) {
  * @param p The predicate to push.
  */
 void Engine::push(PredPtr p) {
-  shared_ptr<env_entry> entry(new env_entry);
+  env_entry *entry = new env_entry();
   entry->pred = p;
   entry->trail_index = trail_stack.size();
   env_stack.push(entry);
@@ -189,24 +190,12 @@ bool Engine::call_predicate(PredPtr p) {
  */
 bool Engine::retry_predicate(PredPtr p) {
   if (!p->more_choices()) {
+    env_entry *entry = env_stack.top();
     env_stack.pop();
+    delete entry;
     return false;
   }
   return make_choice_and_continue(p);
-}
-
-/**
- * @brief Makes the current choice, checks it, and continues
- * execution (using the predicates continuation) if the choice is valid.
- * @param p The predicate to make a choice on.
- * @return True if the choice is valid and the predicates continuation
- * succeeds, false otherwise.
- */
-bool Engine::make_choice_and_continue(PredPtr p) {
-  if (p->apply_choice()) {
-    return call_predicate(p->get_continuation());
-  }
-  return false;
 }
 
 /**
@@ -214,7 +203,9 @@ bool Engine::make_choice_and_continue(PredPtr p) {
  */
 void Engine::pop_pred_call() {
   backtrack();
+  env_entry *entry = env_stack.top();
   env_stack.pop();
+  delete entry;
 }
 
 /**
@@ -223,7 +214,9 @@ void Engine::pop_pred_call() {
  */
 void Engine::cut_to_choice_point(int env_index) {
   while (env_stack.size() > env_index) {
+    env_entry *entry = env_stack.top();
     env_stack.pop();
+    delete entry;
   }
 }
 
@@ -233,7 +226,9 @@ void Engine::cut_to_choice_point(int env_index) {
 void Engine::clear_stacks() {
   while (env_stack.size() > 0) {
     backtrack();
+    env_entry *entry = env_stack.top();
     env_stack.pop();
+    delete entry;
   }
 }
 
@@ -250,8 +245,7 @@ bool Engine::execute(PredPtr p, bool unbind) {
     if (env_stack.size() == top_of_env_stack)
       break;
     backtrack();
-    PredPtr pred_call = env_stack.top()->pred;
-    has_succeeded = retry_predicate(pred_call);
+    has_succeeded = retry_predicate(env_stack.top()->pred);
   }
 
   if (unbind)

@@ -52,16 +52,6 @@ public:
    */
   PAtom(const std::string &name) : name(name) {}
 
-  /**
-   * @brief Binds the term to another term.
-   * @param t The term to bind to.
-   * @return False, as atoms cannot be bound to other terms.
-   */
-  bool bind(TermPtr t) override {
-    return false; // Atoms cannot be bound to other terms
-  }
-
-
 
   /**
    * @brief Returns the name of the atom.

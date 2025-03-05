@@ -38,7 +38,7 @@ namespace pl_search {
 /**
  * @brief Initializes the predicate call.
  */
-void Pred::initialize_call() {}
+// void Pred::initialize_call() {}
 
 /**
  * @brief Follows the continuation chain to the last predicate.
@@ -135,7 +135,6 @@ bool NotNot::apply_choice() {
   }
   return false;
 }
-
 
 /**
  * @brief Checks if there are more choices for the not-not predicate.

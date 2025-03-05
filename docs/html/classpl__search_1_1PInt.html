@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.1</span>
+   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.2</span>
    </div>
   </td>
  </tr>
@@ -115,9 +115,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9e2ecafd93be3de94087c94902edff29" id="r_a9e2ecafd93be3de94087c94902edff29"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PInt.html#a9e2ecafd93be3de94087c94902edff29">PInt</a> (int <a class="el" href="classpl__search_1_1PInt.html#a5c31498f55ff8e9782c3891c1b517918">value</a>)</td></tr>
 <tr class="memdesc:a9e2ecafd93be3de94087c94902edff29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a <a class="el" href="classpl__search_1_1PInt.html" title="Represents a Prolog integer.">PInt</a> with the given value.  <br /></td></tr>
 <tr class="separator:a9e2ecafd93be3de94087c94902edff29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedd1ebbe7403f23f5350ef407939b2d3" id="r_aedd1ebbe7403f23f5350ef407939b2d3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PInt.html#aedd1ebbe7403f23f5350ef407939b2d3">bind</a> (<a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> t) override</td></tr>
-<tr class="memdesc:aedd1ebbe7403f23f5350ef407939b2d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the term to another term.  <br /></td></tr>
-<tr class="separator:aedd1ebbe7403f23f5350ef407939b2d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd7d358b156b7bd2ab8916b0a4977887" id="r_abd7d358b156b7bd2ab8916b0a4977887"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PInt.html#abd7d358b156b7bd2ab8916b0a4977887">repr</a> () const override</td></tr>
 <tr class="memdesc:abd7d358b156b7bd2ab8916b0a4977887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string representation of the integer.  <br /></td></tr>
 <tr class="separator:abd7d358b156b7bd2ab8916b0a4977887"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,6 +152,10 @@ Private Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classpl__search_1_1Term"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classpl__search_1_1Term')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classpl__search_1_1Term.html">pl_search::Term</a></td></tr>
+<tr class="memitem:a2559f440e0975018c0260d6394792b12 inherit pro_methods_classpl__search_1_1Term" id="r_a2559f440e0975018c0260d6394792b12"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classpl__search_1_1Term.html">Term</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Term.html#a2559f440e0975018c0260d6394792b12">deref_term</a> ()</td></tr>
+<tr class="memdesc:a2559f440e0975018c0260d6394792b12 inherit pro_methods_classpl__search_1_1Term"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to dereference but returning the "raw" pointer.  <br /></td></tr>
+<tr class="separator:a2559f440e0975018c0260d6394792b12 inherit pro_methods_classpl__search_1_1Term"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a Prolog integer. </p>
@@ -195,43 +196,6 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aedd1ebbe7403f23f5350ef407939b2d3" name="aedd1ebbe7403f23f5350ef407939b2d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedd1ebbe7403f23f5350ef407939b2d3">&#9670;&#160;</a></span>bind()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool pl_search::PInt::bind </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a>&#160;</td>
-          <td class="paramname"><em>t</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Binds the term to another term. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">t</td><td>The term to bind to. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>False, as integers cannot be bound to other terms. </dd></dl>
-
-<p>Reimplemented from <a class="el" href="classpl__search_1_1Term.html#a8ae9c143b98931c183ce748530eb2548">pl_search::Term</a>.</p>
-
-</div>
-</div>
 <a id="a89064c0052b087beae3dde138f183ad4" name="a89064c0052b087beae3dde138f183ad4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89064c0052b087beae3dde138f183ad4">&#9670;&#160;</a></span>getValue()</h2>
 

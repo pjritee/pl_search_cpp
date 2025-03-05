@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.1</span>
+   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.2</span>
    </div>
   </td>
  </tr>
@@ -123,12 +123,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4999e40680088c0da03ff73a85728b1c" id="r_a4999e40680088c0da03ff73a85728b1c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#a4999e40680088c0da03ff73a85728b1c">dereference</a> () override</td></tr>
 <tr class="memdesc:a4999e40680088c0da03ff73a85728b1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereferences the variable to find the actual term it points to.  <br /></td></tr>
 <tr class="separator:a4999e40680088c0da03ff73a85728b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89cf3584422a4b5efd373048a40c6870" id="r_a89cf3584422a4b5efd373048a40c6870"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#a89cf3584422a4b5efd373048a40c6870">bind</a> (<a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> t) override</td></tr>
-<tr class="memdesc:a89cf3584422a4b5efd373048a40c6870"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the variable to a term.  <br /></td></tr>
-<tr class="separator:a89cf3584422a4b5efd373048a40c6870"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a792c30c7e97609df2a0ca7d51c593d72" id="r_a792c30c7e97609df2a0ca7d51c593d72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#a792c30c7e97609df2a0ca7d51c593d72">reset</a> (<a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> t)</td></tr>
-<tr class="memdesc:a792c30c7e97609df2a0ca7d51c593d72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the variable to point at the supplied term.  <br /></td></tr>
-<tr class="separator:a792c30c7e97609df2a0ca7d51c593d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adca982f8fd60d02926102b077c31f58b" id="r_adca982f8fd60d02926102b077c31f58b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#adca982f8fd60d02926102b077c31f58b">bind</a> (const <a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> &amp;t)</td></tr>
+<tr class="memdesc:adca982f8fd60d02926102b077c31f58b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds the variable to a term.  <br /></td></tr>
+<tr class="separator:adca982f8fd60d02926102b077c31f58b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9007096612f7886ac6d7f840ab6ee316" id="r_a9007096612f7886ac6d7f840ab6ee316"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#a9007096612f7886ac6d7f840ab6ee316">reset</a> (const <a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> &amp;t)</td></tr>
+<tr class="memdesc:a9007096612f7886ac6d7f840ab6ee316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the variable to point at the supplied term.  <br /></td></tr>
+<tr class="separator:a9007096612f7886ac6d7f840ab6ee316"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57873449b309319dc6868de6120f24d" id="r_aa57873449b309319dc6868de6120f24d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#aa57873449b309319dc6868de6120f24d">is_var</a> () override</td></tr>
 <tr class="memdesc:aa57873449b309319dc6868de6120f24d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the term is a variable.  <br /></td></tr>
 <tr class="separator:aa57873449b309319dc6868de6120f24d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +169,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a25d1c1517ecc890a0d7fd12e838f0f6d" id="r_a25d1c1517ecc890a0d7fd12e838f0f6d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#a25d1c1517ecc890a0d7fd12e838f0f6d">isEqualTo</a> (<a class="el" href="classpl__search_1_1Term.html">Term</a> &amp;other) const override</td></tr>
 <tr class="memdesc:a25d1c1517ecc890a0d7fd12e838f0f6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the term is equal to another term.  <br /></td></tr>
 <tr class="separator:a25d1c1517ecc890a0d7fd12e838f0f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fad23c98d085162b077a091966f453c" id="r_a7fad23c98d085162b077a091966f453c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classpl__search_1_1Term.html">Term</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1PVar.html#a7fad23c98d085162b077a091966f453c">deref_term</a> () override</td></tr>
+<tr class="memdesc:a7fad23c98d085162b077a091966f453c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to dereference but returning the "raw" pointer.  <br /></td></tr>
+<tr class="separator:a7fad23c98d085162b077a091966f453c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -208,8 +211,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a89cf3584422a4b5efd373048a40c6870" name="a89cf3584422a4b5efd373048a40c6870"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89cf3584422a4b5efd373048a40c6870">&#9670;&#160;</a></span>bind()</h2>
+<a id="adca982f8fd60d02926102b077c31f58b" name="adca982f8fd60d02926102b077c31f58b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adca982f8fd60d02926102b077c31f58b">&#9670;&#160;</a></span>bind()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -220,14 +223,14 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">bool pl_search::PVar::bind </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> &amp;&#160;</td>
           <td class="paramname"><em>t</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -239,9 +242,46 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the binding is successful, false otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the binding is successful, false otherwise.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>The term to bind to. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the binding is successful, false otherwise. Precondition: t has been dereferenced before the call (bind is only called from unify) </dd></dl>
 
-<p>Reimplemented from <a class="el" href="classpl__search_1_1Term.html#a8ae9c143b98931c183ce748530eb2548">pl_search::Term</a>.</p>
+</div>
+</div>
+<a id="a7fad23c98d085162b077a091966f453c" name="a7fad23c98d085162b077a091966f453c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fad23c98d085162b077a091966f453c">&#9670;&#160;</a></span>deref_term()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classpl__search_1_1Term.html">Term</a> * pl_search::PVar::deref_term </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Similar to dereference but returning the "raw" pointer. </p>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the dereferenced term. WARNING: This should only be used for testing as it returns the raw pointer of a shared_ptr. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classpl__search_1_1Term.html#a2559f440e0975018c0260d6394792b12">pl_search::Term</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classpl__search_1_1UpdatablePVar.html#a8e219e611d6ab2abfe56c5458034d2db">pl_search::UpdatablePVar</a>.</p>
 
 </div>
 </div>
@@ -439,8 +479,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a792c30c7e97609df2a0ca7d51c593d72" name="a792c30c7e97609df2a0ca7d51c593d72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a792c30c7e97609df2a0ca7d51c593d72">&#9670;&#160;</a></span>reset()</h2>
+<a id="a9007096612f7886ac6d7f840ab6ee316" name="a9007096612f7886ac6d7f840ab6ee316"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9007096612f7886ac6d7f840ab6ee316">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -448,7 +488,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">void pl_search::PVar::reset </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacepl__search.html#aefab13fe8a24c420b9a3b2792e5d0cb7">TermPtr</a> &amp;&#160;</td>
           <td class="paramname"><em>t</em></td><td>)</td>
           <td></td>
         </tr>

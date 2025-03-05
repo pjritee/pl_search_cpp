@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.1</span>
+   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.2</span>
    </div>
   </td>
  </tr>
@@ -131,12 +131,12 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a6ada603844aef407a3b8b881c8379d2d" id="r_a6ada603844aef407a3b8b881c8379d2d"><td class="memItemLeft" align="right" valign="top">std::stack&lt; std::shared_ptr&lt; <a class="el" href="structpl__search_1_1trail__entry.html">trail_entry</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Engine.html#a6ada603844aef407a3b8b881c8379d2d">trail_stack</a></td></tr>
-<tr class="memdesc:a6ada603844aef407a3b8b881c8379d2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack for trail entries.  <br /></td></tr>
-<tr class="separator:a6ada603844aef407a3b8b881c8379d2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50f49039d6f0ff933f66e7a3181f5ee1" id="r_a50f49039d6f0ff933f66e7a3181f5ee1"><td class="memItemLeft" align="right" valign="top">std::stack&lt; std::shared_ptr&lt; <a class="el" href="structpl__search_1_1env__entry.html">env_entry</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Engine.html#a50f49039d6f0ff933f66e7a3181f5ee1">env_stack</a></td></tr>
-<tr class="memdesc:a50f49039d6f0ff933f66e7a3181f5ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack for environment entries.  <br /></td></tr>
-<tr class="separator:a50f49039d6f0ff933f66e7a3181f5ee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa724fd2e4da7dcda47952a42b7c041de" id="r_aa724fd2e4da7dcda47952a42b7c041de"><td class="memItemLeft" align="right" valign="top">std::stack&lt; <a class="el" href="structpl__search_1_1trail__entry.html">trail_entry</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Engine.html#aa724fd2e4da7dcda47952a42b7c041de">trail_stack</a></td></tr>
+<tr class="memdesc:aa724fd2e4da7dcda47952a42b7c041de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack for trail entries.  <br /></td></tr>
+<tr class="separator:aa724fd2e4da7dcda47952a42b7c041de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad791307a39feb21fc17cbc90712675c2" id="r_ad791307a39feb21fc17cbc90712675c2"><td class="memItemLeft" align="right" valign="top">std::stack&lt; <a class="el" href="structpl__search_1_1env__entry.html">env_entry</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Engine.html#ad791307a39feb21fc17cbc90712675c2">env_stack</a></td></tr>
+<tr class="memdesc:ad791307a39feb21fc17cbc90712675c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack for environment entries.  <br /></td></tr>
+<tr class="separator:ad791307a39feb21fc17cbc90712675c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -368,7 +368,7 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -645,8 +645,8 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a50f49039d6f0ff933f66e7a3181f5ee1" name="a50f49039d6f0ff933f66e7a3181f5ee1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50f49039d6f0ff933f66e7a3181f5ee1">&#9670;&#160;</a></span>env_stack</h2>
+<a id="ad791307a39feb21fc17cbc90712675c2" name="ad791307a39feb21fc17cbc90712675c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad791307a39feb21fc17cbc90712675c2">&#9670;&#160;</a></span>env_stack</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -655,7 +655,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::stack&lt;std::shared_ptr&lt;<a class="el" href="structpl__search_1_1env__entry.html">env_entry</a>&gt; &gt; pl_search::Engine::env_stack</td>
+          <td class="memname">std::stack&lt;<a class="el" href="structpl__search_1_1env__entry.html">env_entry</a> *&gt; pl_search::Engine::env_stack</td>
         </tr>
       </table>
   </td>
@@ -669,8 +669,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a6ada603844aef407a3b8b881c8379d2d" name="a6ada603844aef407a3b8b881c8379d2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ada603844aef407a3b8b881c8379d2d">&#9670;&#160;</a></span>trail_stack</h2>
+<a id="aa724fd2e4da7dcda47952a42b7c041de" name="aa724fd2e4da7dcda47952a42b7c041de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa724fd2e4da7dcda47952a42b7c041de">&#9670;&#160;</a></span>trail_stack</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -679,7 +679,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::stack&lt;std::shared_ptr&lt;<a class="el" href="structpl__search_1_1trail__entry.html">trail_entry</a>&gt; &gt; pl_search::Engine::trail_stack</td>
+          <td class="memname">std::stack&lt;<a class="el" href="structpl__search_1_1trail__entry.html">trail_entry</a> *&gt; pl_search::Engine::trail_stack</td>
         </tr>
       </table>
   </td>

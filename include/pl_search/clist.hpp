@@ -67,15 +67,6 @@ public:
   CList(std::list<TermPtr> &elems) : elements(elems) {}
 
   /**
-   * @brief Binds the term to another term.
-   * @param t The term to bind to.
-   * @return False, as lists cannot be bound to other terms.
-   */
-  bool bind(TermPtr t) override {
-    return false; // Lists cannot be bound to other terms
-  }
-
-  /**
    * @brief Returns a string representation of the list.
    * @return A string representation of the list.
    */

@@ -61,14 +61,13 @@ public:
   /**
    * @brief Initializes the predicate call.
    */
-  virtual void initialize_call() = 0;
+  virtual void initialize_call() {};
 
   /**
    * @brief Applies a choice.
    * @return True if the choice is applied successfully, false otherwise.
    */
   virtual bool apply_choice() { return false; }
-
 
   /**
    * @brief Checks if there are more choices.
@@ -178,7 +177,6 @@ public:
    * @return True
    */
   bool apply_choice() override { return true; }
-  
 };
 
 /**

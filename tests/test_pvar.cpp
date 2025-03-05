@@ -12,7 +12,7 @@ class UserVar : public PVar {
 public:
   UserVar() : PVar() {}
 
-  bool bind(TermPtr t) override;
+  bool bind(const TermPtr &t);
 
   void set_disjoint(std::vector<TermPtr> disj) { disjoint = disj; }
 
@@ -22,17 +22,13 @@ private:
   std::vector<TermPtr> disjoint;
 };
 
-bool UserVar::bind(TermPtr t) {
+bool UserVar::bind(const TermPtr &t) {
   TermPtr deref = t->dereference();
   for (auto it = disjoint.begin(); it != disjoint.end(); ++it) {
-    std::cout << "Checking if " << *deref << " is equal to "
-              << *((*it)->dereference()) << std::endl;
     if (deref == (*it)->dereference()) {
-      std::cout << "Cannot bind " << *this << " to " << *deref << std::endl;
       return false;
     }
   }
-  std::cout << "bind " << *this << " to " << *deref << std::endl;
   return PVar::bind(t);
 }
 

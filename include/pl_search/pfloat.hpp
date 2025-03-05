@@ -52,14 +52,6 @@ public:
    */
   PFloat(double value) : value(value) {}
 
-  /**
-   * @brief Binds the term to another term.
-   * @param t The term to bind to.
-   * @return False, as floats cannot be bound to other terms.
-   */
-  bool bind(TermPtr t) override {
-    return false; // Floats cannot be bound to other terms
-  }
 
   /**
    * @brief Returns a string representation of the float.

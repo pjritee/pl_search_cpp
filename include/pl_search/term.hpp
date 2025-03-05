@@ -56,6 +56,14 @@ protected:
    */
   virtual bool isEqualTo(Term &t) const = 0;
 
+  /**
+   * @brief Similar to dereference but returning the "raw" pointer
+   * @return A pointer to the dereferenced term.
+   * WARNING: This should only be used for testing as it returns
+   * the raw pointer of a shared_ptr.
+   */
+  virtual Term *deref_term() { return this; }
+
 public:
   /**
    * @brief Dereferences the term. The default is to return a shared pointer to
@@ -63,13 +71,6 @@ public:
    * @return A shared pointer to the dereferenced term.
    */
   virtual TermPtr dereference() { return shared_from_this(); };
-
-  /**
-   * @brief Binds the term to another term. The default is to simply fail.
-   * @param t The term to bind to.
-   * @return True if the binding is successful, false otherwise.
-   */
-  virtual bool bind(TermPtr t) { return false; }
 
   /**
    * @brief Returns a string representation of the term.

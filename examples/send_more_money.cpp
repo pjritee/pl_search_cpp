@@ -25,8 +25,10 @@ MIT License
 #include "pl_search/pvar.hpp"
 #include "pl_search/typedefs.hpp"
 #include <cassert>
+#include <chrono>
 #include <iostream>
 #include <vector>
+using namespace std::chrono;
 
 using namespace pl_search;
 
@@ -78,14 +80,14 @@ public:
   // The bind method is overridden to check that the value is in the
   // range and that it is distinct from the other variables in the
   // distinctness set.
-  bool bind(TermPtr t) override {
+  bool bind(const TermPtr &t) override {
     if (PIntPtr p = std::dynamic_pointer_cast<PInt>(t)) {
       if (p->getValue() >= lower_bound && p->getValue() <= upper_bound) {
         if (distinct.empty()) {
           return PVar::bind(t);
         }
         for (auto v : distinct) {
-          if (v->dereference() == t) {
+          if (*v == *t) {
             return false;
           }
         }
@@ -104,7 +106,7 @@ public:
       PIntPtr d = digits[i];
       bool in_distinct = false;
       for (auto v : distinct) {
-        if (v->dereference() == d) {
+        if (*v == *d) {
           in_distinct = true;
           break;
         }
@@ -405,6 +407,7 @@ private:
 };
 
 int main() {
+  auto start = high_resolution_clock::now();
   std::cout << std::endl
             << "Solutions of the SEND+MORE=MONEY puzzle: " << std::endl
             << std::endl;
@@ -475,7 +478,11 @@ int main() {
   // all possible solutions on backtracking) and the print_and_fail predicate
   // that pretty-prints a solution and then fails (to trigger backtracking).
   PredPtr conjunction_pred = conjunction({loop, print_and_fail});
-  engine.execute(conjunction_pred, false);
+  engine.execute(conjunction_pred, true);
   std::cout << std::endl << std::endl << "End of solutions" << std::endl;
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(stop - start);
+  std::cout << "Time taken send_more_money: " << duration.count()
+            << " microseconds" << std::endl;
   return 0;
 }

@@ -40,25 +40,39 @@ int PVar::id = 0;
  * @return A pointer to the dereferenced term.
  */
 TermPtr PVar::dereference() {
-  TermPtr result = shared_from_this();
-
-  while (true) {
-    // Check if the current result is a PVar
-    if (PVar *v = dynamic_cast<PVar *>(result.get())) {
-      if (v->value == nullptr) {
-        // If the value is null, return the variable
-        return result;
-      }
-      // Otherwise, follow the chain
-      result = v->value;
-    } else {
-      // If the result is not a PVar, return it
-      return result;
-    }
+  if (value == nullptr) {
+    // an unbound variable
+    return shared_from_this();
   }
-  // This should never be reached
-  assert(false);
-  return result;
+  PVar *val = this;
+  while (PVar *next = dynamic_cast<PVar *>(val->value.get())) {
+    // val->value is a variable
+    if (next->value == nullptr) {
+      // next is an unbound variable
+      break;
+    }
+    val = next;
+  }
+  // val->value is either a non-var term or an unbound variable
+  return val->value;
+}
+
+Term *PVar::deref_term() {
+  if (value == nullptr) {
+    // an unbound variable
+    return this;
+  }
+  PVar *val = this;
+  while (PVar *next = dynamic_cast<PVar *>(val->value.get())) {
+    // val->value is a variable
+    if (next->value == nullptr) {
+      // next is an unbound variable
+      break;
+    }
+    val = next;
+  }
+  // val->value is either a non-var term or an unbound variable
+  return val->value.get();
 }
 
 /**
@@ -66,27 +80,26 @@ TermPtr PVar::dereference() {
  * @return True if the term is a variable, false otherwise.
  */
 bool PVar::is_var() {
-  TermPtr deref = dereference();
-  if (std::dynamic_pointer_cast<PVar>(deref)) {
-    return true;
-  }
-  return false;
+  Term *deref = deref_term();
+  PVar *t = dynamic_cast<PVar *>(deref);
+  return (t != nullptr);
 }
 
 /**
  * @brief Binds the variable to a term.
  * @param t The term to bind to.
  * @return True if the binding is successful, false otherwise.
+ * Precondition: t has been dereferenced before the call
+ * (bind is only called from unify)
  */
-bool PVar::bind(TermPtr t) {
-  // Dereference the term to find its actual value
-  TermPtr deref = t->dereference();
-  // If the dereferenced term is the same as this variable, return true
-  if (shared_from_this() == deref) {
+bool PVar::bind(const TermPtr &t) {
+  // assert(t == t->dereference());
+  if (this == t.get()) {
+    // The same variable so nothing to do
     return true;
   }
   // Otherwise, bind this variable to the dereferenced term
-  value = deref;
+  value = t;
   return true;
 }
 
@@ -94,7 +107,7 @@ bool PVar::bind(TermPtr t) {
  * @brief Resets the variable to point at the supplied term.
  * @param t The term to reset to.
  */
-void PVar::reset(TermPtr t) { value = t; }
+void PVar::reset(const TermPtr &t) { value = t; }
 
 /**
  * @brief Checks if the variable is less than another term.

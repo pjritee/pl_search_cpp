@@ -42,6 +42,7 @@ namespace pl_search {
  * terms. An unbound variable is represented by a PVar object with a null value.
  */
 class PVar : public Term {
+
 public:
   static int id; ///< Static member to generate unique IDs for variables.
 
@@ -63,13 +64,13 @@ public:
    * @param t The term to bind to.
    * @return True if the binding is successful, false otherwise.
    */
-  bool bind(TermPtr t) override;
+  virtual bool bind(const TermPtr &t);
 
   /**
    * @brief Resets the variable to point at the supplied term.
    * @param t The term to reset to.
    */
-  void reset(TermPtr t);
+  void reset(const TermPtr &t);
 
   /**
    * @brief Checks if the term is a variable.
@@ -101,6 +102,8 @@ protected:
     return false;
   }
 
+  Term *deref_term() override;
+
 private:
   int var_id; ///< The ID of the variable.
 };
@@ -117,6 +120,7 @@ private:
  * the old value will be restored.
  */
 class UpdatablePVar : public PVar {
+
 public:
   UpdatablePVar(TermPtr t) : PVar() { value = t; }
 
@@ -125,6 +129,9 @@ public:
   // If we wanted to do a full dereference for an updatable variable, v, we
   // would use v->PVar::dereference() or v->getValue()->dereference()
   TermPtr dereference() override { return shared_from_this(); }
+
+protected:
+  Term *deref_term() override { return this; }
 };
 
 } // namespace pl_search

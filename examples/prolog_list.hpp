@@ -56,7 +56,6 @@ public:
 
   TermPtr dereference() override { return shared_from_this(); }
 
-  bool bind(TermPtr t) override { return false; }
 
   bool isEqualTo(Term &t) const override {
     PrologList *lst = dynamic_cast<PrologList *>(&t);

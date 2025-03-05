@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.1</span>
+   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.2</span>
    </div>
   </td>
  </tr>
@@ -77,7 +77,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classpl__search_1_1Pred-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">pl_search::Pred Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+  <div class="headertitle"><div class="title">pl_search::Pred Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -129,9 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1b191ce47303b402e9628945f2563ae8" id="r_a1b191ce47303b402e9628945f2563ae8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Pred.html#a1b191ce47303b402e9628945f2563ae8">Pred</a> (<a class="el" href="classpl__search_1_1Engine.html">Engine</a> *eng)</td></tr>
 <tr class="memdesc:a1b191ce47303b402e9628945f2563ae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:a1b191ce47303b402e9628945f2563ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad31d6ffd8ea9228e92b5e49ef16797c6" id="r_ad31d6ffd8ea9228e92b5e49ef16797c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Pred.html#ad31d6ffd8ea9228e92b5e49ef16797c6">initialize_call</a> ()=0</td></tr>
-<tr class="memdesc:ad31d6ffd8ea9228e92b5e49ef16797c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the predicate call.  <br /></td></tr>
-<tr class="separator:ad31d6ffd8ea9228e92b5e49ef16797c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e5e5a35786463efec5a22a69f1ca762" id="r_a5e5e5a35786463efec5a22a69f1ca762"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Pred.html#a5e5e5a35786463efec5a22a69f1ca762">initialize_call</a> ()</td></tr>
+<tr class="memdesc:a5e5e5a35786463efec5a22a69f1ca762"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the predicate call.  <br /></td></tr>
+<tr class="separator:a5e5e5a35786463efec5a22a69f1ca762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93caabf2e20e2dfcda2e2baa7ab7afcc" id="r_a93caabf2e20e2dfcda2e2baa7ab7afcc"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpl__search_1_1Pred.html#a93caabf2e20e2dfcda2e2baa7ab7afcc">apply_choice</a> ()</td></tr>
 <tr class="memdesc:a93caabf2e20e2dfcda2e2baa7ab7afcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a choice.  <br /></td></tr>
 <tr class="separator:a93caabf2e20e2dfcda2e2baa7ab7afcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -313,8 +313,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad31d6ffd8ea9228e92b5e49ef16797c6" name="ad31d6ffd8ea9228e92b5e49ef16797c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad31d6ffd8ea9228e92b5e49ef16797c6">&#9670;&#160;</a></span>initialize_call()</h2>
+<a id="a5e5e5a35786463efec5a22a69f1ca762" name="a5e5e5a35786463efec5a22a69f1ca762"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e5e5a35786463efec5a22a69f1ca762">&#9670;&#160;</a></span>initialize_call()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +323,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void pl_search::Pred::initialize_call </td>
+          <td class="memname">virtual void pl_search::Pred::initialize_call </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -331,14 +331,14 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Initializes the predicate call. </p>
 
-<p>Implemented in <a class="el" href="classpl__search_1_1ChoicePred.html#aadc4f7a60974e2d3541d044d982e99a0">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a5f42ca33ce19e50752898adba8b55ef9">pl_search::DisjPred</a>, <a class="el" href="classpl__search_1_1Cut.html#a4ae97bd88931c520fabc51bf4d261db1">pl_search::Cut</a>, <a class="el" href="classpl__search_1_1NotNotEnd.html#aa26b0fa43c228bea43792a126eb89b7b">pl_search::NotNotEnd</a>, <a class="el" href="classpl__search_1_1NotNot.html#af7fdc423e0eef127f26e3422cc65c86a">pl_search::NotNot</a>, and <a class="el" href="classpl__search_1_1Loop.html#a037564d414abce3db74e0128c1a2285c">pl_search::Loop</a>.</p>
+<p>Reimplemented in <a class="el" href="classpl__search_1_1ChoicePred.html#aadc4f7a60974e2d3541d044d982e99a0">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a5f42ca33ce19e50752898adba8b55ef9">pl_search::DisjPred</a>, <a class="el" href="classpl__search_1_1Cut.html#a4ae97bd88931c520fabc51bf4d261db1">pl_search::Cut</a>, <a class="el" href="classpl__search_1_1NotNotEnd.html#aa26b0fa43c228bea43792a126eb89b7b">pl_search::NotNotEnd</a>, <a class="el" href="classpl__search_1_1NotNot.html#af7fdc423e0eef127f26e3422cc65c86a">pl_search::NotNot</a>, and <a class="el" href="classpl__search_1_1Loop.html#a037564d414abce3db74e0128c1a2285c">pl_search::Loop</a>.</p>
 
 </div>
 </div>
@@ -386,7 +386,9 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Follows the continuation chain to the last predicate. </p>
-<dl class="section return"><dt>Returns</dt><dd>A shared pointer to the last predicate in the continuation chain. </dd></dl>
+<p>Initializes the predicate call.</p>
+<dl class="section return"><dt>Returns</dt><dd>A shared pointer to the last predicate in the continuation chain.</dd></dl>
+<p>Follows the continuation chain to the last predicate. </p><dl class="section return"><dt>Returns</dt><dd>A shared pointer to the last predicate in the continuation chain. </dd></dl>
 
 </div>
 </div>

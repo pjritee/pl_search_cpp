@@ -45,7 +45,7 @@ namespace pl_search {
   otherwise.
  */
 bool operator==(Term &t1, Term &t2) {
-  return t1.dereference()->isEqualTo(*(t2.dereference()));
+  return t1.deref_term()->isEqualTo(*(t2.deref_term()));
 }
 
 /**
@@ -64,7 +64,7 @@ bool operator==(Term &t1, Term &t2) {
    * otherwise.
    */
 bool operator<(Term &t1, Term &t2) {
-  return t1.dereference()->isLessThan(*(t2.dereference()));
+  return t1.deref_term()->isLessThan(*(t2.deref_term()));
 }
 
 /**
@@ -75,8 +75,8 @@ bool operator<(Term &t1, Term &t2) {
  * false otherwise.
  */
 bool operator<=(Term &t1, Term &t2) {
-  TermPtr deref1 = t1.dereference();
-  TermPtr deref2 = t2.dereference();
+  Term *deref1 = t1.deref_term();
+  Term *deref2 = t2.deref_term();
   return deref1->isLessThan(*deref2) || deref1->isEqualTo(*deref2);
 }
 
