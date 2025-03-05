@@ -70,7 +70,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
   - Several (small) code optimizations - improved send_more_money by about 30%
       - dynamic_cast<PInt*>(t.get()) is faster than dynamic_pointer_cast<PInt>(t)
       - redo PVar::dereference to avoid shared_ptr copies
-      - Term* Term::deref_term() to avoid copying copying shared_ptr (for internal use)
+      - add Term* Term::deref_term() to avoid copying shared_ptr (for internal use)
       - In Var::bind use raw pointer for pointer test
       - change env_stack and trail_stack to use normal pointers 
   - Turned on -O2 optimization in cmake - approximately another 10% improvement
