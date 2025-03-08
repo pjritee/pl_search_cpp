@@ -5,7 +5,6 @@
 *.a
 
 .vscode/
-.github
 
 # Ignore build directories
 build/
