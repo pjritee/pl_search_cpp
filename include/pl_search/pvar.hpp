@@ -63,6 +63,8 @@ public:
    * @brief Binds the variable to a term.
    * @param t The term to bind to.
    * @return True if the binding is successful, false otherwise.
+   * Precondition: t has been dereferenced before the call
+   * (bind is only called from unify)
    */
   virtual bool bind(const TermPtr &t);
 

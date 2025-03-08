@@ -161,7 +161,7 @@ void Engine::push(PredPtr p) {
  * @brief Call a predicate.
  *
  * If the call is non-deterministic, the predicate is pushed onto the
- * environment stack before the call. Otherwise it is not pushed
+ * environment stack before the call. Otherwise the is not pushed
  * and the call is made directly.
  *
  * @param p The predicate to call.
