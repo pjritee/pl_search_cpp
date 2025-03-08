@@ -86,10 +86,15 @@ public:
    */
   bool execute(PredPtr p, bool unbind);
 
+  /**
+   * The following predicates need access to private attributes.
+   */
   friend class Cut;
   friend void Pred::wrap_with_once();
-
   friend class DisjPred;
+  friend class IfThenElse;
+
+  // for testing
   friend class ::EngineTest;
 
 private:

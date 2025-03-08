@@ -148,6 +148,52 @@ bool NotNot::more_choices() {
   return false;
 }
 
+/**
+ * @brief The equlvalent of the Prolog call (If -> Then ; Else)
+ * @param eng Pointer to the engine
+ * @param if_pred The guard predicate
+ * @param then_pred The then predicate
+ * @param else_pred The else predicate
+ */
+IfThenElse::IfThenElse(Engine *eng, PredPtr if_pred, PredPtr then_pred,
+                       PredPtr else_pred)
+    : Pred(eng), if_pred(if_pred), then_pred(then_pred), else_pred(else_pred) {
+
+  // create the Cut pred - the 0 is overridden in initialization_call
+  // as this happens when this predicate is put on env_stack
+  cut_pred = make_shared<Cut>(engine, 0);
+  if_then_pred = conjunction({if_pred, cut_pred, then_pred});
+}
+
+void IfThenElse::initialize_call() {
+  // If if_pred succeeds then we need to pop this if-then-else predicate
+  // because we don't want backtracking to choose the else branch. This
+  // also removes choicepoints created by the if_pred call.
+  cut_pred->set_cut_point(engine->env_stack.size() - 1);
+  choice_number = 0;
+}
+
+bool IfThenElse::apply_choice() {
+  if (choice_number == 0) {
+    // the next call is if_then_pred
+    continuation = if_then_pred;
+  } else {
+    // the next call is  else_pred
+    continuation = else_pred;
+  }
+  choice_number++;
+  return true;
+}
+
+bool IfThenElse::more_choices() { return choice_number < 2; }
+
+// If this preciate becomes part of a conjunction then both the then and
+// else branches need to point at the next predicate in the conjunction
+void IfThenElse::set_continuation(PredPtr cont) {
+  if_then_pred->last_pred()->set_continuation(cont);
+  else_pred->last_pred()->set_continuation(cont);
+}
+
 void Loop::initialize_call() {}
 
 /**

@@ -39,7 +39,6 @@ public:
   void initialize_call() override { results.push_back(var->dereference()); }
 
   bool apply_choice() override { return false; }
-
 };
 
 // Equivalent of Prolog fail
@@ -224,17 +223,11 @@ TEST_CASE("Engine execute disj test", "[Engine]") {
 
   PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, choice_iterator1);
   PredPtr choicePred2 = std::make_shared<ChoicePred>(&engine, choice_iterator2);
-
-  std::cout << "failpred " << repr(failpred) << std::endl;
-  std::cout << "choicepred1 " << repr(choicePred1) << std::endl;
-  std::cout << "choicepred2 " << repr(choicePred2) << std::endl;
-
   std::vector<PredPtr> disjPreds = {choicePred1, choicePred2};
   PredPtr disjPred = std::make_shared<DisjPred>(
       &engine, disjPreds); // Disjunction of choicePred1 and choicePred2
-  std::cout << "disjPred " << repr(disjPred) << std::endl;
+
   PredPtr conjunctionPred3 = conjunction({disjPred, failpred});
-  std::cout << "conjPred3 " << repr(conjunctionPred3) << std::endl;
 
   SECTION("Execute test - disjunction, backtrack over choice") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred3, false));
@@ -312,5 +305,90 @@ TEST_CASE("Test loop predicate", "[Engine]") {
     REQUIRE(v2->dereference() == i2);
     REQUIRE(v3->dereference() == i3);
     REQUIRE(v4->dereference() == i4);
+  }
+}
+
+TEST_CASE("Test if-the-else predicate: if succeeds", "[Engine]") {
+  Engine engine;
+  PVarPtr v1 = NEW_PVAR();
+  PVarPtr v2 = NEW_PVAR();
+  PIntPtr i1 = NEW_PINT(1);
+  PIntPtr i2 = NEW_PINT(2);
+  PIntPtr i3 = NEW_PINT(3);
+  PIntPtr i4 = NEW_PINT(4);
+  PIntPtr i5 = NEW_PINT(5);
+  std::list<TermPtr> results;
+  std::vector<TermPtr> if_choices = {i1, i2};
+  std::vector<TermPtr> then_choices = {i2, i3};
+  std::vector<TermPtr> else_choices = {i4, i5};
+
+  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, v2, results);
+
+  std::shared_ptr<VarChoiceIterator> choice_iterator_if =
+      std::make_shared<VarChoiceIterator>(&engine, v1, if_choices);
+  PredPtr ifPred = std::make_shared<ChoicePred>(&engine, choice_iterator_if);
+
+  std::shared_ptr<VarChoiceIterator> choice_iterator_then =
+      std::make_shared<VarChoiceIterator>(&engine, v2, then_choices);
+  PredPtr thenPred =
+      std::make_shared<ChoicePred>(&engine, choice_iterator_then);
+
+  std::shared_ptr<VarChoiceIterator> choice_iterator_else =
+      std::make_shared<VarChoiceIterator>(&engine, v2, else_choices);
+  PredPtr elsePred =
+      std::make_shared<ChoicePred>(&engine, choice_iterator_else);
+
+  PredPtr if_then_else =
+      std::make_shared<IfThenElse>(&engine, ifPred, thenPred, elsePred);
+  PredPtr conjunctionPred = conjunction({if_then_else, failpred});
+
+  SECTION("Engine execute") {
+    REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
+    REQUIRE(results.size() == 2);
+    std::list<TermPtr>::iterator it = results.begin();
+    REQUIRE(*it == i2);
+    ++it;
+    REQUIRE(*it == i3);
+  }
+}
+
+TEST_CASE("Test if-the-else predicate: if fails", "[Engine]") {
+  Engine engine;
+  PVarPtr v1 = NEW_PVAR();
+  PVarPtr v2 = NEW_PVAR();
+  PIntPtr i1 = NEW_PINT(1);
+  PIntPtr i2 = NEW_PINT(2);
+  PIntPtr i3 = NEW_PINT(3);
+  PIntPtr i4 = NEW_PINT(4);
+  PIntPtr i5 = NEW_PINT(5);
+  std::list<TermPtr> results;
+  std::vector<TermPtr> then_choices = {i2, i3};
+  std::vector<TermPtr> else_choices = {i4, i5};
+
+  PredPtr failpred = std::make_shared<CollectAndFail>(&engine, v2, results);
+
+  PredPtr ifPred = std::make_shared<Fail>(&engine);
+
+  std::shared_ptr<VarChoiceIterator> choice_iterator_then =
+      std::make_shared<VarChoiceIterator>(&engine, v2, then_choices);
+  PredPtr thenPred =
+      std::make_shared<ChoicePred>(&engine, choice_iterator_then);
+
+  std::shared_ptr<VarChoiceIterator> choice_iterator_else =
+      std::make_shared<VarChoiceIterator>(&engine, v2, else_choices);
+  PredPtr elsePred =
+      std::make_shared<ChoicePred>(&engine, choice_iterator_else);
+
+  PredPtr if_then_else =
+      std::make_shared<IfThenElse>(&engine, ifPred, thenPred, elsePred);
+  PredPtr conjunctionPred = conjunction({if_then_else, failpred});
+
+  SECTION("Engine execute") {
+    REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
+    REQUIRE(results.size() == 2);
+    std::list<TermPtr>::iterator it = results.begin();
+    REQUIRE(*it == i4);
+    ++it;
+    REQUIRE(*it == i5);
   }
 }

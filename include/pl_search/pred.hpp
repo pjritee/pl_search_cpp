@@ -246,6 +246,8 @@ public:
 
   bool apply_choice() override;
 
+  void set_cut_point(int cut_point) { env_index = cut_point; }
+
 private:
   int env_index;
 };
@@ -296,6 +298,35 @@ private:
   PredPtr saved_continuation;
 };
 
+/**
+* @brief Represents the equivalent of Prolog if-then-else i.e.
+* (G1 -> G2; G3)  - similar to (G1, !, G2; G3)
+) */
+class IfThenElse : public Pred {
+public:
+  /**
+   * @brief The equlvalent of the Prolog call (If -> Then ; Else)
+   * @param eng Pointer to the engine
+   * @param if_pred The guard predicate
+   * @param then_pred The then predicate
+   * @param else_pred The else predicate
+   */
+  IfThenElse(Engine *eng, PredPtr if_pred, PredPtr then_pred,
+             PredPtr else_pred);
+
+  void initialize_call() override;
+  bool apply_choice() override;
+  bool more_choices() override;
+  void set_continuation(PredPtr cont);
+
+private:
+  PredPtr if_pred;
+  PredPtr then_pred;
+  PredPtr else_pred;
+  PredPtr if_then_pred;
+  std::shared_ptr<Cut> cut_pred;
+  int choice_number;
+};
 /**
  * @brief LoopBodyFactory is an abstract base class used for  generating
  * instances of a predicate class used in the body of a loop.
