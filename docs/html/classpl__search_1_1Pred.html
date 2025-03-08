@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.2</span>
+   <div id="projectname">PLSearchCPP<span id="projectnumber">&#160;1.3</span>
    </div>
   </td>
  </tr>
@@ -90,25 +90,27 @@ Inheritance diagram for pl_search::Pred:</div>
 <div class="dyncontent">
 <div class="center"><img src="classpl__search_1_1Pred__inherit__graph.png" border="0" usemap="#apl__search_1_1Pred_inherit__map" alt="Inheritance graph"/></div>
 <map name="apl__search_1_1Pred_inherit__map" id="apl__search_1_1Pred_inherit__map">
-<area shape="rect" title="Abstract base class for Prolog&#45;like predicates." alt="" coords="273,93,386,119"/>
-<area shape="rect" href="classpl__search_1_1ChoicePred.html" title="Represents a choice predicate." alt="" coords="5,167,160,192"/>
-<area shape="poly" title=" " alt="" coords="277,125,123,169,122,164,276,120"/>
-<area shape="rect" href="classpl__search_1_1DisjPred.html" title="Represents a disjunction of predicates." alt="" coords="184,167,320,192"/>
-<area shape="poly" title=" " alt="" coords="309,130,266,168,263,164,305,126"/>
-<area shape="rect" href="classpl__search_1_1NotNot.html" title="Represents an equivalent of the Prolog call \+\+Call. The aim is to determine if Call succeeds withou..." alt="" coords="344,167,472,192"/>
-<area shape="poly" title=" " alt="" coords="354,126,397,164,393,168,350,130"/>
-<area shape="rect" href="classpl__search_1_1SemiDetPred.html" title="Represents a semi&#45;deterministic predicate." alt="" coords="497,167,661,192"/>
-<area shape="poly" title=" " alt="" coords="383,120,539,164,538,169,382,125"/>
-<area shape="rect" title=" " alt="" coords="262,5,397,45"/>
-<area shape="poly" title=" " alt="" coords="332,59,332,93,327,93,327,59"/>
-<area shape="rect" href="classpl__search_1_1DetPred.html" title="Represents a deterministic predicate." alt="" coords="427,240,562,265"/>
-<area shape="poly" title=" " alt="" coords="556,203,510,242,507,238,553,199"/>
-<area shape="rect" href="classpl__search_1_1NotNotEnd.html" title="Intended for internal use by NotNot which injects this call directly after the predicate supplied to ..." alt="" coords="586,240,737,265"/>
-<area shape="poly" title=" " alt="" coords="604,199,650,238,646,242,601,203"/>
-<area shape="rect" href="classpl__search_1_1Cut.html" title="Represents a Prolog like cut. When called it pops env_stack thus removing choicepoints." alt="" coords="375,313,481,339"/>
-<area shape="poly" title=" " alt="" coords="476,278,441,315,437,311,472,274"/>
-<area shape="rect" href="classpl__search_1_1Loop.html" title="Constructs a predicate that loops over (instances of) a predicate while some condition (loop_continue..." alt="" coords="505,313,620,339"/>
-<area shape="poly" title=" " alt="" coords="517,273,554,311,550,315,513,277"/>
+<area shape="rect" title="Abstract base class for Prolog&#45;like predicates." alt="" coords="188,104,301,129"/>
+<area shape="rect" href="classpl__search_1_1ChoicePred.html" title="Represents a choice predicate." alt="" coords="354,5,509,31"/>
+<area shape="poly" title=" " alt="" coords="269,93,305,65,348,40,377,28,379,33,351,44,308,70,273,97"/>
+<area shape="rect" href="classpl__search_1_1DisjPred.html" title="Represents a disjunction of predicates." alt="" coords="363,55,499,80"/>
+<area shape="poly" title=" " alt="" coords="306,98,381,78,383,83,307,103"/>
+<area shape="rect" href="classpl__search_1_1IfThenElse.html" title="Represents the equivalent of Prolog if&#45;then&#45;else i.e. (G1 &#45;&gt; G2; G3) &#45; similar to (G1,..." alt="" coords="357,104,506,129"/>
+<area shape="poly" title=" " alt="" coords="315,114,356,114,356,119,315,119"/>
+<area shape="rect" href="classpl__search_1_1NotNot.html" title="Represents an equivalent of the Prolog call \+\+Call. The aim is to determine if Call succeeds withou..." alt="" coords="367,153,495,179"/>
+<area shape="poly" title=" " alt="" coords="307,130,383,151,381,156,306,135"/>
+<area shape="rect" href="classpl__search_1_1SemiDetPred.html" title="Represents a semi&#45;deterministic predicate." alt="" coords="349,203,513,228"/>
+<area shape="poly" title=" " alt="" coords="273,136,308,164,351,189,379,200,377,205,348,194,305,168,269,141"/>
+<area shape="rect" title=" " alt="" coords="5,97,140,137"/>
+<area shape="poly" title=" " alt="" coords="154,114,187,114,187,119,154,119"/>
+<area shape="rect" href="classpl__search_1_1DetPred.html" title="Represents a deterministic predicate." alt="" coords="569,177,704,203"/>
+<area shape="poly" title=" " alt="" coords="527,201,569,196,570,201,527,206"/>
+<area shape="rect" href="classpl__search_1_1NotNotEnd.html" title="Intended for internal use by NotNot which injects this call directly after the predicate supplied to ..." alt="" coords="561,227,712,252"/>
+<area shape="poly" title=" " alt="" coords="527,224,561,228,561,233,526,229"/>
+<area shape="rect" href="classpl__search_1_1Cut.html" title="Represents a Prolog like cut. When called it pops env_stack thus removing choicepoints." alt="" coords="764,153,871,179"/>
+<area shape="poly" title=" " alt="" coords="717,177,763,170,764,176,718,182"/>
+<area shape="rect" href="classpl__search_1_1Loop.html" title="Constructs a predicate that loops over (instances of) a predicate while some condition (loop_continue..." alt="" coords="760,203,875,228"/>
+<area shape="poly" title=" " alt="" coords="718,199,760,205,759,210,717,204"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -254,7 +256,7 @@ Protected Attributes</h2></td></tr>
 <p>Applies a choice. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if the choice is applied successfully, false otherwise. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classpl__search_1_1ChoicePred.html#a55a69b87b518ee073771540395707ffa">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1DetPred.html#a2c540769ee001527e4530a66eccedd02">pl_search::DetPred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a43ed327f330da3eceea4fefada506180">pl_search::DisjPred</a>, <a class="el" href="classpl__search_1_1Cut.html#ac9a720bcf7a6a19fddbb951b0689c0dc">pl_search::Cut</a>, <a class="el" href="classpl__search_1_1NotNotEnd.html#a730b3798a1188dad07bee88d1d4dc32f">pl_search::NotNotEnd</a>, <a class="el" href="classpl__search_1_1NotNot.html#a4f25a7b823ebea802d56b9bd2043f5d1">pl_search::NotNot</a>, and <a class="el" href="classpl__search_1_1Loop.html#ac0f68eb47ecef71b2b980919e6a554c1">pl_search::Loop</a>.</p>
+<p>Reimplemented in <a class="el" href="classpl__search_1_1ChoicePred.html#a55a69b87b518ee073771540395707ffa">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1DetPred.html#a2c540769ee001527e4530a66eccedd02">pl_search::DetPred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a43ed327f330da3eceea4fefada506180">pl_search::DisjPred</a>, <a class="el" href="classpl__search_1_1Cut.html#ac9a720bcf7a6a19fddbb951b0689c0dc">pl_search::Cut</a>, <a class="el" href="classpl__search_1_1NotNotEnd.html#a730b3798a1188dad07bee88d1d4dc32f">pl_search::NotNotEnd</a>, <a class="el" href="classpl__search_1_1NotNot.html#a4f25a7b823ebea802d56b9bd2043f5d1">pl_search::NotNot</a>, <a class="el" href="classpl__search_1_1IfThenElse.html#a734204a905dda886c10c3cc5fce720ca">pl_search::IfThenElse</a>, and <a class="el" href="classpl__search_1_1Loop.html#ac0f68eb47ecef71b2b980919e6a554c1">pl_search::Loop</a>.</p>
 
 </div>
 </div>
@@ -338,7 +340,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Initializes the predicate call. </p>
 
-<p>Reimplemented in <a class="el" href="classpl__search_1_1ChoicePred.html#aadc4f7a60974e2d3541d044d982e99a0">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a5f42ca33ce19e50752898adba8b55ef9">pl_search::DisjPred</a>, <a class="el" href="classpl__search_1_1Cut.html#a4ae97bd88931c520fabc51bf4d261db1">pl_search::Cut</a>, <a class="el" href="classpl__search_1_1NotNotEnd.html#aa26b0fa43c228bea43792a126eb89b7b">pl_search::NotNotEnd</a>, <a class="el" href="classpl__search_1_1NotNot.html#af7fdc423e0eef127f26e3422cc65c86a">pl_search::NotNot</a>, and <a class="el" href="classpl__search_1_1Loop.html#a037564d414abce3db74e0128c1a2285c">pl_search::Loop</a>.</p>
+<p>Reimplemented in <a class="el" href="classpl__search_1_1ChoicePred.html#aadc4f7a60974e2d3541d044d982e99a0">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a5f42ca33ce19e50752898adba8b55ef9">pl_search::DisjPred</a>, <a class="el" href="classpl__search_1_1Cut.html#a4ae97bd88931c520fabc51bf4d261db1">pl_search::Cut</a>, <a class="el" href="classpl__search_1_1NotNotEnd.html#aa26b0fa43c228bea43792a126eb89b7b">pl_search::NotNotEnd</a>, <a class="el" href="classpl__search_1_1NotNot.html#af7fdc423e0eef127f26e3422cc65c86a">pl_search::NotNot</a>, <a class="el" href="classpl__search_1_1IfThenElse.html#af0094ff223985c1eb7e168749cd8a47a">pl_search::IfThenElse</a>, and <a class="el" href="classpl__search_1_1Loop.html#a037564d414abce3db74e0128c1a2285c">pl_search::Loop</a>.</p>
 
 </div>
 </div>
@@ -418,7 +420,7 @@ Protected Attributes</h2></td></tr>
 <p>Checks if there are more choices. </p>
 <dl class="section return"><dt>Returns</dt><dd>True if there are more choices, false otherwise. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classpl__search_1_1ChoicePred.html#a83013d66e772bfa800a1211ea2acf0a5">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1SemiDetPred.html#ab40c24b15286b68a32bd168e183bc109">pl_search::SemiDetPred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a94ad7a5e76c247f169b66ef3363abe20">pl_search::DisjPred</a>, and <a class="el" href="classpl__search_1_1NotNot.html#a3a53a2e410884ef8ddfd87790bf3f1dd">pl_search::NotNot</a>.</p>
+<p>Reimplemented in <a class="el" href="classpl__search_1_1ChoicePred.html#a83013d66e772bfa800a1211ea2acf0a5">pl_search::ChoicePred</a>, <a class="el" href="classpl__search_1_1SemiDetPred.html#ab40c24b15286b68a32bd168e183bc109">pl_search::SemiDetPred</a>, <a class="el" href="classpl__search_1_1DisjPred.html#a94ad7a5e76c247f169b66ef3363abe20">pl_search::DisjPred</a>, <a class="el" href="classpl__search_1_1NotNot.html#a3a53a2e410884ef8ddfd87790bf3f1dd">pl_search::NotNot</a>, and <a class="el" href="classpl__search_1_1IfThenElse.html#a5c772cd186bcd19e320df4d8b2341597">pl_search::IfThenElse</a>.</p>
 
 </div>
 </div>
@@ -454,7 +456,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classpl__search_1_1Loop.html#ab299d88c3ffee0cb735c26acdb5d5dc2">pl_search::Loop</a>.</p>
+<p>Reimplemented in <a class="el" href="classpl__search_1_1IfThenElse.html#a31eeebda24fd67803f238ab9e017e1c8">pl_search::IfThenElse</a>, and <a class="el" href="classpl__search_1_1Loop.html#ab299d88c3ffee0cb735c26acdb5d5dc2">pl_search::Loop</a>.</p>
 
 </div>
 </div>

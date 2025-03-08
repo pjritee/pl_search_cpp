@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['loop_0',['Loop',['../classpl__search_1_1Loop.html',1,'pl_search']]],
-  ['loopbodyfactory_1',['LoopBodyFactory',['../classpl__search_1_1LoopBodyFactory.html',1,'pl_search']]]
+  ['ifthenelse_0',['IfThenElse',['../classpl__search_1_1IfThenElse.html',1,'pl_search']]]
 ];
