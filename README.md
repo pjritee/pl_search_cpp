@@ -66,6 +66,8 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Version History
+* 1.3
+  - Add an if-then-else predicate.
 * 1.2
   - Several (small) code optimizations - improved send_more_money by about 30%
       - dynamic_cast<PInt*>(t.get()) is faster than dynamic_pointer_cast<PInt>(t)
