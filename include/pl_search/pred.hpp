@@ -223,7 +223,7 @@ public:
 
   bool more_choices() override { return index < preds.size(); }
 
-private:
+protected:
   std::vector<PredPtr> preds; ///< The predicates in the disjunction.
   int index;                  ///< index of the current predicate choice
 };
@@ -248,7 +248,7 @@ public:
 
   void set_cut_point(int cut_point) { env_index = cut_point; }
 
-private:
+protected:
   int env_index;
 };
 
@@ -270,7 +270,7 @@ public:
   void initialize_call() override {};
   bool apply_choice() override;
 
-private:
+protected:
   bool *succeeded;
 };
 
@@ -291,7 +291,7 @@ public:
   bool apply_choice() override;
   bool more_choices() override;
 
-private:
+protected:
   PredPtr pred;
   bool succeeded;
   bool another_choice;
@@ -319,7 +319,7 @@ public:
   bool more_choices() override;
   void set_continuation(PredPtr cont);
 
-private:
+protected:
   PredPtr if_pred;
   PredPtr then_pred;
   PredPtr else_pred;
@@ -365,7 +365,7 @@ public:
   bool apply_choice() override;
   void set_continuation(PredPtr cont);
 
-private:
+protected:
   PredPtr saved_continuation;
 };
 

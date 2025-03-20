@@ -15,4 +15,7 @@ timing/
 send_more_money
 prolog_list
 
+
+gmon.*
+callgrind.*
 # Other ignore rules...

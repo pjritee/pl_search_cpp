@@ -84,7 +84,7 @@ public:
    */
   bool isLessThan(Term &t) const override;
 
-private:
+protected:
   std::string name; ///< The name of the atom.
 };
 

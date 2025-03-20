@@ -83,7 +83,7 @@ public:
    */
   int getValue() const { return value; }
 
-private:
+protected:
   int value; ///< The value of the integer.
 };
 

@@ -84,7 +84,7 @@ public:
    */
   double getValue() const { return value; }
 
-private:
+protected:
   double value; ///< The value of the float.
 };
 

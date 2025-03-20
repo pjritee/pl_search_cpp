@@ -56,7 +56,7 @@ namespace pl_search {
  * might modify it or when binding a variable to a CList object.
  */
 class CList : public Term {
-private:
+protected:
   std::list<TermPtr> &elements; ///< The elements of the list.
 
 public:

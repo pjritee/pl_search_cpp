@@ -106,7 +106,6 @@ protected:
 
   Term *deref_term() override;
 
-private:
   int var_id; ///< The ID of the variable.
 };
 
