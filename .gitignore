@@ -18,4 +18,5 @@ prolog_list
 
 gmon.*
 callgrind.*
+.bak
 # Other ignore rules...
