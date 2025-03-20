@@ -6,7 +6,7 @@
 <area shape="poly" id="edge25_Node000001_Node000003" title=" " alt="" coords="630,31,630,138,624,138,624,31"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="48,299,120,324"/>
 <area shape="poly" id="edge44_Node000001_Node000005" title=" " alt="" coords="574,25,438,37,268,60,185,77,111,98,52,124,30,138,15,153,9,170,10,194,17,221,29,249,44,270,61,288,57,291,40,273,25,252,12,223,5,194,3,169,10,151,27,134,50,119,109,93,184,72,267,55,438,32,573,20"/>
-<area shape="rect" id="Node000007" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="686,299,784,324"/>
+<area shape="rect" id="Node000007" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the pl_search library." alt="" coords="686,299,784,324"/>
 <area shape="poly" id="edge42_Node000001_Node000007" title=" " alt="" coords="681,19,760,29,857,50,907,67,957,89,1003,117,1045,150,1060,167,1069,184,1078,225,1081,239,1077,252,1058,267,1030,279,957,296,874,306,798,311,797,306,873,301,956,291,1029,274,1055,263,1073,249,1076,239,1073,226,1064,186,1056,170,1041,154,1000,121,954,94,906,72,855,56,759,34,680,25"/>
 <area shape="rect" id="Node000011" href="$pred_8hpp.html" title="Definition of the Pred class and its derived classes." alt="" coords="814,152,886,177"/>
 <area shape="poly" id="edge41_Node000001_Node000011" title=" " alt="" coords="681,20,717,25,755,36,792,52,825,77,836,91,843,106,851,138,845,139,838,108,831,93,821,81,790,57,753,41,715,30,680,25"/>

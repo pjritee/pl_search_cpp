@@ -1,5 +1,5 @@
 <map id="include/pl_search/typedefs.hpp" name="include/pl_search/typedefs.hpp">
-<area shape="rect" id="Node000001" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="579,5,782,31"/>
+<area shape="rect" id="Node000001" title="Definition of common typedefs used in the pl_search library." alt="" coords="579,5,782,31"/>
 <area shape="rect" id="Node000002" href="$choice__iterator_8hpp.html" title=" " alt="" coords="80,299,246,339"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="566,26,414,37,247,60,170,76,102,97,50,123,31,138,17,153,9,174,11,195,20,215,36,235,79,270,125,296,122,301,76,274,32,238,16,218,5,196,4,174,13,151,27,134,47,118,100,92,168,71,246,54,414,32,565,21"/>
 <area shape="rect" id="Node000004" href="$clist_8hpp.html" title="Definition of the CList class." alt="" coords="531,152,707,177"/>

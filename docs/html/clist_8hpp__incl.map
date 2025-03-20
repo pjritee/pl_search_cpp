@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,33,145,71,141,67,182,29"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="5,152,60,177"/>
 <area shape="poly" id="edge9_Node000001_Node000004" title=" " alt="" coords="156,33,113,52,92,65,73,80,54,109,42,139,37,137,49,107,69,77,89,60,110,47,154,28"/>
-<area shape="rect" id="Node000005" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="181,152,279,177"/>
+<area shape="rect" id="Node000005" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the pl_search library." alt="" coords="181,152,279,177"/>
 <area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="201,30,227,138,221,139,196,32"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="233,79,272,104"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="207,29,237,66,233,70,203,33"/>

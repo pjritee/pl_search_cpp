@@ -7,7 +7,7 @@ MIT License
 
 /**
  * @file typedefs.hpp
- * @brief Definition of common typedefs used in the PLSearchCPP library.
+ * @brief Definition of common typedefs used in the pl_search library.
  */
 
 #ifndef PL_SEARCH_TYPEDEFS_HPP

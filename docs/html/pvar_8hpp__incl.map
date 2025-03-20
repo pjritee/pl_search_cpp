@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Definition of the PVar class." alt="" coords="91,5,267,31"/>
 <area shape="rect" id="Node000002" href="$term_8hpp.html" title="Definition of the Term class." alt="" coords="105,79,178,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,32,156,68,151,65,170,30"/>
-<area shape="rect" id="Node000005" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="181,152,278,177"/>
+<area shape="rect" id="Node000005" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the pl_search library." alt="" coords="181,152,278,177"/>
 <area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="185,30,223,138,218,140,180,32"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,152,77,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="127,106,70,146,67,142,124,102"/>

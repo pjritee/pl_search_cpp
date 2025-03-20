@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,5,171,45"/>
 <area shape="rect" id="Node000002" href="$engine_8hpp.html" title="Definition of the Engine class and related structures." alt="" coords="329,93,415,119"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,43,318,87,317,92,155,48"/>
-<area shape="rect" id="Node000007" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the PLSearchCPP library." alt="" coords="295,313,393,339"/>
+<area shape="rect" id="Node000007" href="$typedefs_8hpp.html" title="Definition of common typedefs used in the pl_search library." alt="" coords="295,313,393,339"/>
 <area shape="poly" id="edge25_Node000001_Node000007" title=" " alt="" coords="78,47,55,91,34,148,28,179,28,209,34,238,49,264,63,275,86,286,146,302,216,312,282,319,281,324,216,318,145,307,84,291,61,280,45,267,29,240,22,210,23,179,29,147,50,89,73,45"/>
 <area shape="rect" id="Node000013" title=" " alt="" coords="59,240,117,265"/>
 <area shape="poly" id="edge26_Node000001_Node000013" title=" " alt="" coords="91,45,91,226,85,226,85,45"/>
