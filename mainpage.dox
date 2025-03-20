@@ -1,9 +1,9 @@
 /**
- * @mainpage PLSearchCPP Documentation
+ * @mainpage pl_search_cpp Documentation
  *
  * @section intro Introduction
  *
- * PLSearchCPP is a C++ library that approximates Prolog predicates using a continuation-passing style. 
+ * pl_search_cpp is a C++ library that approximates Prolog predicates using a continuation-passing style. 
  * It provides a framework for defining and executing Prolog-like predicates, including support for 
  * backtracking, choice points, and unification. Its intended use is to support
  * backtrack search in a wide range of problem domains, not as a pathway to a Prolog
@@ -19,7 +19,7 @@
  *
  * @section usage Usage
  *
- * To use the PLSearchCPP library, include the necessary headers in your project and link against the library.
+ * To use the pl_search_cpp library, include the necessary headers in your project and link against the library.
  *
  * @code
  * #include "pl_search/engine.hpp"

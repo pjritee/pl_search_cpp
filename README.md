@@ -1,6 +1,6 @@
-# PLSearchCPP
+# pl_search_cpp
 
-PLSearchCPP is a C++ library that approximates Prolog predicates using a continuation-passing style. It provides a framework for defining and executing Prolog-like predicates, including support for backtracking, choice points, and unification.
+pl_search_cpp is a C++ library that approximates Prolog predicates using a continuation-passing style. It provides a framework for defining and executing Prolog-like predicates, including support for backtracking, choice points, and unification.
 
 ## Features
 
@@ -22,8 +22,8 @@ PLSearchCPP is a C++ library that approximates Prolog predicates using a continu
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/yourusername/PLSearchCPP.git
-cd PLSearchCPP
+git clone https://github.com/yourusername/pl_search_cpp.git
+cd pl_search_cpp
 ```
 
 2. Create a build directory and navigate to it:
@@ -66,6 +66,8 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Version History
+* 1.4
+  - Change from private to protected in term and pred classes to increase flexibility when subclassing. For example, termcolour can now be used in subclasses of various terms. 
 * 1.3
   - Add an if-then-else predicate.
 * 1.2
