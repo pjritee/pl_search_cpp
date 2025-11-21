@@ -56,6 +56,7 @@ The examples directory contains the following examples of using the library.
 - An implementation of the Prolog append predicate using the above type (<code>append_pred.hpp</code>).
 - A main program ( <code>prolog_list.cpp</code>) that exercises the definitions above.
 - A Makefile to build the executables.
+- A serious use of this library was for searching for the Orthogonal Designs listed in the OD_Designs repo.
 
 ## Documentation
 
