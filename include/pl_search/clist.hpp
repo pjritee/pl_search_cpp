@@ -38,12 +38,10 @@ SOFTWARE.
  */
 
 // CList objects replace Prolog lists for efficiency
-// WARNING: Because the internal list is mutable care must be taken when using
-// CList objects. For example, it might be necessary to copy the list before
-// passing it to a function that might modify it or when binding a variable to
-// a CList object.
-// If a Prolog-like list is required, a user-defined class that implements the
-// Term interface should be used (for example ConsList).
+// The list passed to the constructor is copied, so it can be safely modified
+// after the CList is created. If a Prolog-like list is required, a user-defined
+// class that implements the Term interface should be used (for example
+// ConsList).
 
 namespace pl_search {
 
@@ -57,14 +55,14 @@ namespace pl_search {
  */
 class CList : public Term {
 protected:
-  std::list<TermPtr> &elements; ///< The elements of the list.
+  std::list<TermPtr> elements; ///< The elements of the list.
 
 public:
   /**
    * @brief Constructs a CList with the given elements.
    * @param elems The elements of the list.
    */
-  CList(std::list<TermPtr> &elems) : elements(elems) {}
+  CList(std::list<TermPtr> elems) : elements(elems) {}
 
   /**
    * @brief Returns a string representation of the list.

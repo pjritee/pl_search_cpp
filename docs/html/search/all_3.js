@@ -9,7 +9,7 @@ var searchData=
   ['choicepred_6',['choicepred',['../classpl__search_1_1ChoicePred.html',1,'pl_search::ChoicePred'],['../classpl__search_1_1ChoicePred.html#a40a98f492bb1c813ecf302607fe4fe61',1,'pl_search::ChoicePred::ChoicePred()']]],
   ['choices_7',['choices',['../classpl__search_1_1VarChoiceIterator.html#a4ba33c33a20ae360e09e71a147a4d4f5',1,'pl_search::VarChoiceIterator']]],
   ['clear_5fstacks_8',['clear_stacks',['../classpl__search_1_1Engine.html#a208c67a588522e6a76dbd103e8977b44',1,'pl_search::Engine']]],
-  ['clist_9',['clist',['../classpl__search_1_1CList.html#a169d2822b00018db5dd54abe5621e7f6',1,'pl_search::CList::CList()'],['../classpl__search_1_1CList.html',1,'pl_search::CList']]],
+  ['clist_9',['clist',['../classpl__search_1_1CList.html#a50dcad0633aeeae3a14c11a3cfcf4fa5',1,'pl_search::CList::CList()'],['../classpl__search_1_1CList.html',1,'pl_search::CList']]],
   ['clist_2ehpp_10',['clist.hpp',['../clist_8hpp.html',1,'']]],
   ['clistptr_11',['CListPtr',['../namespacepl__search.html#a5f3671086e7ecd34b431d841ad4e4b91',1,'pl_search']]],
   ['conjunction_12',['conjunction',['../namespacepl__search.html#ab463f6f2fee72cb6ee931c291c560e1f',1,'pl_search']]],
