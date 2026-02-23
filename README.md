@@ -67,6 +67,8 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Version History
+* 1.5
+  - Change the constructor of CList to copy the supplied list.
 * 1.4
   - Change from private to protected in term and pred classes to increase flexibility when subclassing. For example, termcolour can now be used in subclasses of various terms. 
 * 1.3
