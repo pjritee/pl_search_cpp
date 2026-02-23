@@ -162,7 +162,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a list of terms. </p>
-<p><a class="el" href="classpl__search_1_1CList.html" title="Represents a list of terms.">CList</a> objects replace Prolog lists for efficiency. The internal list is mutable, so care must be taken when using <a class="el" href="classpl__search_1_1CList.html" title="Represents a list of terms.">CList</a> objects. For example, it might be necessary to copy the list before passing it to a function that might modify it or when binding a variable to a <a class="el" href="classpl__search_1_1CList.html" title="Represents a list of terms.">CList</a> object. </p>
+<p><a class="el" href="classpl__search_1_1CList.html" title="Represents a list of terms.">CList</a> objects replace Prolog lists for efficiency. The list passed to the constructor is copied, so it can be safely modified after the <a class="el" href="classpl__search_1_1CList.html" title="Represents a list of terms.">CList</a> is created. If a Prolog-like list is required, a user-defined class that implements the <a class="el" href="classpl__search_1_1Term.html" title="Abstract base class for terms that approximate Prolog terms.">Term</a> interface should be used. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a50dcad0633aeeae3a14c11a3cfcf4fa5" name="a50dcad0633aeeae3a14c11a3cfcf4fa5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a50dcad0633aeeae3a14c11a3cfcf4fa5">&#9670;&#160;</a></span>CList()</h2>

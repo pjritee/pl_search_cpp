@@ -25,12 +25,12 @@ SOFTWARE.
 #ifndef PL_SEARCH_CLIST_HPP
 #define PL_SEARCH_CLIST_HPP
 
-#include "term.hpp"
-#include "typedefs.hpp"
-
 #include <list>
 #include <sstream>
 #include <string>
+
+#include "term.hpp"
+#include "typedefs.hpp"
 
 /**
  * @file clist.hpp
@@ -40,18 +40,17 @@ SOFTWARE.
 // CList objects replace Prolog lists for efficiency
 // The list passed to the constructor is copied, so it can be safely modified
 // after the CList is created. If a Prolog-like list is required, a user-defined
-// class that implements the Term interface should be used (for example
-// ConsList).
+// class that implements the Term interface should be used.
 
 namespace pl_search {
 
 /**
  * @brief Represents a list of terms.
  *
- * CList objects replace Prolog lists for efficiency. The internal list is
- * mutable, so care must be taken when using CList objects. For example, it
- * might be necessary to copy the list before passing it to a function that
- * might modify it or when binding a variable to a CList object.
+ * CList objects replace Prolog lists for efficiency.
+ * The list passed to the constructor is copied, so it can be safely modified
+ * after the CList is created. If a Prolog-like list is required, a user-defined
+ * class that implements the Term interface should be used.
  */
 class CList : public Term {
 protected:
