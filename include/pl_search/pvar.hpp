@@ -93,7 +93,12 @@ public:
    */
   int getVarId() const { return var_id; }
 
-  std::string repr() const override { return "X" + std::to_string(var_id); }
+  std::string repr() const override {
+    if (value) {
+      return value->dereference()->repr();
+    }
+    return "X" + std::to_string(var_id);
+  }
 
 protected:
   virtual bool isEqualTo(Term &other) const override {
