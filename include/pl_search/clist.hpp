@@ -74,7 +74,7 @@ public:
       if (it != elements.begin()) {
         oss << ", ";
       }
-      oss << (*it)->repr();
+      oss << (*it)->dereference()->repr();
     }
     oss << "]";
     return oss.str();
