@@ -67,6 +67,8 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Version History
+* 1.6
+  - Change CList so that the contained list becomes immutable.
 * 1.5
   - Change the constructor of CList to copy the supplied list.
 * 1.4

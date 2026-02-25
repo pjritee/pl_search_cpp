@@ -37,81 +37,79 @@ SOFTWARE.
  * @brief Definition of the CList class.
  */
 
-// CList objects replace Prolog lists for efficiency
-// The list passed to the constructor is copied, so it can be safely modified
-// after the CList is created. If a Prolog-like list is required, a user-defined
-// class that implements the Term interface should be used.
+ // CList objects replace Prolog lists for efficiency
+ // The list passed to the constructor is copied, so it can be safely modified
+ // after the CList is created. If a Prolog-like list is required, a user-defined
+ // class that implements the Term interface should be used.
 
 namespace pl_search {
 
-/**
- * @brief Represents a list of terms.
- *
- * CList objects replace Prolog lists for efficiency.
- * The list passed to the constructor is copied, so it can be safely modified
- * after the CList is created. If a Prolog-like list is required, a user-defined
- * class that implements the Term interface should be used.
- */
-class CList : public Term {
-protected:
-  std::list<TermPtr> elements; ///< The elements of the list.
-
-public:
   /**
-   * @brief Constructs a CList with the given elements.
-   * @param elems The elements of the list.
+   * @brief Represents a list of terms.
+   *
+   * CList objects replace Prolog lists for efficiency.
+   * The list passed to the constructor is copied.
    */
-  CList(std::list<TermPtr> elems) : elements(elems) {}
+  class CList : public Term {
+  protected:
+    std::list<TermPtr> elements; ///< The elements of the list.
 
-  /**
-   * @brief Returns a string representation of the list.
-   * @return A string representation of the list.
-   */
-  std::string repr() const override {
-    std::ostringstream oss;
-    oss << "[";
-    for (auto it = elements.begin(); it != elements.end(); ++it) {
-      if (it != elements.begin()) {
-        oss << ", ";
+  public:
+    /**
+     * @brief Constructs a CList with the given elements.
+     * @param elems The elements of the list.
+     */
+    CList(std::list<TermPtr> elems) : elements(elems) {}
+
+    /**
+     * @brief Returns a string representation of the list.
+     * @return A string representation of the list.
+     */
+    std::string repr() const override {
+      std::ostringstream oss;
+      oss << "[";
+      for (auto it = elements.begin(); it != elements.end(); ++it) {
+        if (it != elements.begin()) {
+          oss << ", ";
+        }
+        oss << (*it)->dereference()->repr();
       }
-      oss << (*it)->dereference()->repr();
+      oss << "]";
+      return oss.str();
     }
-    oss << "]";
-    return oss.str();
-  }
 
-  /**
-   * @brief Checks if the term is equal to another term.
-   * @param other The term to compare to.
-   * @return True if the terms are equal, false otherwise.
-   */
-  bool isEqualTo(Term &other) const override {
-    if (CList *list = dynamic_cast<CList *>(&other)) {
-      return elements == list->elements;
+    /**
+     * @brief Checks if the term is equal to another term.
+     * @param other The term to compare to.
+     * @return True if the terms are equal, false otherwise.
+     */
+    bool isEqualTo(Term& other) const override {
+      if (CList* list = dynamic_cast<CList*>(&other)) {
+        return elements == list->elements;
+      }
+      return false;
     }
-    return false;
-  }
 
-  /**
-   * @brief < operator for a CList and a Term
-   * @param other The term being compared
-   * @return True if the this CList is < other, false otherwise.
-   */
-  bool isLessThan(Term &other) const override;
+    /**
+     * @brief < operator for a CList and a Term
+     * @param other The term being compared
+     * @return True if the this CList is < other, false otherwise.
+     */
+    bool isLessThan(Term& other) const override;
 
-  /**
-   * @brief Adds an element to the list.
-   * @param element The element to add.
-   * Warning: the engine does not backtrack over adding elements to a CList.
-   */
-  void addElement(TermPtr element) { elements.push_back(element); }
 
-  /**
-   * @brief Returns the elements of the list.
-   * @return A reference to the list of elements.
-   */
-  const std::list<TermPtr> &getElements() const { return elements; }
-};
+    /**
+     * @brief Gets the elements of the list.
+     * @details The elements are returned as a list of shared pointers to Terms.
+     * The caller can modify the elements of the list through the shared pointers, but cannot modify the list itself.
+     * Making the list itself modifiable would break the immutability of CList, which is a key feature for its use in
+     * Prolog-like logic programming. This means that any changes to the list will be undone on backtracking, 
+     * which is essential for the correct functioning of the engine. 
+     * If users need to modify the list itself, they should create a new CList with the modified list of elements. 
+     * @return The elements of the list.
+     */
+    const std::list<TermPtr> getElements() const { return elements; }
+  };
 
 } // namespace pl_search
 
