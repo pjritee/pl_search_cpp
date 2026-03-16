@@ -67,6 +67,9 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Version History
+* 1.7
+  - Change clear_stacks in engine.cpp so that trail entries created before execute is called are also cleaned up.
+  - Fix two warnings. 
 * 1.6
   - Change CList so that the contained list becomes immutable.
 * 1.5

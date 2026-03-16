@@ -317,7 +317,7 @@ public:
   void initialize_call() override;
   bool apply_choice() override;
   bool more_choices() override;
-  void set_continuation(PredPtr cont);
+  void set_continuation(PredPtr cont) override;
 
 protected:
   PredPtr if_pred;
@@ -363,7 +363,7 @@ public:
 
   void initialize_call() override;
   bool apply_choice() override;
-  void set_continuation(PredPtr cont);
+  void set_continuation(PredPtr cont) override;
 
 protected:
   PredPtr saved_continuation;
