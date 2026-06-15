@@ -350,16 +350,16 @@ public:
  */
 class Loop : public DetPred {
 public:
-  LoopBodyFactory *body_factory;
+  LoopBodyFactoryPtr body_factory;
 
   /**
    * @brief Constructs a predicate that loops over (instances of) a predicate
    * while some condition (loop_continues) is satisfied.
    * @param eng Pointer to the engine.
-   * @param bf a subclass of LoopBodyFactory that is used to generate
+   * @param bf a pointer to a subclass of LoopBodyFactory that is used to generate
    * body predicates to call and to test if the loop should continue.
    */
-  Loop(Engine *eng, LoopBodyFactory *bf) : DetPred(eng), body_factory(bf) {}
+  Loop(Engine *eng, LoopBodyFactoryPtr bf) : DetPred(eng), body_factory(bf) {}
 
   void initialize_call() override;
   bool apply_choice() override;

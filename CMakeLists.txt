@@ -16,7 +16,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
-project(pl_search_cpp VERSION 1.5)
+project(pl_search_cpp VERSION 1.8)
 
 # Include directories
 include_directories(include)

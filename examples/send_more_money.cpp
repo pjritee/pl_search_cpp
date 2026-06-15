@@ -51,7 +51,7 @@ using namespace pl_search;
 
 std::vector<PIntPtr> digits = {
     NEW_PINT(0), NEW_PINT(1), NEW_PINT(2), NEW_PINT(3), NEW_PINT(4),
-    NEW_PINT(5), NEW_PINT(6), NEW_PINT(7), NEW_PINT(8), NEW_PINT(9)};
+    NEW_PINT(5), NEW_PINT(6), NEW_PINT(7), NEW_PINT(8), NEW_PINT(9) };
 
 //
 // The approach we take to manage these constrains is to define a subclass
@@ -70,17 +70,18 @@ public:
   // range of values for the variable. name is the name of the variable
   // (used for debugging).
   PuzzleVar(int low, int high, std::string name)
-      : PVar(), lower_bound(low), upper_bound(high), name(name) {}
+    : PVar(), lower_bound(low), upper_bound(high), name(name) {
+  }
 
   // The set_distinct method will set the distinctness set for the variable.
   // This can't be part of the constructor because the distinctness set is
   // not known until all the variables have been created.
-  void set_distinct(std::vector<PuzzleVarPtr> &d) { distinct = d; }
+  void set_distinct(std::vector<PuzzleVarPtr>& d) { distinct = d; }
 
   // The bind method is overridden to check that the value is in the
   // range and that it is distinct from the other variables in the
   // distinctness set.
-  bool bind(const TermPtr &t) override {
+  bool bind(const TermPtr& t) override {
     if (PIntPtr p = std::dynamic_pointer_cast<PInt>(t)) {
       if (p->getValue() >= lower_bound && p->getValue() <= upper_bound) {
         if (distinct.empty()) {
@@ -161,9 +162,9 @@ public:
   // will be reset to unsolved because the solved variable will be unbound.
   static PAtomPtr solved_value;
 
-  ColumnSumConstraint(Engine *eng, std::vector<PuzzleVarPtr> &lhs,
-                      PuzzleVarPtr rhs, PuzzleVarPtr carry)
-      : engine(eng), lhs(lhs), rhs(rhs), carry(carry) {
+  ColumnSumConstraint(Engine* eng, std::vector<PuzzleVarPtr>& lhs,
+    PuzzleVarPtr rhs, PuzzleVarPtr carry)
+    : engine(eng), lhs(lhs), rhs(rhs), carry(carry) {
     solved = NEW_PVAR();
   }
 
@@ -173,7 +174,7 @@ public:
   // true and progress should be left unchanged. If the constraint is
   // not yet solved but progress has been made by binding  variables
   // it should return true and progress should be set to true.
-  bool try_solve(bool &progress) {
+  bool try_solve(bool& progress) {
     // If the constraint is already solved then return true
     if (!solved->is_var()) {
       return true;
@@ -183,11 +184,12 @@ public:
     // is the number of remaining variables above the line.
     int sum = 0;
     int num_vars_lhs = 0;
-    for (auto &v : lhs) {
+    for (auto& v : lhs) {
       if (PIntPtr p = std::dynamic_pointer_cast<PInt>(v->dereference())) {
         // If the variable is bound then add its value to the sum
         sum += p->getValue();
-      } else {
+      }
+      else {
         // If the variable is not bound then increment the number of
         // variables above the line.
         num_vars_lhs++;
@@ -226,7 +228,7 @@ public:
       // remaining variable above the line.
       PIntPtr rhs_deref = std::dynamic_pointer_cast<PInt>(rhs->dereference());
       PIntPtr carry_deref =
-          std::dynamic_pointer_cast<PInt>(carry->dereference());
+        std::dynamic_pointer_cast<PInt>(carry->dereference());
       assert(rhs_deref);
       assert(carry_deref);
       int value = rhs_deref->getValue() + 10 * carry_deref->getValue() - sum;
@@ -263,8 +265,8 @@ public:
   }
 
 private:
-  Engine *engine;
-  std::vector<PuzzleVarPtr> &lhs;
+  Engine* engine;
+  std::vector<PuzzleVarPtr>& lhs;
   PuzzleVarPtr rhs;
   PuzzleVarPtr carry;
   PVarPtr solved;
@@ -279,10 +281,11 @@ class AllConstraints {
 public:
   // We pass in the puzzle variables so that we can iterate over them
   // to find variables that have fewer than two choices.
-  AllConstraints(Engine *eng, std::vector<PuzzleVarPtr> &vars)
-      : engine(eng), vars(vars) {}
+  AllConstraints(Engine* eng, std::vector<PuzzleVarPtr>& vars)
+    : engine(eng), vars(vars) {
+  }
 
-  void add_constraint(ColumnSumConstraint *c) { constraints.push_back(c); }
+  void add_constraint(ColumnSumConstraint* c) { constraints.push_back(c); }
 
   // The try_solve method will try to solve all the constraints. If it can't
   // solve a constraint then it will return false otherwise it will return true.
@@ -292,13 +295,13 @@ public:
     while (progress) {
       progress = false;
       // Try to solve each constraint in turn.
-      for (auto &c : constraints) {
+      for (auto& c : constraints) {
         if (!c->try_solve(progress)) {
           return false;
         }
       }
       // Find any variables that have fewer than two choices.
-      for (auto &v : vars) {
+      for (auto& v : vars) {
         if (v->is_var()) {
           std::vector<TermPtr> choices = v->get_choices();
           // If there are no choices then the puzzle can't be solved (with these
@@ -322,9 +325,9 @@ public:
   }
 
 private:
-  Engine *engine;
-  std::vector<ColumnSumConstraint *> constraints;
-  std::vector<PuzzleVarPtr> &vars;
+  Engine* engine;
+  std::vector<ColumnSumConstraint*> constraints;
+  std::vector<PuzzleVarPtr>& vars;
 };
 
 // The PrintAndFail class is a predicate that will print the solution
@@ -332,28 +335,29 @@ private:
 // solutions.
 class PrintAndFail : public SemiDetPred {
 public:
-  PrintAndFail(Engine *eng, std::vector<PuzzleVarPtr> &vars)
-      : SemiDetPred(eng), vars(vars) {}
+  PrintAndFail(Engine* eng, std::vector<PuzzleVarPtr>& vars)
+    : SemiDetPred(eng), vars(vars) {
+  }
 
   void initialize_call() override {
     // Pretty print the solution - we are relying on the order of variables
     // (now digits) in vars
     std::cout << " " << *(vars[0]->dereference()) << *(vars[1]->dereference())
-              << *(vars[2]->dereference()) << *(vars[3]->dereference())
-              << std::endl;
+      << *(vars[2]->dereference()) << *(vars[3]->dereference())
+      << std::endl;
     std::cout << "+" << std::endl;
     std::cout << " " << *(vars[4]->dereference()) << *(vars[5]->dereference())
-              << *(vars[6]->dereference()) << *(vars[1]->dereference())
-              << std::endl;
+      << *(vars[6]->dereference()) << *(vars[1]->dereference())
+      << std::endl;
     std::cout << "-----" << std::endl;
     std::cout << *(vars[4]->dereference()) << *(vars[5]->dereference())
-              << *(vars[2]->dereference()) << *(vars[1]->dereference())
-              << *(vars[7]->dereference()) << std::endl
-              << std::endl;
+      << *(vars[2]->dereference()) << *(vars[1]->dereference())
+      << *(vars[7]->dereference()) << std::endl
+      << std::endl;
   }
 
 private:
-  std::vector<PuzzleVarPtr> &vars;
+  std::vector<PuzzleVarPtr>& vars;
 };
 
 // PuzzleChoiceIterator is a subclass of VarChoiceIterator that overrides
@@ -361,23 +365,25 @@ private:
 // based on the choice for the variable.
 class PuzzleChoiceIterator : public VarChoiceIterator {
 public:
-  PuzzleChoiceIterator(Engine *engine, PuzzleVarPtr v, std::vector<TermPtr> ch,
-                       AllConstraints *constraints)
-      : VarChoiceIterator(engine, v, ch), constraints(constraints) {}
+  PuzzleChoiceIterator(Engine* engine, PuzzleVarPtr v, std::vector<TermPtr> ch,
+    AllConstraints* constraints)
+    : VarChoiceIterator(engine, v, ch), constraints(constraints) {
+  }
 
   bool test_choice() override { return constraints->try_solve(); }
 
 private:
-  AllConstraints *constraints;
+  AllConstraints* constraints;
 };
 // To solve the puzzle we need to choose values for several variables and
 // that is done by using the Loop predicate whic is drived by the following
 // factory.
 class PuzzleLoopBodyFactory : public LoopBodyFactory {
 public:
-  PuzzleLoopBodyFactory(Engine *eng, std::vector<PuzzleVarPtr> *vs,
-                        AllConstraints *constraints)
-      : LoopBodyFactory(eng), vars(vs), constraints(constraints) {}
+  PuzzleLoopBodyFactory(Engine* eng, std::vector<PuzzleVarPtr>* vs,
+    AllConstraints* constraints)
+    : LoopBodyFactory(eng), vars(vs), constraints(constraints) {
+  }
 
   // The loop should continue if there are any unbound puzzle variables.
   // If it continues then next_var will be set to one of these variables.
@@ -395,13 +401,13 @@ public:
   // based on next_var and it's possible choices.
   PredPtr make_body_pred() override {
     choice_iterator = std::make_shared<PuzzleChoiceIterator>(
-        engine, next_var, next_var->get_choices(), constraints);
+      engine, next_var, next_var->get_choices(), constraints);
     return std::make_shared<ChoicePred>(engine, choice_iterator);
   }
 
 private:
-  std::vector<PuzzleVarPtr> *vars;
-  AllConstraints *constraints;
+  std::vector<PuzzleVarPtr>* vars;
+  AllConstraints* constraints;
   PuzzleVarPtr next_var;
   ChoiceIteratorPtr choice_iterator;
 };
@@ -409,8 +415,8 @@ private:
 int main() {
   auto start = high_resolution_clock::now();
   std::cout << std::endl
-            << "Solutions of the SEND+MORE=MONEY puzzle: " << std::endl
-            << std::endl;
+    << "Solutions of the SEND+MORE=MONEY puzzle: " << std::endl
+    << std::endl;
 
   Engine engine;
   // The PuzzleVars - pass in the variable name for debugging
@@ -427,9 +433,9 @@ int main() {
   PuzzleVarPtr C3 = NEW_PUZZLE_VAR(0, 1, "C3");
 
   // The distinctness set for the variables
-  std::vector<PuzzleVarPtr> distinctvars = {S, E, N, D, M, O, R, Y};
+  std::vector<PuzzleVarPtr> distinctvars = { S, E, N, D, M, O, R, Y };
   // All the puzzle variables.
-  std::vector<PuzzleVarPtr> allvars = {S, E, N, D, M, O, R, Y, C1, C2, C3};
+  std::vector<PuzzleVarPtr> allvars = { S, E, N, D, M, O, R, Y, C1, C2, C3 };
 
   //  Set the distinctness set for each variable
   S->set_distinct(distinctvars);
@@ -442,10 +448,10 @@ int main() {
   Y->set_distinct(distinctvars);
 
   // Above the line vectors
-  std::vector<PuzzleVarPtr> D_E = {D, E};
-  std::vector<PuzzleVarPtr> N_R_C1 = {N, R, C1};
-  std::vector<PuzzleVarPtr> E_O_C2 = {E, O, C2};
-  std::vector<PuzzleVarPtr> S_M_C3 = {S, M, C3};
+  std::vector<PuzzleVarPtr> D_E = { D, E };
+  std::vector<PuzzleVarPtr> N_R_C1 = { N, R, C1 };
+  std::vector<PuzzleVarPtr> E_O_C2 = { E, O, C2 };
+  std::vector<PuzzleVarPtr> S_M_C3 = { S, M, C3 };
   // Set the column sum constraints
   ColumnSumConstraint c1(&engine, D_E, Y, C1);
   ColumnSumConstraint c2(&engine, N_R_C1, E, C2);
@@ -469,20 +475,20 @@ int main() {
   }
 
   // Create the loop predicate
-  PuzzleLoopBodyFactory loop_body_factory(&engine, &allvars, &all_constraints);
-  PredPtr loop = std::make_shared<Loop>(&engine, &loop_body_factory);
+  LoopBodyFactoryPtr loop_body_factory = std::make_shared<PuzzleLoopBodyFactory>(&engine, &allvars, &all_constraints);
+  PredPtr loop = std::make_shared<Loop>(&engine, loop_body_factory);
 
   PredPtr print_and_fail = std::make_shared<PrintAndFail>(&engine, allvars);
 
   // The complete solver is a conjunction of the loop predicate (which finds
   // all possible solutions on backtracking) and the print_and_fail predicate
   // that pretty-prints a solution and then fails (to trigger backtracking).
-  PredPtr conjunction_pred = conjunction({loop, print_and_fail});
+  PredPtr conjunction_pred = conjunction({ loop, print_and_fail });
   engine.execute(conjunction_pred, true);
   std::cout << std::endl << std::endl << "End of solutions" << std::endl;
   auto stop = high_resolution_clock::now();
   auto duration = duration_cast<microseconds>(stop - start);
   std::cout << "Time taken send_more_money: " << duration.count()
-            << " microseconds" << std::endl;
+    << " microseconds" << std::endl;
   return 0;
 }

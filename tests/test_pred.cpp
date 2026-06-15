@@ -12,8 +12,9 @@ using namespace pl_search;
 // Like Prolog unify, but only for testing
 class SemiDetTestPred : public SemiDetPred {
 public:
-  SemiDetTestPred(Engine *eng, TermPtr t1, TermPtr t2)
-      : SemiDetPred(eng), term1(t1), term2(t2) {}
+  SemiDetTestPred(Engine* eng, TermPtr t1, TermPtr t2)
+    : SemiDetPred(eng), term1(t1), term2(t2) {
+  }
   void initialize_call() override {
     // Add assertions based on what initialize_call is supposed to do
   }
@@ -27,7 +28,7 @@ private:
 // line the true Prolog predicate
 class DetTestPred : public DetPred {
 public:
-  DetTestPred(Engine *eng) : DetPred(eng) {}
+  DetTestPred(Engine* eng) : DetPred(eng) {}
   void initialize_call() override {}
 };
 
@@ -35,7 +36,7 @@ public:
 // Test Loop
 class TestBodyFactory : public LoopBodyFactory {
 public:
-  TestBodyFactory(Engine *eng) : LoopBodyFactory(eng) { cont = true; }
+  TestBodyFactory(Engine* eng) : LoopBodyFactory(eng) { cont = true; }
 
   bool loop_continues() override {
     if (cont) {
@@ -57,14 +58,14 @@ TEST_CASE("ChoicePred functionality", "[ChoicePred]") {
   Engine engine;
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
-  std::vector<TermPtr> choices = {term1, term2};
+  std::vector<TermPtr> choices = { term1, term2 };
   PVarPtr var = NEW_PVAR();
 
   std::shared_ptr<VarChoiceIterator> choice_iterator =
-      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+    std::make_shared<VarChoiceIterator>(&engine, var, choices);
 
   std::shared_ptr<ChoicePred> choicePred =
-      std::make_shared<ChoicePred>(&engine, choice_iterator);
+    std::make_shared<ChoicePred>(&engine, choice_iterator);
 
   SECTION("Apply choice test") { REQUIRE(choicePred->apply_choice() == true); }
 
@@ -76,10 +77,10 @@ TEST_CASE("SemiDetPred functionality", "[SemiDetPred]") {
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
   std::shared_ptr<SemiDetTestPred> semiDetPred12 =
-      std::make_shared<SemiDetTestPred>(&engine, term1, term2);
-      
+    std::make_shared<SemiDetTestPred>(&engine, term1, term2);
+
   std::shared_ptr<SemiDetTestPred> semiDetPred11 =
-      std::make_shared<SemiDetTestPred>(&engine, term1, term1);
+    std::make_shared<SemiDetTestPred>(&engine, term1, term1);
 
   SECTION("Try call test term1  and term2") {
     REQUIRE(semiDetPred12->test_call() == false);
@@ -95,11 +96,11 @@ TEST_CASE("Conjunction functionality", "[Conjunction]") {
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
   std::shared_ptr<SemiDetTestPred> semiDetPred12 =
-      std::make_shared<SemiDetTestPred>(&engine, term1, term2);
+    std::make_shared<SemiDetTestPred>(&engine, term1, term2);
   std::shared_ptr<SemiDetTestPred> semiDetPred11 =
-      std::make_shared<SemiDetTestPred>(&engine, term1, term1);
+    std::make_shared<SemiDetTestPred>(&engine, term1, term1);
 
-  std::vector<PredPtr> preds = {semiDetPred12, semiDetPred11};
+  std::vector<PredPtr> preds = { semiDetPred12, semiDetPred11 };
 
   PredPtr conjunctionPred = conjunction(preds);
 
@@ -111,8 +112,8 @@ TEST_CASE("Conjunction functionality", "[Conjunction]") {
 
 TEST_CASE("Loop functionality", "[Loop]") {
   Engine engine;
-  TestBodyFactory body_factory = TestBodyFactory(&engine);
-  PredPtr loop = std::make_shared<Loop>(&engine, &body_factory);
+  LoopBodyFactoryPtr body_factory = std::make_shared<TestBodyFactory>(&engine);
+  PredPtr loop = std::make_shared<Loop>(&engine, body_factory);
 
   loop->initialize_call();
 

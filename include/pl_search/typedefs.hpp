@@ -26,6 +26,7 @@ class PFloat;
 class PAtom;
 class CList;
 class UpdatablePVar;
+class LoopBodyFactory;
 
 /**
  * @brief Typedef for a shared pointer to a Pred object.
@@ -47,6 +48,7 @@ typedef std::shared_ptr<PFloat> PFloatPtr;
 typedef std::shared_ptr<PAtom> PAtomPtr;
 typedef std::shared_ptr<CList> CListPtr;
 typedef std::shared_ptr<UpdatablePVar> UpdatablePVarPtr;
+typedef std::shared_ptr<LoopBodyFactory> LoopBodyFactoryPtr;
 
 /**
  * @brief Helper functions to create shared pointers to Terms and subclasses.
@@ -57,6 +59,7 @@ typedef std::shared_ptr<UpdatablePVar> UpdatablePVarPtr;
 #define NEW_PATOM std::make_shared<PAtom>
 #define NEW_CLIST std::make_shared<CList>
 #define NEW_UPDATABLE_PVAR std::make_shared<UpdatablePVar>
+#define NEW_LOOP_BODY_FACTORY std::make_shared<LoopBodyFactory>
 
 } // namespace pl_search
 

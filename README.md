@@ -67,6 +67,8 @@ Documentation can be found here [docs/index.html](https://pjritee.github.io/pl_s
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Version History
+* 1.8
+  - Modify the Loop predicate to take a shared pointer to a LoopBodyFactory rather than a raw pointer. This makes Loop more versatile - for example, a loop can be created within the LoopBodyFactory of an outer loop.
 * 1.7
   - Change clear_stacks in engine.cpp so that trail entries created before execute is called are also cleaned up.
   - Fix two warnings. 

@@ -11,7 +11,7 @@ using namespace pl_search;
 // Define a simple predicate for testing
 class TestPred : public Pred {
 public:
-  TestPred(Engine *eng) : Pred(eng) {}
+  TestPred(Engine* eng) : Pred(eng) {}
 
   void initialize_call() override {
     // Initialize the call
@@ -31,10 +31,11 @@ public:
 // A predicate that records the current value of a variable and then fails
 class CollectAndFail : public SemiDetPred {
 public:
-  std::list<TermPtr> &results;
+  std::list<TermPtr>& results;
   PVarPtr var;
-  CollectAndFail(Engine *eng, PVarPtr v, std::list<TermPtr> &r)
-      : SemiDetPred(eng), var(v), results(r) {}
+  CollectAndFail(Engine* eng, PVarPtr v, std::list<TermPtr>& r)
+    : SemiDetPred(eng), var(v), results(r) {
+  }
 
   void initialize_call() override { results.push_back(var->dereference()); }
 
@@ -44,7 +45,7 @@ public:
 // Equivalent of Prolog fail
 class Fail : public SemiDetPred {
 public:
-  Fail(Engine *eng) : SemiDetPred(eng) {}
+  Fail(Engine* eng) : SemiDetPred(eng) {}
 
   void initialize_call() override {}
 
@@ -53,8 +54,9 @@ public:
 
 class DetPredTest : public DetPred {
 public:
-  DetPredTest(Engine *eng, TermPtr t1, TermPtr t2)
-      : DetPred(eng), term1(t1), term2(t2) {}
+  DetPredTest(Engine* eng, TermPtr t1, TermPtr t2)
+    : DetPred(eng), term1(t1), term2(t2) {
+  }
 
   void initialize_call() { engine->unify(term1, term2); }
 
@@ -66,8 +68,9 @@ private:
 // Loop body test pred
 class BodyPred : public DetPred {
 public:
-  BodyPred(Engine *eng, TermPtr t1, TermPtr t2)
-      : DetPred(eng), term1(t1), term2(t2) {}
+  BodyPred(Engine* eng, TermPtr t1, TermPtr t2)
+    : DetPred(eng), term1(t1), term2(t2) {
+  }
 
   void initialize_call() { engine->unify(term1, term2); }
 
@@ -82,9 +85,9 @@ class TestBodyFactory : public LoopBodyFactory {
 public:
   std::vector<PVarPtr> vars;
   std::vector<TermPtr> values;
-  TestBodyFactory(Engine *eng, std::vector<PVarPtr> &vs,
-                  std::vector<TermPtr> vals)
-      : LoopBodyFactory(eng), vars(vs), values(vals) {
+  TestBodyFactory(Engine* eng, std::vector<PVarPtr>& vs,
+    std::vector<TermPtr> vals)
+    : LoopBodyFactory(eng), vars(vs), values(vals) {
     index = 0;
   }
 
@@ -110,14 +113,14 @@ void print_pred_chain(PredPtr pred) {
 
 class EngineTest {
 public:
-  static void do_push(Engine *engine, PredPtr pred) { engine->push(pred); }
-  static void test_trail(Engine *engine, PVarPtr var) {
+  static void do_push(Engine* engine, PredPtr pred) { engine->push(pred); }
+  static void test_trail(Engine* engine, PVarPtr var) {
     engine->trail(var);
     REQUIRE(engine->trail_stack.size() == 1);
     REQUIRE(engine->trail_stack.top()->var == var);
   }
 
-  static void test_backtrack(Engine *engine, PVarPtr var) {
+  static void test_backtrack(Engine* engine, PVarPtr var) {
     engine->trail(var);
     var->bind(NEW_PINT(42));
     engine->backtrack();
@@ -125,12 +128,12 @@ public:
     REQUIRE(var->value == nullptr);
   }
 
-  static void test_push(Engine *engine, PredPtr pred) {
+  static void test_push(Engine* engine, PredPtr pred) {
     REQUIRE(engine->env_stack.size() == 1);
     REQUIRE(engine->env_stack.top()->pred == pred);
   }
 
-  static bool test_execute(Engine *engine, PredPtr pred, bool unbind) {
+  static bool test_execute(Engine* engine, PredPtr pred, bool unbind) {
     return engine->execute(pred, unbind);
   }
 };
@@ -155,19 +158,19 @@ TEST_CASE("Engine execute test", "[Engine]") {
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
-  std::vector<TermPtr> choices = {term1, term2};
+  std::vector<TermPtr> choices = { term1, term2 };
 
   std::shared_ptr<VarChoiceIterator> choice_iterator1 =
-      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+    std::make_shared<VarChoiceIterator>(&engine, var, choices);
   std::shared_ptr<VarChoiceIterator> choice_iterator2 =
-      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+    std::make_shared<VarChoiceIterator>(&engine, var, choices);
 
   PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, choice_iterator1);
   PredPtr choicePred2 = std::make_shared<ChoicePred>(&engine, choice_iterator2);
   choicePred2->wrap_with_once();
 
-  PredPtr conjunctionPred1 = conjunction({choicePred1, failpred});
-  PredPtr conjunctionPred2 = conjunction({choicePred2, failpred});
+  PredPtr conjunctionPred1 = conjunction({ choicePred1, failpred });
+  PredPtr conjunctionPred2 = conjunction({ choicePred2, failpred });
 
   SECTION("Execute test - test once") {
     REQUIRE(choicePred2->get_continuation()->get_continuation() == failpred);
@@ -199,7 +202,7 @@ TEST_CASE("Test backtracking over deterministic predicate", "[Engine]") {
 
   PredPtr failpred = std::make_shared<Fail>(&engine);
   PredPtr detpred = std::make_shared<DetPredTest>(&engine, var, term42);
-  PredPtr conjunctionPred = conjunction({detpred, failpred});
+  PredPtr conjunctionPred = conjunction({ detpred, failpred });
 
   SECTION("Test backtracking over deterministic predicate") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
@@ -214,20 +217,20 @@ TEST_CASE("Engine execute disj test", "[Engine]") {
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
-  std::vector<TermPtr> choices = {term1, term2};
+  std::vector<TermPtr> choices = { term1, term2 };
 
   std::shared_ptr<VarChoiceIterator> choice_iterator1 =
-      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+    std::make_shared<VarChoiceIterator>(&engine, var, choices);
   std::shared_ptr<VarChoiceIterator> choice_iterator2 =
-      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+    std::make_shared<VarChoiceIterator>(&engine, var, choices);
 
   PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, choice_iterator1);
   PredPtr choicePred2 = std::make_shared<ChoicePred>(&engine, choice_iterator2);
-  std::vector<PredPtr> disjPreds = {choicePred1, choicePred2};
+  std::vector<PredPtr> disjPreds = { choicePred1, choicePred2 };
   PredPtr disjPred = std::make_shared<DisjPred>(
-      &engine, disjPreds); // Disjunction of choicePred1 and choicePred2
+    &engine, disjPreds); // Disjunction of choicePred1 and choicePred2
 
-  PredPtr conjunctionPred3 = conjunction({disjPred, failpred});
+  PredPtr conjunctionPred3 = conjunction({ disjPred, failpred });
 
   SECTION("Execute test - disjunction, backtrack over choice") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred3, false));
@@ -244,19 +247,19 @@ TEST_CASE("Engine execute disj test", "[Engine]") {
 }
 
 TEST_CASE("Engine execute notnot predicate - not not call succeeds",
-          "[Engine]") {
+  "[Engine]") {
   Engine engine;
   PVarPtr var = NEW_PVAR();
   std::list<TermPtr> results;
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, var, results);
   PIntPtr term1 = NEW_PINT(42);
   PIntPtr term2 = NEW_PINT(43);
-  std::vector<TermPtr> choices = {term1, term2};
+  std::vector<TermPtr> choices = { term1, term2 };
   std::shared_ptr<VarChoiceIterator> choice_iterator1 =
-      std::make_shared<VarChoiceIterator>(&engine, var, choices);
+    std::make_shared<VarChoiceIterator>(&engine, var, choices);
   PredPtr choicePred1 = std::make_shared<ChoicePred>(&engine, choice_iterator1);
   PredPtr notnot_pred = std::make_shared<NotNot>(&engine, choicePred1);
-  PredPtr conjunctionPred = conjunction({notnot_pred, failpred});
+  PredPtr conjunctionPred = conjunction({ notnot_pred, failpred });
 
   SECTION("Engine execute notnot predicate - execute") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
@@ -273,7 +276,7 @@ TEST_CASE("Engine execute notnot predicate - not not call fails", "[Engine]") {
 
   PredPtr fail = std::make_shared<Fail>(&engine);
   PredPtr notnotPred = std::make_shared<NotNot>(&engine, fail);
-  PredPtr conjunctionPred = conjunction({notnotPred, failpred});
+  PredPtr conjunctionPred = conjunction({ notnotPred, failpred });
 
   SECTION("Engine execute notnot predicate - execute") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
@@ -292,12 +295,12 @@ TEST_CASE("Test loop predicate", "[Engine]") {
   PIntPtr i3 = NEW_PINT(3);
   PIntPtr i4 = NEW_PINT(4);
 
-  std::vector<PVarPtr> vars = {v1, v2, v3};
-  std::vector<TermPtr> values = {i1, i2, i3};
+  std::vector<PVarPtr> vars = { v1, v2, v3 };
+  std::vector<TermPtr> values = { i1, i2, i3 };
   PredPtr detpred = std::make_shared<DetPredTest>(&engine, v4, i4);
-  TestBodyFactory body_factory = TestBodyFactory(&engine, vars, values);
-  PredPtr loop = std::make_shared<Loop>(&engine, &body_factory);
-  PredPtr conjunctionPred = conjunction({loop, detpred});
+  LoopBodyFactoryPtr body_factory_ptr = std::make_shared<TestBodyFactory>(&engine, vars, values);
+  PredPtr loop = std::make_shared<Loop>(&engine, body_factory_ptr);
+  PredPtr conjunctionPred = conjunction({ loop, detpred });
 
   SECTION("Engine execute loop") {
     REQUIRE(EngineTest::test_execute(&engine, conjunctionPred, false));
@@ -318,29 +321,29 @@ TEST_CASE("Test if-the-else predicate: if succeeds", "[Engine]") {
   PIntPtr i4 = NEW_PINT(4);
   PIntPtr i5 = NEW_PINT(5);
   std::list<TermPtr> results;
-  std::vector<TermPtr> if_choices = {i1, i2};
-  std::vector<TermPtr> then_choices = {i2, i3};
-  std::vector<TermPtr> else_choices = {i4, i5};
+  std::vector<TermPtr> if_choices = { i1, i2 };
+  std::vector<TermPtr> then_choices = { i2, i3 };
+  std::vector<TermPtr> else_choices = { i4, i5 };
 
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, v2, results);
 
   std::shared_ptr<VarChoiceIterator> choice_iterator_if =
-      std::make_shared<VarChoiceIterator>(&engine, v1, if_choices);
+    std::make_shared<VarChoiceIterator>(&engine, v1, if_choices);
   PredPtr ifPred = std::make_shared<ChoicePred>(&engine, choice_iterator_if);
 
   std::shared_ptr<VarChoiceIterator> choice_iterator_then =
-      std::make_shared<VarChoiceIterator>(&engine, v2, then_choices);
+    std::make_shared<VarChoiceIterator>(&engine, v2, then_choices);
   PredPtr thenPred =
-      std::make_shared<ChoicePred>(&engine, choice_iterator_then);
+    std::make_shared<ChoicePred>(&engine, choice_iterator_then);
 
   std::shared_ptr<VarChoiceIterator> choice_iterator_else =
-      std::make_shared<VarChoiceIterator>(&engine, v2, else_choices);
+    std::make_shared<VarChoiceIterator>(&engine, v2, else_choices);
   PredPtr elsePred =
-      std::make_shared<ChoicePred>(&engine, choice_iterator_else);
+    std::make_shared<ChoicePred>(&engine, choice_iterator_else);
 
   PredPtr if_then_else =
-      std::make_shared<IfThenElse>(&engine, ifPred, thenPred, elsePred);
-  PredPtr conjunctionPred = conjunction({if_then_else, failpred});
+    std::make_shared<IfThenElse>(&engine, ifPred, thenPred, elsePred);
+  PredPtr conjunctionPred = conjunction({ if_then_else, failpred });
 
   SECTION("Engine execute") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
@@ -362,26 +365,26 @@ TEST_CASE("Test if-the-else predicate: if fails", "[Engine]") {
   PIntPtr i4 = NEW_PINT(4);
   PIntPtr i5 = NEW_PINT(5);
   std::list<TermPtr> results;
-  std::vector<TermPtr> then_choices = {i2, i3};
-  std::vector<TermPtr> else_choices = {i4, i5};
+  std::vector<TermPtr> then_choices = { i2, i3 };
+  std::vector<TermPtr> else_choices = { i4, i5 };
 
   PredPtr failpred = std::make_shared<CollectAndFail>(&engine, v2, results);
 
   PredPtr ifPred = std::make_shared<Fail>(&engine);
 
   std::shared_ptr<VarChoiceIterator> choice_iterator_then =
-      std::make_shared<VarChoiceIterator>(&engine, v2, then_choices);
+    std::make_shared<VarChoiceIterator>(&engine, v2, then_choices);
   PredPtr thenPred =
-      std::make_shared<ChoicePred>(&engine, choice_iterator_then);
+    std::make_shared<ChoicePred>(&engine, choice_iterator_then);
 
   std::shared_ptr<VarChoiceIterator> choice_iterator_else =
-      std::make_shared<VarChoiceIterator>(&engine, v2, else_choices);
+    std::make_shared<VarChoiceIterator>(&engine, v2, else_choices);
   PredPtr elsePred =
-      std::make_shared<ChoicePred>(&engine, choice_iterator_else);
+    std::make_shared<ChoicePred>(&engine, choice_iterator_else);
 
   PredPtr if_then_else =
-      std::make_shared<IfThenElse>(&engine, ifPred, thenPred, elsePred);
-  PredPtr conjunctionPred = conjunction({if_then_else, failpred});
+    std::make_shared<IfThenElse>(&engine, ifPred, thenPred, elsePred);
+  PredPtr conjunctionPred = conjunction({ if_then_else, failpred });
 
   SECTION("Engine execute") {
     REQUIRE(!EngineTest::test_execute(&engine, conjunctionPred, false));
